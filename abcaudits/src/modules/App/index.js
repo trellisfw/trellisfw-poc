@@ -1,9 +1,13 @@
 import {
-  initialize 
+  initialize ,
+  addCertification,
+  setYear,
+  setClient,
 } from './chains'
 
 export default {
   state: {
+    token: '',
     model: {
       audits: {
 /*        abc: {
@@ -25,14 +29,22 @@ export default {
       }
     },
     view: {
-      main: {
-        mode: 'certifications'
-      }
+      main_panel: {
+        mode: 'certifications',
+        certs: {
+          certs_to_show: {},
+          selected_audits: {},
+        },
+        client: '',
+      },
     }, 
   },
 
   signals: {
     initialize,
+    addCertButtonClicked: addCertification,
+    yearClicked: setYear,
+    clientClicked: setClient,
   },
 
   modules: {

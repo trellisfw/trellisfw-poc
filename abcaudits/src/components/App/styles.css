@@ -30,6 +30,12 @@
   flex: 1;
   order: 1;
 }
+.main-panel-add-cert {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  flex: 1;
+}
 .main-panel-header {
   display: flex;
   align-items: center;

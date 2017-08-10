@@ -13,7 +13,6 @@ class CertCard extends React.Component {
 
   render() {
     let date = new moment(this.props.audit.conditions_during_audit.operation_observed_date).format('MMMM D, YYYY')
-    console.log(date)
 
     return (
      <div className='cert-card'>
