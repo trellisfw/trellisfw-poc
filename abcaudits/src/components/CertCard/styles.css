@@ -17,6 +17,7 @@
 .right-container {
   display: flex;
   flex-direction: column;
+  align-items: center;
   order: 3;
 }
 .expiration {
@@ -36,6 +37,7 @@
   order: 1;
 }
 .sync-info {
+  align-items: center;
   display: flex;
   order: 3;
 }

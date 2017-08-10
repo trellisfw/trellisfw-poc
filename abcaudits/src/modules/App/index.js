@@ -1,9 +1,12 @@
+import {
+  initialize 
+} from './chains'
 
 export default {
   state: {
     model: {
       audits: {
-        abc: {
+/*        abc: {
           score: '92',
           product: 'Cherries',
           expiration: '2016',
@@ -18,7 +21,7 @@ export default {
           organization: 'Frank Farmer',
           from: 'DistributingGreatness',
           valid: false,
-        },
+        }, */
       }
     },
     view: {
@@ -29,7 +32,7 @@ export default {
   },
 
   signals: {
-  
+    initialize,
   },
 
   modules: {
