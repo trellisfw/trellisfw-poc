@@ -40,6 +40,7 @@ class CertCard extends React.Component {
             </IconButton>
           <p className={'valid'}>{this.props.audit.valid ? 'Signature valid' : 'Signature invalid!'}</p>
         </div>
+        <hr />
       </div>
     )
   }

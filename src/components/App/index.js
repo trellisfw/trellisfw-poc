@@ -89,12 +89,15 @@ class App extends React.Component {
             </Table>
           </div>
           <div className='main-panel'>
-            <IconButton
-              iconClassName="material-icons">delete
-            </IconButton>
-            <IconButton
-              iconClassName="material-icons">group
-            </IconButton>
+            <div className='main-panel-header'>
+              <p className={'main-panel-header-text'}>Current Certifications</p>
+              <IconButton
+                iconClassName="material-icons">delete
+              </IconButton>
+              <IconButton
+                iconClassName="material-icons">group
+              </IconButton>
+            </div>
             <Divider/>
             {certs}
           </div>

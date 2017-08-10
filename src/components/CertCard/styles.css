@@ -19,9 +19,6 @@
   flex-direction: column;
   order: 3;
 }
-.checkbox-container {
-
-}
 .expiration {
   order: 1;
 }
@@ -41,4 +38,7 @@
 .sync-info {
   display: flex;
   order: 3;
+}
+p {
+  margin: 0px;
 }
