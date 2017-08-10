@@ -1,0 +1,44 @@
+.cert-card {
+  display: flex;
+}
+.left-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  order: 1;
+}
+.middle-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  order: 2;
+}
+.right-container {
+  display: flex;
+  flex-direction: column;
+  order: 3;
+}
+.checkbox-container {
+
+}
+.expiration {
+  order: 1;
+}
+.score {
+  order: 2;
+}
+.valid-icon {
+  order: 2;
+}
+.valid {
+  order: 3;
+}
+.product-organization { 
+  font-size: 24px;
+  order: 1;
+}
+.sync-info {
+  display: flex;
+  order: 3;
+}
