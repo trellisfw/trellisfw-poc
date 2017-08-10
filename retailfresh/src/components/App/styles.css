@@ -20,11 +20,19 @@
 .main-panel {
   width: 75%;
 }
+.main-panel-share-button {
+  order: 3;
+}
+.main-panel-delete-button {
+  order: 2;
+}
 .main-panel-header-text {
-
+  flex: 1;
+  order: 1;
 }
 .main-panel-header {
   display: flex;
+  align-items: center;
 }
 .left-panel {
   display: flex;

@@ -28,7 +28,10 @@ class App extends React.Component {
       } else {
         years[this.props.audits[key].expiration] = 1;
       }
-      return <CertCard name={key} key={'cert-'+i}/>
+      return <div key={'cert-hr-container'+i}>
+        <CertCard name={key} key={'cert-'+i}/>
+        <hr/>
+      </div>
     })
 
     return (
@@ -92,13 +95,15 @@ class App extends React.Component {
             <div className='main-panel-header'>
               <p className={'main-panel-header-text'}>Current Certifications</p>
               <IconButton
+                className='main-panel-delete-button'
                 iconClassName="material-icons">delete
               </IconButton>
               <IconButton
+                className='main-panel-share-button'
                 iconClassName="material-icons">group
               </IconButton>
             </div>
-            <Divider/>
+            <hr />
             {certs}
           </div>
         </div>
