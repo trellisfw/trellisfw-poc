@@ -10,6 +10,7 @@
   flex-direction: row;
 }
 .mode {
+  padding: 5px;
   cursor: pointer;
 }
 .highlighted-mode {
@@ -60,4 +61,5 @@
 .profile-container {
   display: flex;
   align-items: center;
+  flex: 1;
 }

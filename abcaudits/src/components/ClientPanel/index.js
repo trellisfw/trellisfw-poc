@@ -46,11 +46,11 @@ class ClientPanel extends React.Component {
           displayRowCheckbox={false}>
           {Object.keys(clients).map(client =>
             <TableRow 
+              onTouchTap={() => {this.props.clientClicked({client})}}
               className={'row'}
               selected={client === this.props.client}
               key={'client-category-'+client}>
-              <TableRowColumn
-                onClick={() => {this.props.clientClicked({})}}>
+              <TableRowColumn>
                 <div className={'rowtext'}>
                   <p className={'category-title'}>{client}</p>
                   <p>{`(${clients[client]})`}</p>

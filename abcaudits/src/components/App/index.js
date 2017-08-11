@@ -17,9 +17,9 @@ import styles from './styles.css'
 
 export default connect({
   audits: state`app.model.audits`,
-  mode: state`app.view.main.mode`,
+  mode: state`app.view.main_panel.mode`,
+  client: state`app.view.main_panel.client`,
   certsToShow: state`app.view.main_panel.certs.certs_to_show`,
-//  configs: state`configs`,
 
   initialize: signal`app.initialize`,
   addCertButtonClicked: signal`app.addCertButtonClicked`,
@@ -62,7 +62,7 @@ class App extends React.Component {
                 iconClassName="material-icons">account_circle
               </IconButton>
             </div>
-            <div className='modes'>
+            {false ? <div className='modes'>
               <p 
                 className={this.props.mode === 'connections' ? 'highlighted-mode' : 'mode'}
                 onClick={()=>{this.props.modeClicked({mode: 'connections'})}}>
@@ -73,7 +73,7 @@ class App extends React.Component {
                 onClick={()=>{this.props.modeClicked({mode: 'certifications'})}}>
                 <u>Certifications</u>
               </p>
-            </div>
+            </div> : null}
           </div>
         </div>
         <div className='lower'>
@@ -97,14 +97,14 @@ class App extends React.Component {
             <hr />
             {certs}
             {true ? 
-            <div
+            (this.props.client ? <div
               onClick={()=> this.props.addCertButtonClicked({})}
               className='main-panel-add-cert'>
               <IconButton
                 iconClassName="material-icons">add_circle
               </IconButton> 
               <p>New Certification</p>
-            </div>
+            </div> : null)
             : null }
           </div>
         </div>
