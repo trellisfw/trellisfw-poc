@@ -10,7 +10,6 @@ export default Controller({
     host: 'localhost:8585' 
   }),
   state: {
-    title: 'Hello world'
   },
   signals: {
   },

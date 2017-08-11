@@ -44,14 +44,14 @@ class App extends React.Component {
     return (
       <div className='app'>
         <div 
-          style={{backgroundColor: '#000'}}
+          style={{}}
           className='header'>
           <div className='header-left'>
-            <h1>RetailFresh</h1>
+            <h1>ABC Audits</h1>
             <IconButton
               iconClassName="material-icons">store
             </IconButton>
-            We sell retail stuff...fresh!
+            Audits done right!
           </div>
           <div
             className='header-right'>
