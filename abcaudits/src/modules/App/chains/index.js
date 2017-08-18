@@ -58,7 +58,10 @@ function filterCerts({state, props}) {
 function addRandomCert({state, props, path}) {
   let a = state.get('app.view.main_panel.certs.certs_to_show')
   let audits = state.get('app.model.audits')
-  let org = audits[Object.keys(a)[0]].organization
+  let org = randCert.randomOrganization();
+  if (audits && _.keys(audits).length && a && _.keys(a).length) {
+    org = audits[Object.keys(a)[0]].organization
+  }
   let auditor = randCert.randomAuditor()
   let product = randCert.randomProducts(1)[0]
   let operation = randCert.randomOperationTypes(1)
@@ -92,15 +95,17 @@ function getOadaAudits({state, props, path}) {
   .set('Authorization', 'Bearer '+ 'xyz')
   .end()
   .then((response) => {
-    return Promise.each(Object.keys(response.body), (key) => {
+    return Promise.map(Object.keys(response.body), (key) => {
       if (key.charAt(0) === '_') return false
+console.log('Getting this audit: ', key);
       return agent('GET', 'https://api.oada-dev.com/resources/'+key)
       .set('Authorization', 'Bearer '+ 'xyz')
       .end()
       .then((res) => {
+console.log('DONE Got this audit: ', key);
         return audits[key] = res.body;
       })
-    })
+    }, { concurrency: 10 });
   }).then(() => {
     return path.success({audits})
   })

@@ -25,7 +25,7 @@ class CertCard extends React.Component {
         </div>
         <div className='middle-container'>
           <p className={'score'}>{'Score: '+(100*parseFloat(this.props.audit.score.globalgap_levels.minor_musts.value)).toFixed(1) + ' %'}</p>
-          <p className={'product-organization'}>{this.props.audit.scope.products_observed[0].name +' - '+this.props.audit.organization.contacts[0].name}</p>
+          <p className={'product-organization'}>{this.props.audit.scope.products_observed[0].name +' - '+this.props.audit.organization.name}</p>
           {false ? <div className={'sync-info'}>
             <IconButton
               className={'sync-icon'}
