@@ -1,5 +1,5 @@
 import randCert from 'fpad-rand-cert'
-import {set, when} from 'cerebral/operators'
+import { set, when, toggle } from 'cerebral/operators'
 import {state, props, string, path} from 'cerebral/tags'
 import templateAudit from './GlobalGAP_FullAudit.js'
 import _ from 'lodash'
@@ -9,13 +9,12 @@ import oadaIdClient from 'oada-id-client'
 var agent = require('superagent-promise')(require('superagent'), Promise);
 //import config from '../../../config.js'
 
-export let setYear = [
+export let selectAudit = [
 
 ]
 
-export let setClient = [
-  set(state`app.view.main_panel.client`, props`client`),
-  filterCerts,
+export let showClientDialog = [
+  toggle(state`app.view.client_panel.client_dialog.visible`),
 ]
 
 export let initialize = [
@@ -92,7 +91,7 @@ function getOadaAudits({state, props, path}) {
   .set('Authorization', 'Bearer '+ 'xyz')
   .end()
   .then((response) => {
-    return Promise.each(Object.keys(response.body), (key) => {
+    return Promise.map(Object.keys(response.body), (key) => {
       if (key.charAt(0) === '_') return false
       return agent('GET', 'https://api.oada-dev.com/resources/'+key)
       .set('Authorization', 'Bearer '+ 'xyz')
@@ -100,7 +99,7 @@ function getOadaAudits({state, props, path}) {
       .then((res) => {
         return audits[key] = res.body;
       })
-    })
+    }, {concurrency:5})
   }).then(() => {
     return path.success({audits})
   })

@@ -4,9 +4,11 @@ import {state, signal} from 'cerebral/tags'
 import { Divider, IconButton, Checkbox } from 'material-ui'
 import styles from './styles.css'
 import CertCard from '../CertCard'
+import AddClientDialog from './AddClientDialog'
 import {
   Table,
   TableBody,
+  TableFooter,
   TableHeader,
   TableHeaderColumn,
   TableRow,
@@ -15,8 +17,8 @@ import {
 
 export default connect({
   audits: state`app.model.audits`,
-  client: state`app.view.main_panel.client`,
-  clientClicked: signal`app.clientClicked`,
+  client: state`client_panel.client`,
+  clientClicked: signal`client_panel.clientClicked`,
 },
 
 class ClientPanel extends React.Component {
@@ -34,6 +36,7 @@ class ClientPanel extends React.Component {
 
     return (
       <Table>
+        fixedFooter={true}
         displayRowCheckbox={false}>
         <TableHeader
           displaySelectAll={false}>
@@ -59,6 +62,16 @@ class ClientPanel extends React.Component {
             </TableRow>
           )}
         </TableBody>
+          <TableFooter
+            adjustForCheckbox={this.state.showCheckboxes}
+          >
+            <TableRow>
+              <TableRowColumn style={{textAlign: 'center'}}>
+                <IconButton iconClassName="muidocs-icon-custom-add_circle" />
+                Add new client
+              </TableRowColumn>
+            </TableRow>
+          </TableFooter>
       </Table>
     )
   }

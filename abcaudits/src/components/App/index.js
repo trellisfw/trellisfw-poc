@@ -97,14 +97,14 @@ class App extends React.Component {
             <hr />
             {certs}
             {true ? 
-            (this.props.client ? <div
+            <div
               onClick={()=> this.props.addCertButtonClicked({})}
               className='main-panel-add-cert'>
               <IconButton
                 iconClassName="material-icons">add_circle
               </IconButton> 
               <p>New Certification</p>
-            </div> : null)
+            </div> 
             : null }
           </div>
         </div>

@@ -1,31 +1,13 @@
 import {
   initialize ,
   addCertification,
-  setYear,
-  setClient,
-} from './chains'
+} from './chains.js'
 
 export default {
   state: {
     token: '',
     model: {
       audits: {
-/*        abc: {
-          score: '92',
-          product: 'Cherries',
-          expiration: '2016',
-          organization: 'Gary Grower',
-          from: 'DistributingExcellence',
-          valid: true,
-        },
-        def: {
-          score: '95',
-          product: 'Cherries',
-          expiration: '2017',
-          organization: 'Frank Farmer',
-          from: 'DistributingGreatness',
-          valid: false,
-        }, */
       }
     },
     view: {
@@ -35,7 +17,6 @@ export default {
           certs_to_show: {},
           selected_audits: {},
         },
-        client: '',
       },
     }, 
   },
@@ -43,8 +24,6 @@ export default {
   signals: {
     initialize,
     addCertButtonClicked: addCertification,
-    yearClicked: setYear,
-    clientClicked: setClient,
   },
 
   modules: {
