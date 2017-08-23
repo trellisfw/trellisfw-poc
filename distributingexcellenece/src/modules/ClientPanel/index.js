@@ -4,26 +4,22 @@ import {
   cancelClient,
   submitClient,
   setClientText,
-  setClient,
-  init,
 } from './chains.js'
 
 export default {
   state: {
-    clients: {},
+    selected_client: '',
     client_dialog: {
-      open: false,
+      visible: false,
       text: '',
     },
   },
 
   signals: {
-    initialize: init,
     addClientButtonClicked: showClientDialog, 
     clientDialogCancelled: cancelClient, 
     clientDialogSubmitted: submitClient, 
     textChanged: setClientText,
-    clientClicked: setClient,
   },
 
   modules: {

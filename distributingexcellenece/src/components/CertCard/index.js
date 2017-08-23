@@ -1,16 +1,15 @@
 import React from 'react'
 import {connect} from 'cerebral/react'
 import {state, signal, props} from 'cerebral/tags'
-import { FlatButton, Card, Divider, IconButton, Checkbox } from 'material-ui'
+import { Card, Divider, IconButton, Checkbox } from 'material-ui'
 import styles from './styles.css'
 import moment from 'moment'
 
 export default connect({
-  audit: state`client_panel.clients.${state`client_panel.selected_client`}.certifications.${props`name`}`,
+  audit: state`app.model.audits.${props`name`}`,
   selected: state`app.view.certifications.${props`name`}.selected`,
   
   checked: signal`app.certChecked`,
-  signAuditButtonClicked: signal`app.signAuditButtonClicked`,
 },
 
 class CertCard extends React.Component {
@@ -41,19 +40,16 @@ class CertCard extends React.Component {
         </div>
         <div className='right-container'>
           <p className={'expiration'}>{date}</p>
-            {this.props.audit.signatures ? <div className={'signature'}>
-              <IconButton
-                className={'valid-icon'}
-                iconClassName="material-icons">check_circle
-              </IconButton>
-              <p className={'valid'}>Signed</p>
-            </div>
+            {this.props.audit.valid ? <IconButton
+              className={'valid-icon'}
+              iconClassName="material-icons">check_circle
+            </IconButton>
             : 
-            <FlatButton
-              className={'sign-button'}
-              onTouchTap={()=>{this.props.signAuditButtonClicked({audit:this.props.audit})}} 
-              label="Finish and sign">
-            </FlatButton>}
+            <IconButton
+              className={'valid-icon'}
+              iconClassName="material-icons">cancel
+            </IconButton>}
+          <p className={'valid'}>{this.props.audit.valid ? 'Signature valid' : 'Signature invalid!'}</p>
         </div>
       </Card>
     )

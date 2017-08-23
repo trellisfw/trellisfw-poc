@@ -2,9 +2,6 @@ import {
   initialize ,
   addCertification,
   setClient,
-  toggleCertSelect,
-  signAudit,
-  deleteAudits,
 } from './chains.js'
 
 export default {
@@ -15,17 +12,20 @@ export default {
       }
     },
     view: {
-      mode: 'certifications',
-      certifications: {},
-    },
+      main_panel: {
+        mode: 'certifications',
+        certs: {
+          certs_to_show: {},
+          selected_audits: {},
+        },
+      },
+    }, 
   },
 
   signals: {
     initialize,
     addCertButtonClicked: addCertification,
-    certChecked: toggleCertSelect,
-    signAuditButtonClicked: signAudit,
-    deleteAuditsButtonClicked: deleteAudits,
+    clientClicked: setClient,
   },
 
   modules: {

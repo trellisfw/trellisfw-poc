@@ -16,14 +16,13 @@ import {
 import styles from './styles.css'
 
 export default connect({
+  audits: state`app.model.audits`,
   mode: state`app.view.main_panel.mode`,
   client: state`client_panel.selected_client`,
-  clients: state`client_panel.clients`,
-  certifications: state`app.view.certifications`,
+  certsToShow: state`app.view.certifications`,
 
   initialize: signal`app.initialize`,
   addCertButtonClicked: signal`app.addCertButtonClicked`,
-  deleteAuditsButtonClicked: signal`app.deleteAuditsButtonClicked`,
 },
 
 class App extends React.Component {
@@ -35,12 +34,9 @@ class App extends React.Component {
   render() {
 
     let years = {}
-    let certs = null
-    if (this.props.client) {
-      certs = Object.keys(this.props.certifications).map((key, i) => {
-        return <CertCard name={key} key={'cert-'+i}/>
-      })
-    }
+    let certs = Object.keys(this.props.certsToShow).map((key, i) => {
+      return <CertCard name={key} key={'cert-'+i}/>
+    })
 
     return (
       <div className='app'>
@@ -58,7 +54,7 @@ class App extends React.Component {
             className='header-right'>
             <div
               className='profile-container'>
-              Audrey Auditor 
+              Ron Retailer
               <IconButton
                 iconClassName="material-icons">account_circle
               </IconButton>
@@ -85,9 +81,8 @@ class App extends React.Component {
             <div className='main-panel-header'>
               <p className={'main-panel-header-text'}>Current Certifications</p>
               <IconButton
-                disabled={!Object.keys(this.props.certifications).some((key) => {return this.props.certifications[key].selected})}
+                disabled={!Object.keys(this.props.certsToShow).some((key) => {return this.props.certsToShow[key].selected})}
                 className='main-panel-delete-button'
-                onTouchTap={() => {this.props.deleteAuditsButtonClicked({})}}
                 iconClassName="material-icons">delete
               </IconButton>
               <IconButton
@@ -98,7 +93,7 @@ class App extends React.Component {
             </div>
             <hr />
             {certs}
-            {this.props.client ? <div
+            {true /*this.props.client*/ ? <div
               onClick={()=> this.props.addCertButtonClicked({})}
               className='main-panel-add-cert'>
               <IconButton

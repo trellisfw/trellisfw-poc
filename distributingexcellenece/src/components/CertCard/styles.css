@@ -1,7 +1,6 @@
 .cert-card {
   display: flex;
-  margin: 10px;
-  padding: 10px;
+  margin: 5px;
 }
 .left-container {
   display: flex;
@@ -28,20 +27,11 @@
 .score {
   order: 2;
 }
-.signature {
-  order: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
 .valid-icon {
-  order: 1;
+  order: 2;
 }
 .valid {
-  order: 2;
-}
-.sign-button {
-  order: 2;
+  order: 3;
 }
 .product-organization { 
   font-size: 24px;

@@ -2,9 +2,7 @@ import {
   initialize ,
   addCertification,
   setClient,
-  toggleCertSelect,
-  signAudit,
-  deleteAudits,
+  toggleCertSelect
 } from './chains.js'
 
 export default {
@@ -23,9 +21,8 @@ export default {
   signals: {
     initialize,
     addCertButtonClicked: addCertification,
+    clientClicked: setClient,
     certChecked: toggleCertSelect,
-    signAuditButtonClicked: signAudit,
-    deleteAuditsButtonClicked: deleteAudits,
   },
 
   modules: {

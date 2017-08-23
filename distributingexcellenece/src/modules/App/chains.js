@@ -1,5 +1,5 @@
 import randCert from 'fpad-rand-cert'
-import { unset, set, when, toggle } from 'cerebral/operators'
+import { set, when, toggle } from 'cerebral/operators'
 import {state, props, string, path} from 'cerebral/tags'
 import templateAudit from './GlobalGAP_FullAudit.js'
 import _ from 'lodash'
@@ -7,9 +7,6 @@ import Promise from 'bluebird';
 import uuid from 'uuid';
 import oadaIdClient from 'oada-id-client'
 import signatures from 'fpad-signatures'
-import prvKey from '../../prvKey.js'
-import pubKey from '../../pubKey.js'
-import {setClient} from '../ClientPanel/chains.js'
 var agent = require('superagent-promise')(require('superagent'), Promise);
 //import config from '../../../config.js'
 
@@ -17,83 +14,64 @@ export let toggleCertSelect = [
   set(state`app.view.certifications.${props`name`}.selected`, props`checked`)
 ]
 
+export let setClient = [
+  set(state`client_panel.selected_client`, props`client`),
+  filterCerts,
+]
+
 export let initialize = [
-
+//  getOadaToken, {
+//    success: [
+//      set(state`app.token`, props`token`),
+      getOadaAudits, {
+        success: [
+          set(state`app.model.audits`, props`audits`),
+          set(props`client`, 'Nola Rath'),
+          validateAudits, {
+            success: [],
+            error: [],
+          },
+          filterCerts,
+        ],
+        error: [],
+      },
+//    ],
+//    error: [],
+//  },
 ]
 
-export let signAudit = [
-  generateAuditSignature, {
-    success: [
-      set(state`client_panel.clients.${state`client_panel.selected_client`}.certifications.${(props`id`)}.signatures`, props`signatures`),
-    ],
-    error: [],
-  },
-]
-
-function generateAuditSignature({state, props, path}) {
-  var kid = 'ABCAudits'
-  var alg = 'RS256'
-  var kty = 'RSA'
-  var typ = 'JWT'
-  var jku = 'https://raw.githubusercontent.com/fpad/trusted-list/master/jku-test/jku-test.json' 
-
-  var headers = { kid, alg, kty, typ, jwk:pubKey, jku }
-  let clientId = state.get('client_panel.selected_client')
-  let audit = _.clone(props.audit)
-  return signatures.generate(audit, prvKey, headers).then((signatures) => {
-    return agent('PUT', 'https://api.oada-dev.com/bookmarks/fpad/clients/'+clientId+'/certifications/'+props.audit._id.split('/')[1]+'/signatures')
-    .set('Authorization', 'Bearer xyz')
-    .set('Content-Type', 'application/vnd.oada.rock.1+json')
-    .send(signatures)
-    .end()
-    .then((res) => {
-      return path.success({signatures, id: audit._id.split('/')[1]})
-    })
-  })
+function validateAudits({state, props, path}) {
+  console.log(signatures)
+  return path.success({})
 }
 
 export let addCertification = [
   addRandomCert, {
     success: [
-      set(state`client_panel.clients.${props`clientId`}.certifications.${props`id`}`, props`audit`),
-      set(state`app.view.certifications.${props`id`}`, {selected: false}),
+      set(state`app.model.audits.${props`id`}`, props`audit`),
+      filterCerts,
     ],
     error: [],
   },
 ] 
 
-export let deleteAudits = [
-  deleteSelectedAudits, {
-    success: [
-      setClient, //use this to reset visible certifications
-    ],
-    error: [],
-  }
-]
-
-function deleteSelectedAudits({state, props, path}) {
-  let clientId = state.get('client_panel.selected_client')
-  let selectedCertifications = _.selectBy(state.get(`app.view.certifications`), 'selected')
-  let certifications = state.get(`client_panel.clients.${clientId}.certifications`)
-  return Promise.map(selectedCertifications, (key) => {
-    return agent('DELETE', 'https://api.oada-dev.com/bookmarks/fpad/clients/'+clientId+'/certifications/'+key)
-    .set('Authorization', 'Bearer '+ 'xyz')
-    .end()
-    .then(() => {
-      return agent('PUT', 'https://api.oada-dev.com/resources/'+key)
-      .set('Authorization', 'Bearer '+ 'xyz')
-      .end()
-    })
-  }).then(() => {
-    return path.success({selectedCertifications})
+function filterCerts({state, props}) {
+  let audits = state.get('app.model.audits')
+  let client = props.client
+  let keys = {} 
+  Object.keys(audits).forEach((key) => {
+    if (audits[key].organization.contacts[0].name === client) keys[key] = {selected: false}
   })
+  state.set(`app.view.certifications`, keys)
 }
 
 function addRandomCert({state, props, path}) {
   let a = state.get('app.view.certifications')
-  let clientId = state.get(`client_panel.selected_client`)
-  let clientName = state.get(`client_panel.clients.${clientId}.name`)
-  let org = randCert.randomOrganization(clientName);
+  let audits = state.get('app.model.audits')
+  let org = randCert.randomOrganization();
+  if (audits && _.keys(audits).length && a && _.keys(a).length) {
+    org = audits[Object.keys(a)[0]].organization
+  }
   let auditor = randCert.randomAuditor()
   let product = randCert.randomProducts(1)[0]
   let operation = randCert.randomOperationTypes(1)
@@ -109,25 +87,37 @@ function addRandomCert({state, props, path}) {
   .then((response) => {
     id = response.headers.location.split('/')
     id = id[id.length-1]
-    audit._id = 'resources/'+id
-    return agent('PUT', 'https://api.oada-dev.com/bookmarks/fpad/clients/'+clientId+'/certifications/'+id)
+    console.log('https://api.oada-dev.com/bookmarks/fpad/certifications-index/'+id)
+    return agent('PUT', 'https://api.oada-dev.com/bookmarks/fpad/certifications-index/'+id)
     .set('Authorization', 'Bearer '+ 'xyz')
     .set('Content-Type', 'application/vnd.oada.rock.1+json')
     .send({_id:'resources/'+id})
     .end()
   }).then(() => {
-    return path.success({id, audit, clientId})
+    return path.success({id, audit, client: org.contacts[0].name})
   })
 }
 
-function validateAudits({state, props, path}) {
-  Object.keys(props.audits).forEach((audit) => {
-    let valid;
-    if (audit.signatures) {
-      valid = signatures.verify(audit)
-    }
+function getOadaAudits({state, props, path}) {
+  let audits = {}
+  let ids = {}
+  return agent('GET', 'https://api.oada-dev.com/bookmarks/fpad/certifications-index/')
+  .set('Authorization', 'Bearer '+ 'xyz')
+  .end()
+  .then((response) => {
+    return Promise.map(Object.keys(response.body), (key) => {
+      if (key.charAt(0) === '_') return false
+      return agent('GET', 'https://api.oada-dev.com/resources/'+key)
+      .set('Authorization', 'Bearer '+ 'xyz')
+      .end()
+      .then((res) => {
+console.log('DONE Got this audit: ', key);
+        return audits[key] = res.body;
+      })
+    }, {concurrency:5})
+  }).then(() => {
+    return path.success({audits})
   })
-  return path.success({})
 }
 
 function getOadaToken({state, path}) {

@@ -5,7 +5,6 @@ import { Divider, IconButton, Checkbox } from 'material-ui'
 import styles from './styles.css'
 import CertCard from '../CertCard'
 import AddClientDialog from './AddClientDialog'
-import _ from 'lodash'
 import {
   Table,
   TableBody,
@@ -17,24 +16,23 @@ import {
 } from 'material-ui/Table';
 
 export default connect({
-  open: state`client_panel.client_dialog.open`,
   audits: state`app.model.audits`,
   client: state`client_panel.client`,
-  clients: state`client_panel.clients`,
-
-  initialize: signal`client_panel.initialize`,
-  clientClicked: signal`client_panel.clientClicked`,
-  addClientButtonClicked: signal`client_panel.addClientButtonClicked`,
+  clientClicked: signal`app.clientClicked`,
 },
 
 class ClientPanel extends React.Component {
 
-  componentWillMount() {
-    this.props.initialize({});
-  }
-
   render() {
-    let clients = _.sortBy(this.props.clients, 'name')
+
+    let clients = {}
+    Object.keys(this.props.audits).map((key, i) => {
+      if (clients[this.props.audits[key].organization.contacts[0].name]) {
+        clients[this.props.audits[key].organization.contacts[0].name]++
+      } else {
+        clients[this.props.audits[key].organization.contacts[0].name] = 1;
+      }
+    })
 
     return (
       <Table
@@ -49,16 +47,16 @@ class ClientPanel extends React.Component {
         <TableBody
           stripedRows={true}
           displayRowCheckbox={false}>
-          {Object.keys(clients).map(id =>
+          {Object.keys(clients).map(client =>
             <TableRow 
-              onTouchTap={() => {this.props.clientClicked({id:clients[id]._id.split('/')[1]})}}
+              onTouchTap={() => {this.props.clientClicked({client})}}
               className={'row'}
-              selected={id === this.props.client}
-              key={'client-category-'+id}>
+              selected={client === this.props.client}
+              key={'client-category-'+client}>
               <TableRowColumn>
                 <div className={'rowtext'}>
-                  <p className={'category-title'}>{clients[id].name}</p>
-                  <p>{`(${Object.keys(clients[id].certifications).length})`}</p>
+                  <p className={'category-title'}>{client}</p>
+                  <p>{`(${clients[client]})`}</p>
                 </div>
               </TableRowColumn>
             </TableRow>
@@ -67,14 +65,11 @@ class ClientPanel extends React.Component {
         <TableFooter adjustForCheckbox={false}>
           <TableRow>
             <TableRowColumn style={{textAlign: 'center'}}>
-              <div
-                onTouchTap={()=>{this.props.addClientButtonClicked({})}}
-                className={"add-client"}>
+              <div className={"add-client"}>
                 <IconButton
                   iconClassName="material-icons">add_circle
                 </IconButton>
                 <p>Add new client</p>
-                {this.props.open ? <AddClientDialog/> : null }
               </div>
             </TableRowColumn>
           </TableRow>
