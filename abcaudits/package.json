@@ -5,7 +5,7 @@
   "dependencies": {
     "bluebird": "^3.5.0",
     "cerebral": "^2.0.0-beta.3",
-    "fpad-rand-cert": "^1.0.3",
+    "fpad-rand-cert": "^1.0.4",
     "fpad-signatures": "^0.1.0",
     "material-ui": "^0.18.7",
     "moment": "^2.18.1",
