@@ -4,9 +4,11 @@ import {state, props, string, path} from 'cerebral/tags'
 import _ from 'lodash'
 import uuid from 'uuid';
 import Promise from 'bluebird';
+import axios from 'axios';
 let agent = require('superagent-promise')(require('superagent'), Promise);
 
 export let setClient = [
+  set(state`app.view.certifications`, {}),
   set(state`client_panel.selected_client`, props`id`),
   getCertifications, {
     success: [
@@ -26,7 +28,7 @@ export let submitClient = [
       setClient,
     ],
     error: [],
-  }
+	},
 ]
 
 export let cancelClient = [
@@ -51,21 +53,23 @@ export let init = [
   },
 ]
 
+
+
 function setVisibleCertifications({state, props, path}) {
   let clientId = state.get(`client_panel.selected_client`)
   let audits = state.get(`client_panel.clients.${clientId}.certifications`)
   let certs = {}
-  console.log(audits)
   Object.keys(audits).forEach((key) => {
-    console.log(key)
     certs[key] = {selected: false}
   })
   state.set(`app.view.certifications`, certs)
 }
 
 function getCertifications({state, props, path}) {
-  let clientId = state.get(`client_panel.selected_client`)
+	let clientId = state.get(`client_panel.selected_client`)
+	console.log(clientId)
   let certs = state.get(`client_panel.clients.${clientId}.certifications`)
+	console.log(certs)
   let certifications = {}
   return Promise.map(Object.keys(certs), (key) => {
     if (key.charAt(0) === '_') return false
@@ -89,7 +93,7 @@ function putClient({state, props, path}) {
   .set('Content-Type', 'application/vnd.oada.rock.1+json')
   .send(stuff)
   .end()
-  .then((response) => {
+	.then((response) => {
     let id = response.headers.location.split('/')[2]
     // Link to bookmarks
     return agent('PUT', 'https://api.oada-dev.com/bookmarks/fpad/clients/'+id)
@@ -97,8 +101,15 @@ function putClient({state, props, path}) {
     .set('Content-Type', 'application/vnd.oada.rock.1+json')
     .send({"_id": 'resources/'+id})
     .end()
-    .then((res) => {
-      return path.success({id, client: {name: text, certifications: {}}})
+			.then(() => {
+				//GET it to confirm
+	    return agent('GET', 'https://api.oada-dev.com/bookmarks/fpad/clients/'+id)
+		  .set('Authorization', 'Bearer xyz')
+			.set('Content-Type', 'application/vnd.oada.rock.1+json')
+			.end()
+			.then((res) => {
+				return path.success({id, client: res.body})
+			})
     })
   })
 }

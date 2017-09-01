@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "axios": "^0.16.2",
     "bluebird": "^3.5.0",
     "cerebral": "^2.0.0-beta.3",
     "fpad-rand-cert": "^1.0.4",

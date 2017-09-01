@@ -97,8 +97,10 @@ function addRandomCert({state, props, path}) {
   let auditor = randCert.randomAuditor()
   let product = randCert.randomProducts(1)[0]
   let operation = randCert.randomOperationTypes(1)
-  let year = '2017'
-  let scope = randCert.randomScope(org, product, operation)
+	let year = '2017'
+	console.log(org, product, operation)
+	let scope = randCert.randomScope(org, product, operation)
+	console.log(scope)
   let audit = randCert.generateAudit(templateAudit, org, auditor, scope, year, true)
   let id;
   return agent('POST', 'https://api.oada-dev.com/resources')
