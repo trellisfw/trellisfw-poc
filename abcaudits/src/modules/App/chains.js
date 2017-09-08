@@ -77,11 +77,11 @@ function deleteSelectedAudits({state, props, path}) {
   let certifications = state.get(`client_panel.clients.${clientId}.certifications`)
   return Promise.map(selectedCertifications, (key) => {
     return agent('DELETE', url+'/bookmarks/fpad/clients/'+clientId+'/certifications/'+key)
-    .set('Authorization', 'Bearer '+ state`user_profile.token`)
+    .set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
     .end()
     .then(() => {
       return agent('PUT', url+'/resources/'+key)
-      .set('Authorization', 'Bearer '+ state`user_profile.token`)
+      .set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
       .end()
     })
   }).then(() => {
@@ -104,7 +104,7 @@ function addRandomCert({state, props, path}) {
   let audit = randCert.generateAudit(templateAudit, org, auditor, scope, year, true)
   let id;
   return agent('POST', url+'/resources')
-  .set('Authorization', 'Bearer '+ 'xyz')
+  .set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
   .set('Content-Type', 'application/vnd.oada.rock.1+json')
   .send(audit)
   .end()
@@ -113,7 +113,7 @@ function addRandomCert({state, props, path}) {
     id = id[id.length-1]
     audit._id = 'resources/'+id
     return agent('PUT', url+'/bookmarks/fpad/clients/'+clientId+'/certifications/'+id)
-    .set('Authorization', 'Bearer '+ 'xyz')
+    .set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
     .set('Content-Type', 'application/vnd.oada.rock.1+json')
     .send({_id:'resources/'+id})
     .end()
