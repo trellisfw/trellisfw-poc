@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'cerebral/react'
 import {state, signal} from 'cerebral/tags'
 import { Divider, IconButton, Checkbox } from 'material-ui'
-import CertCard from '../CertCard'
+
 import {
   Table,
   TableBody,
@@ -10,8 +10,13 @@ import {
   TableHeaderColumn,
   TableRow,
   TableRowColumn,
-} from 'material-ui/Table';
-import styles from './styles.css'
+} from 'material-ui/Table'
+
+import styles from './index.module.css'
+
+import TopBar from '../../common/components/TopBar'
+import CertCard from '../../common/components/CertCard'
+
 
 export default connect({
   audits: state`app.model.audits`,
@@ -24,7 +29,7 @@ class App extends React.Component {
     let years = {}
     let certs = Object.keys(this.props.audits).map((key, i) => {
       if (years[this.props.audits[key].expiration]) {
-        years[this.props.audits[key].expiration]++ 
+        years[this.props.audits[key].expiration]++
       } else {
         years[this.props.audits[key].expiration] = 1;
       }
@@ -32,42 +37,13 @@ class App extends React.Component {
     })
 
     return (
-      <div className='app'>
-        <div className='header'>
-          <div className='header-left'>
-            <h1>RetailFresh</h1>
-            <IconButton
-              iconClassName="material-icons">store
-            </IconButton>
-            We sell retail stuff...fresh!
-          </div>
-          <div
-            className='header-right'>
-            <div
-              className='profile-container'>
-              Ron Retailer
-              <IconButton
-                iconClassName="material-icons">account_circle
-              </IconButton>
-            </div>
-            <div className='modes'>
-              <p 
-                className={this.props.mode === 'connections' ? 'highlighted-mode' : 'mode'}
-                onClick={()=>{this.props.modeClicked({mode: 'connections'})}}>
-                <u>Connections</u>
-              </p>
-              <p 
-                className={this.props.mode === 'certifications' ? 'highlighted-mode' : 'mode'}
-                onClick={()=>{this.props.modeClicked({mode: 'certifications'})}}>
-                <u>Certifications</u>
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className='lower'>
-          <div className='left-panel'>
+      <div className={styles.app}>
+        <TopBar
+          title={'GrowerSync'}
+          description={'Automatic Data Connections for Growers'} />
+        <div className={styles.lower}>
+          <div className={styles.leftPanel}>
             <Table>
-              displayRowCheckbox={false}>
               <TableHeader
                 displaySelectAll={false}>
                 <TableRow>
@@ -88,9 +64,11 @@ class App extends React.Component {
               </TableBody>
             </Table>
           </div>
-          <div className='main-panel'>
-            <div className='main-panel-header'>
-              <p className={'main-panel-header-text'}>Current Certifications</p>
+          <div className={styles.mainPanel}>
+            <div className={styles.header}>
+              <div className={styles.title}>
+                {'Current Certifications'}
+              </div>
               <IconButton
                 iconClassName="material-icons">delete
               </IconButton>

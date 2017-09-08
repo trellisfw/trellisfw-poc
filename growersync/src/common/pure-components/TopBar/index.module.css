@@ -1,0 +1,40 @@
+.header {
+  display: flex;
+  background-color: #99eaa4;
+  padding: 5px;
+}
+.headerLeft {
+  flex: 1;
+  display: flex;
+}
+.headerRight {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.profileContainer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.modes {
+  display: flex;
+  flex-direction: row;
+}
+.mode {
+  cursor: pointer;
+  padding: 7px;
+}
+.highlightedMode {
+  cursor: pointer;
+  background-color: #F00;
+  color: #000;
+}
+.descContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+  .descContainer > .title {
+    font-size: 33px;
+  }
