@@ -60,7 +60,7 @@ function generateAuditSignature({state, props, path}) {
   let clientId = state.get('client_panel.selected_client')
   let audit = _.clone(props.audit)
   return signatures.generate(audit, prvKey, headers).then((signatures) => {
-    return agent('PUT', url+'bookmarks/fpad/clients/'+clientId+'/certifications/'+props.audit._id.split('/')[1]+'/signatures')
+    return agent('PUT', url+'/bookmarks/fpad/clients/'+clientId+'/certifications/'+props.audit._id.split('/')[1]+'/signatures')
     .set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
     .set('Content-Type', 'application/vnd.oada.rock.1+json')
     .send(signatures)

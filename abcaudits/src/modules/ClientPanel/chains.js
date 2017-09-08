@@ -11,6 +11,7 @@ let domain = 'https://vip3.ecn.purdue.edu'
 export let setClient = [
   set(state`app.view.certifications`, {}),
   set(state`client_panel.selected_client`, props`id`),
+  set(props`token`, state`user_profile.user.token`),
   getCertifications, {
     success: [
       set(state`client_panel.clients.${props`id`}.certifications`, props`certifications`),
@@ -121,12 +122,13 @@ function putClient({state, props, path}) {
 }
 
 function getClients({state, props, path}) {
+  let clients = {}
+  console.log(domain+'/bookmarks/fpad/clients', props.token)
   return agent('GET', domain+'/bookmarks/fpad/clients')
   .set('Authorization', 'Bearer '+props.token)
   .then((response) => {
-    let clients = {}
     return Promise.map(Object.keys(response.body), (key) => {
-      if (key.charAt(0) === '_') return false
+      if (key.charAt(0) === '_') return
       return agent('GET', domain+'/bookmarks/fpad/clients/'+key)
       .set('Authorization', 'Bearer '+ props.token)
       .end()
@@ -134,8 +136,8 @@ function getClients({state, props, path}) {
         clients[key] = res.body
         return res.body;
       })
-    }, {concurrency:5}).then(() => {
-      return path.success({clients})
-    })
+    }, {concurrency:5})
+  }).then(() => {
+    return path.success({clients})
   })
 }
