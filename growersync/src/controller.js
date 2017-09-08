@@ -1,13 +1,18 @@
 import {Controller} from 'cerebral'
 import App from './modules/App'
+import {devtoolsPort} from './config.js';
 
 const Devtools = (
-  process.env.NODE_ENV === 'production' ? null : require('cerebral/devtools').default 
+  process.env.NODE_ENV === 'production' ? null : require('cerebral/devtools').default
 )
-
+var devPort = devtoolsPort;
+if (process.env.NODE_ENV !== 'production') {
+  devPort = (devtoolsPort+parseInt(window.location.port)-3000);
+  console.log('Cerebral DevTools running on port:', devPort)
+}
 export default Controller({
   devtools: Devtools && Devtools({
-    host: 'localhost:8585' 
+    host: 'localhost:'+devPort
   }),
   state: {
     title: 'Hello world'

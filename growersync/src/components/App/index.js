@@ -17,7 +17,6 @@ import styles from './index.module.css'
 import TopBar from '../../common/components/TopBar'
 import CertCard from '../../common/components/CertCard'
 
-
 export default connect({
   audits: state`app.model.audits`,
   mode: state`app.view.main.mode`,
