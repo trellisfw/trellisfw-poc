@@ -1,5 +1,8 @@
 import {Controller} from 'cerebral'
 import App from './modules/App'
+import TopBar from './modules/TopBar'
+import Connections from './modules/Connections'
+
 import {devtoolsPort} from './config.js';
 
 const Devtools = (
@@ -21,5 +24,7 @@ export default Controller({
   },
   modules: {
     app: App,
+    topBar: TopBar,
+    connections: Connections
   }
 })

@@ -16,10 +16,12 @@ import styles from './index.module.css'
 
 import TopBar from '../../common/components/TopBar'
 import CertCard from '../../common/components/CertCard'
+import Certifications from '../Certifications';
+import Connections from '../Connections';
 
 export default connect({
   audits: state`app.model.audits`,
-  mode: state`app.view.main.mode`,
+  mode: state`topBar.mode`,
 },
 
 class App extends React.Component {
@@ -35,49 +37,20 @@ class App extends React.Component {
       return <CertCard name={key} key={'cert-'+i}/>
     })
 
+    var page = null;
+    if (this.props.mode == 'certifications') {
+      page = <Certifications />
+    } else if (this.props.mode == 'connections') {
+      page = <Connections />
+    }
+
     return (
       <div className={styles.app}>
         <TopBar
           title={'GrowerSync'}
           description={'Automatic Data Connections for Growers'} />
-        <div className={styles.lower}>
-          <div className={styles.leftPanel}>
-            <Table>
-              <TableHeader
-                displaySelectAll={false}>
-                <TableRow>
-                  <TableHeaderColumn>Year</TableHeaderColumn>
-                </TableRow>
-              </TableHeader>
-              <TableBody
-                stripedRows={true}
-                displayRowCheckbox={false}>
-                {Object.keys(years).map(year =>
-                  <TableRow key={'year-category-'+year}>
-                    <TableRowColumn
-                      onClick={() => {this.props.yearCategoryClicked({})}}>
-                      {`${year} (${years[year]})`}
-                    </TableRowColumn>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </div>
-          <div className={styles.mainPanel}>
-            <div className={styles.header}>
-              <div className={styles.title}>
-                {'Current Certifications'}
-              </div>
-              <IconButton
-                iconClassName="material-icons">delete
-              </IconButton>
-              <IconButton
-                iconClassName="material-icons">group
-              </IconButton>
-            </div>
-            <Divider/>
-            {certs}
-          </div>
+        <div className={styles.page}>
+          {page}
         </div>
       </div>
     )

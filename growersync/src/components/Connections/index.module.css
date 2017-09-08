@@ -1,0 +1,32 @@
+.root {
+  display: flex;
+  flex: 1;
+}
+.mainPanel {
+  flex: 1;
+}
+  .mainPanel > .header {
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+    .mainPanel > .header > .title {
+      font-size: 26px;
+      flex: 1;
+      margin-left: 7px;
+      padding-top: 15px;
+      padding-bottom: 15px;
+    }
+
+.addConnection {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+  .addConnection > .icon {
+    width: 30px;
+  }
+  .addConnection > .label {
+    font-size: 19px;
+  }

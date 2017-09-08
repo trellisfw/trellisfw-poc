@@ -8,7 +8,8 @@ import styles from './index.module.css';
 import svgSprout from '../../svg/grower_sync.svg'
 
 export default connect({
-
+  mode: state`topBar.mode`,
+  modeClicked: signal`topBar.modeClicked`
 },
 
 class TopBarContainer extends React.Component {
