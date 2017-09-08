@@ -52,7 +52,7 @@ class TopBar extends React.Component {
               </div>
 						:
               <div className={styles.profileContainer}>
-  							<div onTouchTap={()=>{this.props.signInClicked({})}}>
+  							<div className={styles.signIn} onTouchTap={()=>{this.props.signInClicked({})}}>
   								Sign in
   							</div>
               </div>

@@ -9,6 +9,7 @@ import {
 
 export default {
   state: {
+    oada_domain: 'vip3.ecn.purdue.edu',
     token: '',
     model: {
       audits: {

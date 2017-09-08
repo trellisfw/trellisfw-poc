@@ -47,10 +47,12 @@ class SharingDialog extends React.Component {
         <TextField
           hintText="gary@mail.com..."
           value={this.props.usernameText}
+          floatingLabelText="username"
           onChange={(evt, text)=>{this.props.usernameTextChanged({text})}}
 				/>
         <TextField
           hintText="supercloud.com"
+          floatingLabelText="fpad domain"
           value={this.props.urlText}
           onChange={(evt, text)=>{this.props.urlTextChanged({text})}}
         />
