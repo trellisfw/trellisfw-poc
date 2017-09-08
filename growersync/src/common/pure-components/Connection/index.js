@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 
 import styles from './index.module.css'
 import svgIncomingConnection from '../../svg/incoming.svg'
+import svgABC from '../../svg/abc_audits.svg'
 
 class NewConnection extends React.Component {
   render() {
@@ -22,19 +23,21 @@ class NewConnection extends React.Component {
           </div>
         </div>
         <div className={styles.right}>
-          <div className={styles.connectContainer}>
-            <div className={styles.label}>
-                {'Connect to:'}
+          <div className={styles.leftSide}>
+            <div className={styles.iconContainer}>
+                <img src={svgABC} className={styles.nameIcon} alt="name" />
+                <div>{'ABC Audits'}</div>
             </div>
-            <input className={styles.input} type='text' value={'https://abcaudits.fpad.io'} />
-          </div>
-          <div className={styles.buttonsContainer}>
-            <div className={styles.button}>
-              {'Connect Now as Me'}
+            <div className={styles.status}>
+              {'Received 0 Certifications'}
             </div>
-            <div style={{paddingLeft: 20, paddingRight: 20}}>{'or'}</div>
-            <div className={styles.button}>
-              {'Email Authorization Link'}
+            <div className={styles.updatedContainer}>
+              <div className={styles.label}>
+                {'Last Update:'}
+              </div>
+              <div className={styles.time}>
+                {' 0 minutes ago'}
+              </div>
             </div>
           </div>
         </div>
