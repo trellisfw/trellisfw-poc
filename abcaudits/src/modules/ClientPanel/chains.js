@@ -77,10 +77,11 @@ function getCertifications({state, props, path}) {
 	let clientId = state.get(`client_panel.selected_client`)
   let certs = state.get(`client_panel.clients.${clientId}.certifications`)
   let certifications = {}
+  let token = state.get(`user_profile.user.token`);
   return Promise.map(Object.keys(certs), (key) => {
     if (key.charAt(0) === '_') return false
     return agent('GET', domain+'/bookmarks/fpad/clients/'+clientId+'/certifications/'+key)
-    .set('Authorization', 'Bearer '+ props.token)
+    .set('Authorization', 'Bearer '+ token)
     .end()
     .then((res) => {
       certifications[key] = res.body

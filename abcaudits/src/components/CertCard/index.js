@@ -8,7 +8,7 @@ import moment from 'moment'
 export default connect({
   audit: state`client_panel.clients.${state`client_panel.selected_client`}.certifications.${props`name`}`,
   selected: state`app.view.certifications.${props`name`}.selected`,
-  
+
   checked: signal`app.certChecked`,
   signAuditButtonClicked: signal`app.signAuditButtonClicked`,
 },
@@ -17,7 +17,6 @@ class CertCard extends React.Component {
 
   render() {
     let date = new moment(this.props.audit.conditions_during_audit.operation_observed_date).format('MMMM D, YYYY')
-
     return (
      <Card className={'cert-card'} containerStyle={{display:'flex', flex:'1'}}>
        <div className='left-container'>
@@ -48,10 +47,10 @@ class CertCard extends React.Component {
               </IconButton>
               <p className={'valid'}>Signed</p>
             </div>
-            : 
+            :
             <FlatButton
               className={'sign-button'}
-              onTouchTap={()=>{this.props.signAuditButtonClicked({audit:this.props.audit})}} 
+              onTouchTap={()=>{this.props.signAuditButtonClicked({audit:this.props.audit})}}
               label="Finish and sign">
             </FlatButton>}
         </div>
