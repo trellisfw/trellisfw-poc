@@ -81,7 +81,7 @@ function deleteSelectedAudits({state, props, path}) {
     .end()
     .then(() => {
       return agent('PUT', url+'/resources/'+key)
-      .set('Authorization', 'Bearer '+ state`user_profile.token`)
+      .set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
       .end()
     })
   }).then(() => {
@@ -104,7 +104,7 @@ function addRandomCert({state, props, path}) {
   let audit = randCert.generateAudit(templateAudit, org, auditor, scope, year, true)
   let id;
   return agent('POST', url+'/resources')
-  .set('Authorization', 'Bearer '+ 'xyz')
+  .set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
   .set('Content-Type', 'application/vnd.oada.rock.1+json')
   .send(audit)
   .end()

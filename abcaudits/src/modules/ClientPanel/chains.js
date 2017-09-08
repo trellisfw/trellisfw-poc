@@ -81,7 +81,7 @@ function getCertifications({state, props, path}) {
   return Promise.map(Object.keys(certs), (key) => {
     if (key.charAt(0) === '_') return false
     return agent('GET', domain+'/bookmarks/fpad/clients/'+clientId+'/certifications/'+key)
-    .set('Authorization', 'Bearer '+ props.token)
+    .set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
     .end()
     .then((res) => {
       certifications[key] = res.body
@@ -96,7 +96,7 @@ function putClient({state, props, path}) {
   let text = state.get('client_panel.client_dialog.text')
   let stuff = {name: text, certifications: {} }
   return agent('POST', domain+'/resources')
-  .set('Authorization', 'Bearer '+props.token)
+  .set('Authorization', 'Bearer '+state.get('user_profile.user.token'))
   .set('Content-Type', 'application/vnd.oada.rock.1+json')
   .send(stuff)
   .end()
@@ -104,14 +104,14 @@ function putClient({state, props, path}) {
     let id = response.headers.location.split('/')[2]
     // Link to bookmarks
     return agent('PUT', domain+'/bookmarks/fpad/clients/'+id)
-    .set('Authorization', 'Bearer '+props.token)
+    .set('Authorization', 'Bearer '+state.get('user_profile.user.token'))
     .set('Content-Type', 'application/vnd.oada.rock.1+json')
     .send({"_id": 'resources/'+id})
     .end()
 			.then(() => {
 				//GET it to confirm
 	    return agent('GET', domain+'/bookmarks/fpad/clients/'+id)
-		  .set('Authorization', 'Bearer '+props.token)
+		  .set('Authorization', 'Bearer '+state.get('user_profile.user.token'))
 			.set('Content-Type', 'application/vnd.oada.rock.1+json')
 			.end()
 			.then((res) => {
@@ -123,14 +123,14 @@ function putClient({state, props, path}) {
 
 function getClients({state, props, path}) {
   let clients = {}
-  console.log(domain+'/bookmarks/fpad/clients', props.token)
+  console.log(domain+'/bookmarks/fpad/clients', state.get('user_profile.user.token'))
   return agent('GET', domain+'/bookmarks/fpad/clients')
-  .set('Authorization', 'Bearer '+props.token)
+  .set('Authorization', 'Bearer '+state.get('user_profile.user.token'))
   .then((response) => {
     return Promise.map(Object.keys(response.body), (key) => {
       if (key.charAt(0) === '_') return
       return agent('GET', domain+'/bookmarks/fpad/clients/'+key)
-      .set('Authorization', 'Bearer '+ props.token)
+      .set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
       .end()
       .then((res) => {
         clients[key] = res.body
