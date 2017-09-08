@@ -43,6 +43,7 @@ class CertCard extends React.Component {
             {this.props.audit.signatures ? <div className={'signature'}>
               <IconButton
                 className={'valid-icon'}
+                style={{color:'#0f0'}}
                 iconClassName="material-icons">check_circle
               </IconButton>
               <p className={'valid'}>Signed</p>

@@ -11,8 +11,6 @@ import prvKey from '../../prvKey.js'
 import pubKey from '../../pubKey.js'
 import {setClient} from '../ClientPanel/chains.js'
 var agent = require('superagent-promise')(require('superagent'), Promise);
-//let url = 'https://api.oada-dev.com'
-let url = 'https://vip3.ecn.purdue.edu'
 
 export let toggleCertSelect = [
   set(state`app.view.certifications.${props`name`}.selected`, props`checked`)
@@ -51,6 +49,7 @@ export let deleteAudits = [
 ]
 
 function generateAuditSignature({state, props, path}) {
+  let domain = state.get('app.oada_domain')
   var kid = 'ABCAudits'
   var alg = 'RS256'
   var kty = 'RSA'
@@ -60,7 +59,7 @@ function generateAuditSignature({state, props, path}) {
   let clientId = state.get('client_panel.selected_client')
   let audit = _.clone(props.audit)
   return signatures.generate(audit, prvKey, headers).then((signatures) => {
-    return agent('PUT', url+'/bookmarks/fpad/clients/'+clientId+'/certifications/'+props.audit._id.split('/')[1]+'/signatures')
+    return agent('PUT', 'https://'+domain+'/bookmarks/fpad/clients/'+clientId+'/certifications/'+props.audit._id.split('/')[1]+'/signatures')
     .set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
     .set('Content-Type', 'application/vnd.oada.rock.1+json')
     .send(signatures)
@@ -72,15 +71,16 @@ function generateAuditSignature({state, props, path}) {
 }
 
 function deleteSelectedAudits({state, props, path}) {
+  let domain = state.get('app.oada_domain')
   let clientId = state.get('client_panel.selected_client')
   let selectedCertifications = _.selectBy(state.get(`app.view.certifications`), 'selected')
   let certifications = state.get(`client_panel.clients.${clientId}.certifications`)
   return Promise.map(selectedCertifications, (key) => {
-    return agent('DELETE', url+'/bookmarks/fpad/clients/'+clientId+'/certifications/'+key)
+    return agent('DELETE', 'https://'+domain+'/bookmarks/fpad/clients/'+clientId+'/certifications/'+key)
     .set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
     .end()
     .then(() => {
-      return agent('PUT', url+'/resources/'+key)
+      return agent('PUT', 'https://'+domain+'/resources/'+key)
       .set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
       .end()
     })
@@ -90,6 +90,7 @@ function deleteSelectedAudits({state, props, path}) {
 }
 
 function addRandomCert({state, props, path}) {
+  let domain = state.get('app.oada_domain')
   let a = state.get('app.view.certifications')
   let clientId = state.get(`client_panel.selected_client`)
   let clientName = state.get(`client_panel.clients.${clientId}.name`)
@@ -103,7 +104,7 @@ function addRandomCert({state, props, path}) {
 	console.log(scope)
   let audit = randCert.generateAudit(templateAudit, org, auditor, scope, year, true)
   let id;
-  return agent('POST', url+'/resources')
+  return agent('POST', 'https://'+domain+'/resources')
   .set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
   .set('Content-Type', 'application/vnd.oada.rock.1+json')
   .send(audit)
@@ -112,7 +113,7 @@ function addRandomCert({state, props, path}) {
     id = response.headers.location.split('/')
     id = id[id.length-1]
     audit._id = 'resources/'+id
-    return agent('PUT', url+'/bookmarks/fpad/clients/'+clientId+'/certifications/'+id)
+    return agent('PUT', 'https://'+domain+'/bookmarks/fpad/clients/'+clientId+'/certifications/'+id)
     .set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
     .set('Content-Type', 'application/vnd.oada.rock.1+json')
     .send({_id:'resources/'+id})

@@ -19,7 +19,7 @@ import {
 export default connect({
   open: state`client_panel.client_dialog.open`,
   audits: state`app.model.audits`,
-  client: state`client_panel.client`,
+  client: state`client_panel.selected_client`,
   clients: state`client_panel.clients`,
 
   initialize: signal`client_panel.initialize`,
@@ -34,11 +34,17 @@ class ClientPanel extends React.Component {
   }
 
   render() {
-    let clients = _.sortBy(this.props.clients, 'name')
+    let clients = _.map(_.keys(this.props.clients), id => {
+      const c = this.props.clients[id];
+      c.id = id;
+      return c;
+    });
+    clients = _.sortBy(clients, 'name')
 
     return (
       <Table
-        fixedFooter={true}>
+        fixedFooter={true}
+        selectable={true}
         displayRowCheckbox={false}>
         <TableHeader
           displaySelectAll={false}>
@@ -47,21 +53,20 @@ class ClientPanel extends React.Component {
           </TableRow>
         </TableHeader>
         <TableBody
-          stripedRows={true}
           displayRowCheckbox={false}>
-          {Object.keys(clients).map(id =>
-            <TableRow 
-              onTouchTap={() => {this.props.clientClicked({id:clients[id]._id.split('/')[1]})}}
+          {clients.map(c => {
+            return <TableRow 
+              onTouchTap={() => {this.props.clientClicked({id:c.id})}}
               className={'row'}
-              selected={id === this.props.client}
-              key={'client-category-'+id}>
+              selected={c.id === this.props.client}
+              key={'client-category-'+c.id}>
               <TableRowColumn>
                 <div className={'rowtext'}>
-                  <p className={'category-title'}>{clients[id].name}</p>
-                  <p>{`(${Object.keys(clients[id].certifications).length})`}</p>
+                  <p className={'category-title'}>{c.name}</p>
+                  <p>{`(${Object.keys(c.certifications).length})`}</p>
                 </div>
               </TableRowColumn>
-            </TableRow>
+            </TableRow> }
           )}
         </TableBody>
         <TableFooter adjustForCheckbox={false}>
