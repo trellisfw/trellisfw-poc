@@ -21,12 +21,8 @@ export let setUsernameText = [
   set(state`sharing_dialog.username_text`, props`text`),
 ]
 
-export let seturlText = [
+export let setUrlText = [
   set(state`sharing_dialog.url_text`, props`text`),
-]
-
-export let cancelSharing = [
-	
 ]
 
 export let submitSharing = [

@@ -6,6 +6,7 @@ import uuid from 'uuid';
 import Promise from 'bluebird';
 import axios from 'axios';
 let agent = require('superagent-promise')(require('superagent'), Promise);
+let domain = 'https://vip3.ecn.purdue.edu'
 
 export let setClient = [
   set(state`app.view.certifications`, {}),
@@ -20,7 +21,8 @@ export let setClient = [
 ]
 
 export let submitClient = [
-  toggle(state`client_panel.client_dialog.open`),
+	toggle(state`client_panel.client_dialog.open`),
+	set(props`token`, state`user_profile.user.token`),
   putClient, {
     success: [
       set(state`client_panel.clients.${props`id`}`, props`client`),
@@ -45,12 +47,18 @@ export let setClientText = [
 ]
 
 export let init = [
-  getClients, {
-    success: [
-      set(state`client_panel.clients`, props`clients`),
-    ],
-    error: [],
-  },
+	when(state`user_profile.user`), {
+		true: [
+  	set(props`token`, state`user_profile.user.token`),
+      getClients, {
+        success: [
+          set(state`client_panel.clients`, props`clients`),
+        ],
+        error: [],
+			},
+		],
+		false: [],
+	}
 ]
 
 
@@ -67,14 +75,12 @@ function setVisibleCertifications({state, props, path}) {
 
 function getCertifications({state, props, path}) {
 	let clientId = state.get(`client_panel.selected_client`)
-	console.log(clientId)
   let certs = state.get(`client_panel.clients.${clientId}.certifications`)
-	console.log(certs)
   let certifications = {}
   return Promise.map(Object.keys(certs), (key) => {
     if (key.charAt(0) === '_') return false
-    return agent('GET', 'https://api.oada-dev.com/bookmarks/fpad/clients/'+clientId+'/certifications/'+key)
-    .set('Authorization', 'Bearer '+ 'xyz')
+    return agent('GET', domain+'/bookmarks/fpad/clients/'+clientId+'/certifications/'+key)
+    .set('Authorization', 'Bearer '+ props.token)
     .end()
     .then((res) => {
       certifications[key] = res.body
@@ -88,23 +94,23 @@ function getCertifications({state, props, path}) {
 function putClient({state, props, path}) {
   let text = state.get('client_panel.client_dialog.text')
   let stuff = {name: text, certifications: {} }
-  return agent('POST', 'https://api.oada-dev.com/resources')
-  .set('Authorization', 'Bearer xyz')
+  return agent('POST', domain+'/resources')
+  .set('Authorization', 'Bearer '+props.token)
   .set('Content-Type', 'application/vnd.oada.rock.1+json')
   .send(stuff)
   .end()
 	.then((response) => {
     let id = response.headers.location.split('/')[2]
     // Link to bookmarks
-    return agent('PUT', 'https://api.oada-dev.com/bookmarks/fpad/clients/'+id)
-    .set('Authorization', 'Bearer xyz')
+    return agent('PUT', domain+'/bookmarks/fpad/clients/'+id)
+    .set('Authorization', 'Bearer '+props.token)
     .set('Content-Type', 'application/vnd.oada.rock.1+json')
     .send({"_id": 'resources/'+id})
     .end()
 			.then(() => {
 				//GET it to confirm
-	    return agent('GET', 'https://api.oada-dev.com/bookmarks/fpad/clients/'+id)
-		  .set('Authorization', 'Bearer xyz')
+	    return agent('GET', domain+'/bookmarks/fpad/clients/'+id)
+		  .set('Authorization', 'Bearer '+props.token)
 			.set('Content-Type', 'application/vnd.oada.rock.1+json')
 			.end()
 			.then((res) => {
@@ -115,14 +121,14 @@ function putClient({state, props, path}) {
 }
 
 function getClients({state, props, path}) {
-  return agent('GET', 'https://api.oada-dev.com/bookmarks/fpad/clients')
-  .set('Authorization', 'Bearer xyz')
+  return agent('GET', domain+'/bookmarks/fpad/clients')
+  .set('Authorization', 'Bearer '+props.token)
   .then((response) => {
     let clients = {}
     return Promise.map(Object.keys(response.body), (key) => {
       if (key.charAt(0) === '_') return false
-      return agent('GET', 'https://api.oada-dev.com/bookmarks/fpad/clients/'+key)
-      .set('Authorization', 'Bearer '+ 'xyz')
+      return agent('GET', domain+'/bookmarks/fpad/clients/'+key)
+      .set('Authorization', 'Bearer '+ props.token)
       .end()
       .then((res) => {
         clients[key] = res.body

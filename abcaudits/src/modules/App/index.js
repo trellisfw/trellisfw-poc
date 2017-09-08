@@ -21,7 +21,7 @@ export default {
   },
 
   signals: {
-    initialize,
+		initialize,
     addCertButtonClicked: addCertification,
     certChecked: toggleCertSelect,
     signAuditButtonClicked: signAudit,

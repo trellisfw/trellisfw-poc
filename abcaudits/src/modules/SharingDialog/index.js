@@ -14,11 +14,11 @@ export default {
   },
 
   signals: {
-    shareAuditsButtonClicked: showClientDialog, 
+    shareAuditsButtonClicked: showSharingDialog, 
     sharingDialogCancelled: cancelSharing, 
     sharingDialogSubmitted: submitSharing, 
-    urlTextChanged: setUsernameText,
-    usernameTextChanged: setUrlText,
+    usernameTextChanged: setUsernameText,
+    urlTextChanged: setUrlText,
   },
 
   modules: {

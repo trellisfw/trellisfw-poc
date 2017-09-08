@@ -1,0 +1,14 @@
+.rowtext {
+  display: flex;
+}
+.category-title {
+  flex: 1;
+}
+.row {
+  cursor: pointer;
+}
+.add-client {
+  cursor: pointer;
+  display:flex;
+  align-items: center;
+}

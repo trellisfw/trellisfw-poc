@@ -8,7 +8,7 @@ export default connect({
   open: state`sharing_dialog.open`,
 	usernameText: state`sharing_dialog.username_text`,
 	urlText: state`sharing_dialog.url_text`,
-	client: state`client_panel.selected_client`,
+	client: state`client_panel.clients.${state`client_panel.selected_client`}`,
 
   sharingDialogSubmitted: signal`sharing_dialog.sharingDialogSubmitted`,
   sharingDialogCancelled: signal`sharing_dialog.sharingDialogCancelled`,
@@ -24,25 +24,26 @@ class SharingDialog extends React.Component {
       <FlatButton
         label="Cancel"
         primary={true}
-        disabled={this.props.text !== ''}
         onClick={() => {this.props.sharingDialogCancelled({})}}
       />,
       <FlatButton
         label="Submit"
         primary={true}
         keyboardFocused={true}
+        disabled={(this.props.urlText === '') || (this.props.usernameText === '')}
         onClick={() => {this.props.sharingDialogSubmitted({})}}
       />,
     ];
 
     return (
       <Dialog
-        title="Sharing for "
+        title={"Sharing for "+this.props.client.name}
         actions={actions}
         modal={false}
         open={this.props.open}
         onRequestClose={()=> {this.props.sharingDialogCancelled({})}}
-      >
+			>
+				<p>{'Who should be able to view '+this.props.client.name+'\'s data?'}</p>
         <TextField
           hintText="gary@mail.com..."
           value={this.props.usernameText}
@@ -50,7 +51,7 @@ class SharingDialog extends React.Component {
 				/>
         <TextField
           hintText="supercloud.com"
-          value={this.props.text}
+          value={this.props.urlText}
           onChange={(evt, text)=>{this.props.urlTextChanged({text})}}
         />
 

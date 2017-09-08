@@ -21,13 +21,13 @@ class AddClient extends React.Component {
       <FlatButton
         label="Cancel"
         primary={true}
-        disabled={this.props.text !== ''}
         onClick={() => {this.props.clientDialogCancelled({})}}
       />,
       <FlatButton
         label="Submit"
         primary={true}
         keyboardFocused={true}
+        disabled={this.props.text === ''}
         onClick={() => {this.props.clientDialogSubmitted({})}}
       />,
     ];
