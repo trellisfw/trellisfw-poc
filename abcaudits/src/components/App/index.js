@@ -51,7 +51,7 @@ class App extends React.Component {
 
     return (
       <div className='app'>
-        <div 
+        <div
           style={{}}
           className='header'>
           <div className='header-left'>
@@ -64,17 +64,17 @@ class App extends React.Component {
           <div
 						className='header-right'>
 						{this.props.user ? <UserProfile /> :
-							<p onTouchTap={()=>{this.props.signInClicked({})}}> 
-								Sign in 
+							<p onTouchTap={()=>{this.props.signInClicked({})}}>
+								Sign in
 							</p>
 						}
             {false ? <div className='modes'>
-              <p 
+              <p
                 className={this.props.mode === 'connections' ? 'highlighted-mode' : 'mode'}
                 onClick={()=>{this.props.modeClicked({mode: 'connections'})}}>
                 <u>Connections</u>
               </p>
-              <p 
+              <p
                 className={this.props.mode === 'certifications' ? 'highlighted-mode' : 'mode'}
                 onClick={()=>{this.props.modeClicked({mode: 'certifications'})}}>
                 <u>Certifications</u>
