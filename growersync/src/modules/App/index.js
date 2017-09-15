@@ -8,7 +8,7 @@ export default {
     },
     view: {
 
-    },
+    }
   },
 
   signals: {

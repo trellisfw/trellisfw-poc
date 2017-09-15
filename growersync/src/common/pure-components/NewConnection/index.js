@@ -1,6 +1,4 @@
 import React from 'react'
-import { FlatButton, Card, Divider, IconButton, Checkbox } from 'material-ui'
-import _ from 'lodash'
 import PropTypes from 'prop-types';
 
 import styles from './index.module.css'
@@ -26,14 +24,14 @@ class NewConnection extends React.Component {
             <div className={styles.label}>
                 {'Connect to:'}
             </div>
-            <input className={styles.input} type='text' value={'https://abcaudits.fpad.io'} />
+            <input className={styles.input} type='text' value={this.props.connection.domain} onChange={this.props.onDomainChange} />
           </div>
           <div className={styles.buttonsContainer}>
-            <div className={styles.button}>
+            <div className={styles.button} onClick={this.props.onConnectAsMeClick}>
               {'Connect Now as Me'}
             </div>
             <div style={{paddingLeft: 20, paddingRight: 20}}>{'or'}</div>
-            <div className={styles.button}>
+            <div className={styles.button} onClick={this.props.onEmailLinkClick}>
               {'Email Authorization Link'}
             </div>
           </div>
@@ -44,7 +42,10 @@ class NewConnection extends React.Component {
 }
 
 NewConnection.propTypes = {
-
+  onDomainChange: PropTypes.func.isRequired,
+  onConnectAsMeClick: PropTypes.func.isRequired,
+  onEmailLinkClick: PropTypes.func.isRequired,
+  connection: PropTypes.object.isRequired
 };
 
 export default NewConnection;

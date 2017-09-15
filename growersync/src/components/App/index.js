@@ -20,8 +20,8 @@ import Certifications from '../Certifications';
 import Connections from '../Connections';
 
 export default connect({
-  audits: state`app.model.audits`,
-  mode: state`topBar.mode`,
+  audits: state`App.model.audits`,
+  mode: state`TopBar.mode`,
 },
 
 class App extends React.Component {

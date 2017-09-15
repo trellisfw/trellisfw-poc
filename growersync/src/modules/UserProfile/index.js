@@ -1,7 +1,5 @@
-import {
-	signIn,
-	signOut,
-} from './chains.js'
+import signIn from './actions/signIn.js';
+import signOut from './actions/signOut.js';
 
 export default {
 	state: {

@@ -2,6 +2,7 @@ import {Controller} from 'cerebral'
 import App from './modules/App'
 import TopBar from './modules/TopBar'
 import Connections from './modules/Connections'
+import UserProfile from './modules/UserProfile'
 
 import {devtoolsPort} from './config.js';
 
@@ -23,8 +24,9 @@ export default Controller({
   signals: {
   },
   modules: {
-    app: App,
-    topBar: TopBar,
-    connections: Connections
+    App,
+    TopBar,
+    Connections,
+    UserProfile
   }
 })

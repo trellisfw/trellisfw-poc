@@ -18,8 +18,8 @@ import TopBar from '../../common/components/TopBar'
 import CertCard from '../../common/components/CertCard'
 
 export default connect({
-  audits: state`app.model.audits`,
-  mode: state`app.view.main.mode`,
+  audits: state`App.model.audits`,
+  mode: state`App.view.main.mode`,
 },
 
 class Certifications extends React.Component {
