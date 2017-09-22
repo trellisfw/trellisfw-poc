@@ -1,8 +1,9 @@
+import mounted from './signals/mounted';
 
 export default {
   state: {
     model: {
-      audits: {
+      certifications: {
 
       }
     },
@@ -12,7 +13,7 @@ export default {
   },
 
   signals: {
-
+    mounted
   },
   modules: {
 
