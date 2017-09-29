@@ -1,4 +1,3 @@
-import modeClicked from './signals/modeClicked'
 import signOutClicked from './signals/signOutClicked'
 
 export default {
@@ -6,7 +5,6 @@ export default {
     mode: 'login'
   },
   signals: {
-    modeClicked,
     signOutClicked
   }
 }

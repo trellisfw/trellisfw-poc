@@ -1,7 +1,6 @@
 import React from 'react'
 import {connect} from '@cerebral/react'
-import {state, signal} from 'cerebral/tags'
-import { Divider, IconButton, Checkbox } from 'material-ui'
+import {state} from 'cerebral/tags'
 import SyncIcon from 'material-ui/svg-icons/notification/sync';
 import _ from 'lodash';
 

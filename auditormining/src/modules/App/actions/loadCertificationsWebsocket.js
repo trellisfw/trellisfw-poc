@@ -12,7 +12,7 @@ function loadCertificationsWebsocket({state, path, websocket}) {
       headers: {Authorization: 'Bearer '+ state.get('UserProfile.user.token')}
     }).then((res) => {
       //Extract only list of certification ids
-      let certKeys = _.filter(Object.keys(res.data), key=>(_.startsWith(key, '_')==false));
+      let certKeys = _.filter(Object.keys(res.data), key=>(_.startsWith(key, '_')===false));
       return Promise.map(certKeys, (key) => {
         //Load the certifications
         return websocket.http({

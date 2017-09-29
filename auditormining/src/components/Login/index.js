@@ -16,7 +16,7 @@ export default connect({
 
 class Login extends React.Component {
   onUrlChange = (evt, index, value) => {
-    if (value == 'custom') return; //TODO popup
+    if (value === 'custom') return; //TODO popup
     this.props.fpadDomainChanged({domain: value});
   }
   render() {

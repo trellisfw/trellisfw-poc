@@ -18,7 +18,6 @@ class RatingBar extends React.Component {
       }
     }
     var barColor = ColorScale[parseInt(this.props.score, 10)].setAlpha(0.6).toRgbString();
-    var barWidth = this.props.score;
     return (
       <div className={styles.ratingBar}>
         <div className={styles.rating} style={{width: this.props.score+'%', backgroundColor: barColor}}>
