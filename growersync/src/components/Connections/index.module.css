@@ -4,6 +4,8 @@
 }
 .mainPanel {
   flex: 1;
+  display: flex;
+  flex-direction: column;
 }
   .mainPanel > .header {
     display: flex;
@@ -18,15 +20,17 @@
       padding-top: 15px;
       padding-bottom: 15px;
     }
-
-.addConnection {
+.addConnectionContainer {
   display: flex;
-  align-items: center;
-  cursor: pointer;
 }
-  .addConnection > .icon {
-    width: 30px;
+  .addConnection {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
   }
-  .addConnection > .label {
-    font-size: 19px;
-  }
+    .addConnection > .icon {
+      width: 30px;
+    }
+    .addConnection > .label {
+      font-size: 19px;
+    }

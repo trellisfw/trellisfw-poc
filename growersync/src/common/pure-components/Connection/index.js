@@ -1,6 +1,4 @@
 import React from 'react'
-import { FlatButton, Card, Divider, IconButton, Checkbox } from 'material-ui'
-import _ from 'lodash'
 import PropTypes from 'prop-types';
 
 import styles from './index.module.css'

@@ -1,10 +1,21 @@
 import React from 'react'
 import styles from './index.module.css'
-import { IconButton } from 'material-ui'
+import { IconButton, MenuItem, Menu } from 'material-ui'
+import Popover from 'material-ui/Popover';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 class TopBar extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {popupOpen: false};
+  }
+  closePopup = () => {
+    this.setState({popupOpen: false});
+  }
+  openPopup = () => {
+    this.setState({popupOpen: true});
+  }
   render() {
     return (
       <div className={styles.header} style={this.props.style}>
@@ -22,24 +33,48 @@ class TopBar extends React.Component {
           </div>
         </div>
         <div className={styles.headerRight}>
-          <div className={styles.profileContainer}>
-            {'Gary Grower'}
-            <IconButton iconClassName="material-icons">
-              {'account_circle'}
-            </IconButton>
-          </div>
-          <div className={styles.modes}>
-            <p
-              className={this.props.mode === 'certifications' ? classnames(styles.mode, styles.highlighted) : styles.mode}
-              onClick={()=>{this.props.modeClicked({mode: 'certifications'})}}>
-              <u>{'Certifications'}</u>
-            </p>
-            <p
-              className={this.props.mode === 'connections' ? classnames(styles.mode, styles.highlighted) : styles.mode }
-              onClick={()=>{this.props.modeClicked({mode: 'connections'})}}>
-              <u>{'Connections'}</u>
-            </p>
-          </div>
+          <Popover
+              open={this.state.popupOpen}
+              anchorEl={this.refs.profileContainer}
+              anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
+              targetOrigin={{horizontal: 'right', vertical: 'top'}}
+              onRequestClose={this.closePopup}>
+                  <Menu onTouchTap={this.closePopup}>
+                  		<MenuItem primaryText="Sign out" onTouchTap={()=>{this.props.signOut({})}} />
+                  </Menu>
+          </Popover>
+          {
+						this.props.user ?
+              <div ref='profileContainer' className={styles.profileContainer} onClick={()=>this.openPopup()}>
+                <IconButton iconClassName="material-icons">
+                  account_circle
+                </IconButton>
+                <div>{this.props.user.name}</div>
+              </div>
+						:
+              <div className={styles.profileContainer}>
+  							<div className={styles.signIn} onTouchTap={()=>{this.props.signIn({})}}>
+  								Sign in
+  							</div>
+              </div>
+					}
+          {
+            this.props.mode ?
+              <div className={styles.modes}>
+                <p
+                  className={this.props.mode === 'certifications' ? classnames(styles.mode, styles.highlighted) : styles.mode}
+                  onClick={()=>{this.props.modeClicked({mode: 'certifications'})}}>
+                  <u>{'Certifications'}</u>
+                </p>
+                <p
+                  className={this.props.mode === 'connections' ? classnames(styles.mode, styles.highlighted) : styles.mode }
+                  onClick={()=>{this.props.modeClicked({mode: 'connections'})}}>
+                  <u>{'Connections'}</u>
+                </p>
+              </div>
+            :
+            null
+          }
         </div>
       </div>
     )
@@ -47,7 +82,7 @@ class TopBar extends React.Component {
 }
 
 TopBar.propTypes = {
-  modeClicked: PropTypes.func.isRequired
+  modeClicked: PropTypes.func
 };
 
 export default TopBar;

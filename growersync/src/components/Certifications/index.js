@@ -18,21 +18,21 @@ import TopBar from '../../common/components/TopBar'
 import CertCard from '../../common/components/CertCard'
 
 export default connect({
-  audits: state`app.model.audits`,
-  mode: state`app.view.main.mode`,
+  certifications: state`App.model.certifications`,
+  mode: state`App.view.main.mode`,
 },
 
 class Certifications extends React.Component {
   render() {
 
     let years = {}
-    let certs = Object.keys(this.props.audits).map((key, i) => {
-      if (years[this.props.audits[key].expiration]) {
-        years[this.props.audits[key].expiration]++
+    let certs = Object.keys(this.props.certifications).map((key, i) => {
+      if (years[this.props.certifications[key].expiration]) {
+        years[this.props.certifications[key].expiration]++
       } else {
-        years[this.props.audits[key].expiration] = 1;
+        years[this.props.certifications[key].expiration] = 1;
       }
-      return <CertCard name={key} key={'cert-'+i}/>
+      return <CertCard name={key} key={'cert-'+i} id={key} />
     })
 
     return (

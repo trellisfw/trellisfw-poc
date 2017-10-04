@@ -20,22 +20,15 @@ import Certifications from '../Certifications';
 import Connections from '../Connections';
 
 export default connect({
-  audits: state`app.model.audits`,
-  mode: state`topBar.mode`,
+  mode: state`TopBar.mode`,
+  mounted: signal`App.mounted`
 },
 
 class App extends React.Component {
+  componentDidMount() {
+    this.props.mounted();
+  }
   render() {
-
-    let years = {}
-    let certs = Object.keys(this.props.audits).map((key, i) => {
-      if (years[this.props.audits[key].expiration]) {
-        years[this.props.audits[key].expiration]++
-      } else {
-        years[this.props.audits[key].expiration] = 1;
-      }
-      return <CertCard name={key} key={'cert-'+i}/>
-    })
 
     var page = null;
     if (this.props.mode == 'certifications') {

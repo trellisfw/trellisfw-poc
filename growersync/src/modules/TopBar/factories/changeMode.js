@@ -4,7 +4,7 @@ function changeModeFactory (mode) {
     throw Error('Invaild View "'+mode+'" for TopBar/factories/changeMode');
   }
   function ChangeMode ({state}) {
-    state.set('topBar.mode', mode);
+    state.set('TopBar.mode', mode);
   }
   return ChangeMode
 }
