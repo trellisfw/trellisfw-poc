@@ -2,6 +2,7 @@ import { set } from 'cerebral/operators'
 import {state, props} from 'cerebral/tags'
 import Promise from 'bluebird';
 import _ from 'lodash';
+import watchCertifications from './watchCertifications';
 
 function loadCertificationsWebsocket({state, path, websocket}) {
   //Get the certifications list
@@ -31,10 +32,11 @@ function loadCertificationsWebsocket({state, path, websocket}) {
 }
 
 export default [
+  watchCertifications,
 	loadCertificationsWebsocket, {
 		success: [
       set(state`App.model.certifications`, props`certifications`),
     ],
 		error: [],
-	},
+	}
 ]

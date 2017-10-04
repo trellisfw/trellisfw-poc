@@ -4,6 +4,8 @@ import Promise from 'bluebird';
 import axios from 'axios';
 import _ from 'lodash';
 
+import watchCertifications from './watchCertifications';
+
 function loadCertifications({state, path}) {
   //Get the certifications list
   let certifications = {};
@@ -33,6 +35,7 @@ function loadCertifications({state, path}) {
 }
 
 export default [
+  watchCertifications,
 	loadCertifications, {
 		success: [
       set(state`App.model.certifications`, props`certifications`),

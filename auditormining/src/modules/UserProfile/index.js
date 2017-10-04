@@ -2,7 +2,10 @@ import signOut from './actions/signOut.js';
 
 export default {
 	state: {
-		user: null
+		user: {
+			name: 'Auditor Audrey',
+			token: 'aaa',
+		}
   },
 
   signals: {

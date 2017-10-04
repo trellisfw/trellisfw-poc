@@ -4,7 +4,8 @@ import Promise from 'bluebird';
 import axios from 'axios';
 import {domain} from '../../../config.js';
 import configureWebsocketProvider from './configureWebsocketProvider';
-import loadCertifications from '../../App/actions/loadCertificationsWebsocket';
+import loadCertificationsWebsocket from '../../App/actions/loadCertificationsWebsocket';
+import changePage from '../../App/factories/changePage';
 
 let getAccessToken = Promise.promisify(require('oada-id-client').getAccessToken)
 
@@ -32,9 +33,9 @@ export default [
 	getOadaToken, {
 		success: [
 		  set(state`UserProfile.user`, props`user`),
-      set(state`App.view.page`, 'auditors'),
+      changePage('auditors'),
       configureWebsocketProvider,
-      loadCertifications
+      loadCertificationsWebsocket
 		],
 		error: [],
 	},

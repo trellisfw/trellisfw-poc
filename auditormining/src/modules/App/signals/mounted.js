@@ -1,5 +1,6 @@
-import loadCertifications from '../actions/loadCertificationsWebsocket';
+import loadCertificationsWebsocket from '../actions/loadCertificationsWebsocket';
 import configureWebsocketProvider from '../../Login/actions/configureWebsocketProvider';
+import changePage from '../factories/changePage';
 
 function isLoggedIn ({state, path}) {
   let user = state.get('UserProfile.user');
@@ -10,8 +11,9 @@ function isLoggedIn ({state, path}) {
 export default [
   isLoggedIn, {
     yes: [
+      changePage('auditors'),
       configureWebsocketProvider,
-      loadCertifications
+      loadCertificationsWebsocket
     ],
     no: []
   }

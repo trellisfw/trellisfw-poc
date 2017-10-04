@@ -1,4 +1,5 @@
 import mounted from './signals/mounted';
+import certificationsChanged from './signals/certificationsChanged';
 
 export default {
   state: {
@@ -13,7 +14,8 @@ export default {
   },
 
   signals: {
-    mounted
+    mounted,
+    certificationsChanged
   },
   modules: {
 
