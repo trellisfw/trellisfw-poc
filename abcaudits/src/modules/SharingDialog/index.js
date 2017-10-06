@@ -1,9 +1,9 @@
 import {
   showSharingDialog,
-  cancelSharing,
-  submitSharing,
+  doneSharing,
   setUsernameText,
   setUrlText,
+	addUser,
 } from './chains.js'
 
 export default {
@@ -14,11 +14,11 @@ export default {
   },
 
   signals: {
-    shareAuditsButtonClicked: showSharingDialog, 
-    sharingDialogCancelled: cancelSharing, 
-    sharingDialogSubmitted: submitSharing, 
+    shareClientButtonClicked: showSharingDialog, 
+    sharingDialogDoneClicked: doneSharing, 
     usernameTextChanged: setUsernameText,
     urlTextChanged: setUrlText,
+		addUserButtonClicked: addUser,
   },
 
   modules: {
