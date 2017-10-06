@@ -61,12 +61,6 @@ class MainPanel extends React.Component {
             onTouchTap={() => {this.props.deleteAuditsButtonClicked({})}}
             iconClassName="material-icons">delete
           </IconButton>
-          <IconButton
-            disabled={!Object.keys(this.props.certifications).some((key) => {return this.props.certifications[key].selected})}
-            className='main-panel-share-button'
-            onTouchTap={() => {this.props.shareAuditsButtonClicked({})}}
-            iconClassName="material-icons">group
-          </IconButton>
         </div>
         <hr />
         {certs}

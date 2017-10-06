@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'cerebral/react'
 import {state, signal} from 'cerebral/tags'
-import { TextField, Dialog, FlatButton } from 'material-ui'
+import { Chip, IconButton, TextField, Dialog, FlatButton } from 'material-ui'
 import styles from './styles.css'
 
 export default connect({
@@ -10,10 +10,10 @@ export default connect({
 	urlText: state`sharing_dialog.url_text`,
 	client: state`client_panel.clients.${state`client_panel.selected_client`}`,
 
-  sharingDialogSubmitted: signal`sharing_dialog.sharingDialogSubmitted`,
-  sharingDialogCancelled: signal`sharing_dialog.sharingDialogCancelled`,
+  sharingDialogDone: signal`sharing_dialog.sharingDialogDoneClicked`,
   urlTextChanged: signal`sharing_dialog.urlTextChanged`,
   usernameTextChanged: signal`sharing_dialog.usernameTextChanged`,
+	addUserButtonClicked: signal`sharing_dialog.addUserButtonClicked`
 },
 
 class SharingDialog extends React.Component {
@@ -22,16 +22,9 @@ class SharingDialog extends React.Component {
 
     const actions = [
       <FlatButton
-        label="Cancel"
+        label="Done"
         primary={true}
-        onClick={() => {this.props.sharingDialogCancelled({})}}
-      />,
-      <FlatButton
-        label="Submit"
-        primary={true}
-        keyboardFocused={true}
-        disabled={(this.props.urlText === '') || (this.props.usernameText === '')}
-        onClick={() => {this.props.sharingDialogSubmitted({})}}
+        onClick={() => {this.props.sharingDialogDone({})}}
       />,
     ];
 
@@ -44,19 +37,41 @@ class SharingDialog extends React.Component {
         onRequestClose={()=> {this.props.sharingDialogCancelled({})}}
 			>
 				<p>{'Who should be able to view '+this.props.client.name+'\'s data?'}</p>
-        <TextField
-          hintText="gary@mail.com..."
-          value={this.props.usernameText}
-          floatingLabelText="username"
-          onChange={(evt, text)=>{this.props.usernameTextChanged({text})}}
-				/>
-        <TextField
-          hintText="supercloud.com"
-          floatingLabelText="fpad domain"
-          value={this.props.urlText}
-          onChange={(evt, text)=>{this.props.urlTextChanged({text})}}
-        />
-
+				<div className='sharing-dialog-user-entry'>
+	        <TextField
+		        hintText="gary@mail.com..."
+			      value={this.props.usernameText}
+				    floatingLabelText="username"
+					  onChange={(evt, text)=>{this.props.usernameTextChanged({text})}}
+					/>
+					<TextField
+						hintText="supercloud.com"
+						floatingLabelText="fpad domain"
+						value={this.props.urlText}
+						onChange={(evt, text)=>{this.props.urlTextChanged({text})}}
+					/>
+					<div
+						onTouchTap={() => this.props.addUserButtonClicked({})}      
+						className='sharing-dialog-add-user'>
+						<IconButton        
+							disabled={(this.props.urlText === '') || (this.props.usernameText === '')}
+							className='client-panel-share-button'                          
+							iconClassName="material-icons">add_circle
+						</IconButton>
+						<p>Add user</p>
+					</div>
+				</div>
+				<div>
+					<p>Currently shared with: </p>
+					<div className='share-dialog-shared users'>
+						{this.props.client._meta._permissions ? Object.keys(this.props.client._meta._permissions).map((u) => 
+							<Chip
+								key={'shared-users-'+u}>
+								{this.props.client._meta._permissions[u].name}
+							</Chip>
+						) : null}
+					</div>
+				</div>
       </Dialog>
     )
   }

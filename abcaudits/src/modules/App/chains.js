@@ -61,7 +61,7 @@ function generateAuditSignature({state, props, path}) {
   return signatures.generate(audit, prvKey, headers).then((signatures) => {
     return agent('PUT', 'https://'+domain+'/bookmarks/fpad/clients/'+clientId+'/certifications/'+props.audit._id.split('/')[1]+'/signatures')
     .set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
-    .set('Content-Type', 'application/vnd.oada.rock.1+json')
+    .set('Content-Type', 'application/vnd.oada.certifications.globalgap.1+json')
     .send(signatures)
     .end()
     .then((res) => {
@@ -106,7 +106,7 @@ function addRandomCert({state, props, path}) {
   let id;
   return agent('POST', 'https://'+domain+'/resources')
   .set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
-  .set('Content-Type', 'application/vnd.oada.rock.1+json')
+  .set('Content-Type', 'application/vnd.fpad.certifications.globalgap.1+json')
   .send(audit)
   .end()
   .then((response) => {
@@ -115,8 +115,8 @@ function addRandomCert({state, props, path}) {
     audit._id = 'resources/'+id
     return agent('PUT', 'https://'+domain+'/bookmarks/fpad/clients/'+clientId+'/certifications/'+id)
     .set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
-    .set('Content-Type', 'application/vnd.oada.rock.1+json')
-    .send({_id:'resources/'+id})
+    .set('Content-Type', 'application/vnd.fpad.certifications.globalgap.1+json')
+    .send({_id:'resources/'+id, _rev: '0-0'})
     .end()
   }).then(() => {
     return path.success({id, audit, clientId})
@@ -132,5 +132,3 @@ function validateAudits({state, props, path}) {
   })
   return path.success({})
 }
-
-

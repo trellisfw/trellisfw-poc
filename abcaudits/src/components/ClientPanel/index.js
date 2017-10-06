@@ -25,6 +25,7 @@ export default connect({
   initialize: signal`client_panel.initialize`,
   clientClicked: signal`client_panel.clientClicked`,
   addClientButtonClicked: signal`client_panel.addClientButtonClicked`,
+	shareClientButtonClicked: signal`sharing_dialog.shareClientButtonClicked`,
 },
 
 class ClientPanel extends React.Component {
@@ -50,6 +51,14 @@ class ClientPanel extends React.Component {
           displaySelectAll={false}>
           <TableRow>
             <TableHeaderColumn>Clients</TableHeaderColumn>
+            <TableHeaderColumn>
+						  <IconButton
+						    disabled={!this.props.client}
+						    className='client-panel-share-button'
+						    onTouchTap={() => this.props.shareClientButtonClicked({})}
+						    iconClassName="material-icons">group
+						  </IconButton>
+						</TableHeaderColumn>
           </TableRow>
         </TableHeader>
         <TableBody
@@ -63,7 +72,7 @@ class ClientPanel extends React.Component {
               <TableRowColumn>
                 <div className={'rowtext'}>
                   <p className={'category-title'}>{c.name}</p>
-                  <p>{`(${Object.keys(c.certifications).length})`}</p>
+                  <p>{`(${Object.keys(c.certifications).filter((k) => {return k.charAt(0) !== '_'}).length})`}</p>
                 </div>
               </TableRowColumn>
             </TableRow> }
