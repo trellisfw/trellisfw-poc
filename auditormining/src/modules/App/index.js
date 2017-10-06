@@ -1,5 +1,6 @@
 import mounted from './signals/mounted';
 import certificationsChanged from './signals/certificationsChanged';
+import snackBarClosed from './signals/snackBarClosed';
 
 export default {
   state: {
@@ -9,13 +10,18 @@ export default {
       }
     },
     view: {
-      page: 'login'
+      page: 'login',
+      snackBar: {
+        message: '',
+        open: false
+      }
     }
   },
 
   signals: {
     mounted,
-    certificationsChanged
+    certificationsChanged,
+    snackBarClosed
   },
   modules: {
 

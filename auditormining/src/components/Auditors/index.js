@@ -17,7 +17,8 @@ export default connect({
 
 class Auditors extends React.Component {
   renderAuditors = () => {
-    return _.map(this.props.auditors, (auditor) => {
+    let auditors = _.orderBy(this.props.auditors, ['name', 'body'], ['asc', 'asc']);
+    return _.map(auditors, (auditor) => {
       return <Auditor key={auditor.key} auditor={auditor} />
     })
   }
