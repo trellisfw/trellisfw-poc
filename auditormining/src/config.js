@@ -3,7 +3,7 @@ export const devtoolsPort = 8585;
 export const fpadDomains = [
   {
     displayText: 'GrowerSync.com',
-    url: 'https://vip3.ecn.purdue.edu'
+    url: 'https://localhost'
   }
 ];
 export const auditorRatings = [

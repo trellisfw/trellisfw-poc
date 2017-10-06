@@ -33,6 +33,7 @@ export default connect({
 
   initialize: signal`app.initialize`,
   addCertButtonClicked: signal`app.addCertButtonClicked`,
+  updateCertButtonClicked: signal`app.updateCertButtonClicked`,
 	deleteAuditsButtonClicked: signal`app.deleteAuditsButtonClicked`,
 	shareAuditsButtonClicked: signal`sharing_dialog.shareAuditsButtonClicked`,
 	signInClicked: signal`user_profile.signInClicked`,
@@ -64,14 +65,25 @@ class MainPanel extends React.Component {
         </div>
         <hr />
         {certs}
-        {this.props.client ? <div
-          onClick={()=> this.props.addCertButtonClicked({})}
-          className='main-panel-add-cert'>
-          <IconButton
-            iconClassName="material-icons">add_circle
-          </IconButton> 
-           <p>New Certification</p>
-        </div> 
+				{this.props.client ? 
+						(Object.keys(this.props.certifications).some((key) => {return this.props.certifications[key].selected}) ? 
+					<div
+						onClick={()=> this.props.updateCertButtonClicked({})}
+						className='main-panel-update-cert'>
+						<IconButton
+							iconClassName="material-icons">update
+						</IconButton> 
+							<p>Update Certifications</p>
+					</div>
+					:
+					<div
+						onClick={()=> this.props.addCertButtonClicked({})}
+						className='main-panel-add-cert'>
+						<IconButton
+							iconClassName="material-icons">add_circle
+						</IconButton> 
+						<p>New Certification</p>
+					</div>)
         : null }
       </div>
     )

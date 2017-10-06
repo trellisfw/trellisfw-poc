@@ -40,6 +40,12 @@
   cursor: pointer;
   flex: 1;
 }
+.main-panel-update-cert {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  flex: 1;
+}
 .main-panel-header {
   display: flex;
   align-items: center;

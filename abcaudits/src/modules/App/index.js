@@ -1,6 +1,7 @@
 import {
-  initialize ,
-  addCertification,
+  initialize,
+	addCertification,
+	updateCertifications,
   setClient,
   toggleCertSelect,
   signAudit,
@@ -24,6 +25,7 @@ export default {
   signals: {
 		initialize,
     addCertButtonClicked: addCertification,
+    updateCertButtonClicked: updateCertifications,
     certChecked: toggleCertSelect,
     signAuditButtonClicked: signAudit,
     deleteAuditsButtonClicked: deleteAudits,

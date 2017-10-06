@@ -48,6 +48,23 @@ export let deleteAudits = [
   }
 ]
 
+export let updateCertifications = [
+	updateCerts, {
+		success: [
+			setCertifications,
+		],
+		error: [],
+	}
+]
+
+function setCertifications({state, props, path}) {
+  let clientId = state.get('client_panel.selected_client')
+	Object.keys(props.newAudits).forEach(key => {
+		state.set(`client_panel.clients.${props.clientId}.certifications.${key}`, props.newAudits[key]);
+		state.set(`app.view.certifications.${key}`, {selected: false});
+	})
+}
+
 function generateAuditSignature({state, props, path}) {
   let domain = state.get('app.oada_domain')
   var kid = 'ABCAudits'
@@ -89,21 +106,56 @@ function deleteSelectedAudits({state, props, path}) {
   })
 }
 
-function addRandomCert({state, props, path}) {
-  let domain = state.get('app.oada_domain')
+function updateCerts({state, props, path}) {
+	let domain = state.get('app.oada_domain')
   let a = state.get('app.view.certifications')
   let clientId = state.get(`client_panel.selected_client`)
+	let clientName = state.get(`client_panel.clients.${clientId}.name`)
+	let audits = state.get(`client_panel.clients.${clientId}.certifications`);
+	let newAudits = {};
+	return Promise.map(Object.keys(audits), (key) => {
+		if (!a[key].selected) return
+		let audit = randCert.generateAudit({
+			template: templateAudit, 
+			minimizeAuditData: true,
+			organization: {name: clientName},
+			year: (parseInt(audits[key].conditions_during_audit.operation_observed_date.slice(0,4))+1).toString(),
+			scope: {
+				products_observed: audits[key].scope.products_observed,
+				operations: audits[key].scope.operations
+			}
+		})
+		return agent('POST', 'https://'+domain+'/resources')
+		.set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
+		.set('Content-Type', 'application/vnd.fpad.certifications.globalgap.1+json')
+		.send(audit)
+		.end()
+		.then((response) => {
+			let id = response.headers.location.split('/')
+			id = id[id.length-1]
+			audit._id = 'resources/'+id
+			newAudits[id] = audit
+			return agent('PUT', 'https://'+domain+'/bookmarks/fpad/clients/'+clientId+'/certifications/'+id)
+			.set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
+			.set('Content-Type', 'application/vnd.fpad.certifications.globalgap.1+json')
+			.send({_id:'resources/'+id, _rev: '0-0'})
+			.end()
+		})
+	}).then(() => {
+		return path.success({newAudits, clientId})
+	})
+}
+
+function addRandomCert({state, props, path}) {
+  let domain = state.get('app.oada_domain')
+  let clientId = state.get(`client_panel.selected_client`)
   let clientName = state.get(`client_panel.clients.${clientId}.name`)
-  let org = randCert.randomOrganization(clientName);
-  let auditor = randCert.randomAuditor()
-  let product = randCert.randomProducts(1)[0]
-  let operation = randCert.randomOperationTypes(1)
-	let year = '2017'
-	console.log(org, product, operation)
-	let scope = randCert.randomScope(org, product, operation)
-	console.log(scope)
-  let audit = randCert.generateAudit(templateAudit, org, auditor, scope, year, true)
-  let id;
+	let audit = randCert.generateAudit({
+		template: templateAudit, 
+		minimizeAuditData: true,
+		organization: {name: clientName},
+	})
+	let id;
   return agent('POST', 'https://'+domain+'/resources')
   .set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
   .set('Content-Type', 'application/vnd.fpad.certifications.globalgap.1+json')
