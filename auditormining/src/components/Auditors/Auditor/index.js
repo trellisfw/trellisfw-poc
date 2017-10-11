@@ -17,6 +17,7 @@ class RatingBar extends React.Component {
         desc = auditorRatings[i-1];
       }
     }
+	console.log(this.props.score)
     var barColor = ColorScale[parseInt(this.props.score, 10)].setAlpha(0.6).toRgbString();
     return (
       <div className={styles.ratingBar}>

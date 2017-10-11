@@ -166,6 +166,7 @@ function getClients({state, props, path}) {
 						// Get each permissioned user (we need their names)
 						if (!r.body._permissions) return
 						return Promise.map(Object.keys(r.body._permissions), (user) => {
+							console.log(user)
 							return agent('GET', 'https://'+domain+'/'+user)
 					    .set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
 							.end()

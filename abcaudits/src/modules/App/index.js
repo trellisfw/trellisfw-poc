@@ -10,7 +10,7 @@ import {
 
 export default {
   state: {
-    oada_domain: 'vip3.ecn.purdue.edu',
+    oada_domain: 'api.abcaudits.fpad.io',
     token: '',
     model: {
       audits: {

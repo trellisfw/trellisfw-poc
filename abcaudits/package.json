@@ -21,7 +21,7 @@
     "websocket": "^1.0.24"
   },
   "devDependencies": {
-    "react-scripts": "git://git@github.com:cyrusbowman/react-scripts-css-modules.git#b1a86b7b19b963f042e33660f775a5092e305816"
+    "react-scripts": "https://github.com/cyrusbowman/react-scripts-css-modules.git#b1a86b7b19b963f042e33660f775a5092e305816"
   },
   "scripts": {
     "start": "react-scripts start",

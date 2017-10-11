@@ -47,6 +47,7 @@ export let addUser = [
 
 function createClientUser({state, props, path}) {
   let domain = state.get('app.oada_domain')
+  let clientId = state.get('client_panel.selected_client')
 	return axios({
 		method: 'post',
 		url: 'https://'+domain+'/users',
@@ -57,8 +58,8 @@ function createClientUser({state, props, path}) {
 		data: {
 //                  oadaid: state.get(`client_panel.client_dialog.selected_client`), 
 			username: state.get(`sharing_dialog.username_text`),
-      name: state.get(`sharing_dialog.username_text`),
-      password: 'test'
+//      name: state.get(`sharing_dialog.username_text`),
+//      password: 'test'
     },
   }).then((response) => {
 		console.log(response)
@@ -70,7 +71,7 @@ function createClientUser({state, props, path}) {
 			},
 		}).then((res) => {
 			console.log(res)
-			return path.success({user:res})
+			return path.success({user:res.data})
 		})
 	  return path.success({})
 	})
@@ -79,6 +80,7 @@ function createClientUser({state, props, path}) {
 function addPermissions({state, props, path}) {
   let domain = state.get('app.oada_domain')
   let clientId = state.get('client_panel.selected_client')
+	
   return axios({
     method: 'put',
     url: 'https://'+domain+'/bookmarks/fpad/clients/'+clientId+'/_meta/_permissions',
@@ -87,7 +89,7 @@ function addPermissions({state, props, path}) {
       'Authorization': 'Bearer '+state.get('user_profile.user.token'),
     },
     data: { 
-      [props.user._key]: {
+      [props.user._id]: {
         read: true,
         write: true, 
         owner: false
