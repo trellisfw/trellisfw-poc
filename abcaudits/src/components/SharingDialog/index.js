@@ -9,6 +9,7 @@ export default connect({
 	usernameText: state`sharing_dialog.username_text`,
 	urlText: state`sharing_dialog.url_text`,
 	client: state`client_panel.clients.${state`client_panel.selected_client`}`,
+	addUserError: state`sharing_dialog.add_user_error`,
 
   sharingDialogDone: signal`sharing_dialog.sharingDialogDoneClicked`,
   urlTextChanged: signal`sharing_dialog.urlTextChanged`,
@@ -51,14 +52,21 @@ class SharingDialog extends React.Component {
 						onChange={(evt, text)=>{this.props.urlTextChanged({text})}}
 					/>
 					<div
-						onTouchTap={() => this.props.addUserButtonClicked({})}      
 						className='sharing-dialog-add-user'>
-						<IconButton        
-							disabled={(this.props.urlText === '') || (this.props.usernameText === '')}
-							className='client-panel-share-button'                          
-							iconClassName="material-icons">add_circle
-						</IconButton>
-						<p>Add user</p>
+						<div
+							onTouchTap={() => this.props.addUserButtonClicked({})}      
+							className='sharing-dialog-add-user-button'>
+							<IconButton        
+								disabled={(this.props.urlText === '') || (this.props.usernameText === '')}
+								className='client-panel-share-button'                          
+								iconClassName="material-icons">add_circle
+							</IconButton>
+							<p>Add user</p>
+						</div>
+						{this.props.addUserError ? 
+							<p className='add-user-error'>{this.props.addUserError}</p> 
+							: null
+						}
 					</div>
 				</div>
 				<div>
@@ -67,7 +75,7 @@ class SharingDialog extends React.Component {
 						{this.props.client._meta._permissions ? Object.keys(this.props.client._meta._permissions).map((u) => 
 							<Chip
 								key={'shared-users-'+u}>
-								{this.props.client._meta._permissions[u].name}
+								{this.props.client._meta._permissions[u].name || this.props.client._meta._permissions[u].username}
 							</Chip>
 						) : null}
 					</div>

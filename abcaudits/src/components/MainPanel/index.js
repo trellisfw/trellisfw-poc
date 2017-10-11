@@ -30,6 +30,7 @@ export default connect({
 	certifications: state`app.view.certifications`,
 	sharingDialog: state`sharing_dialog.open`,
 	user: state`user_profile.user`,
+	noClientsError: state`client_panel.no_clients_error`,
 
   initialize: signal`app.initialize`,
   addCertButtonClicked: signal`app.addCertButtonClicked`,
@@ -43,14 +44,6 @@ class MainPanel extends React.Component {
 
   render() {
 
-    let years = {}
-    let certs = null
-    if (this.props.client) {
-      certs = Object.keys(this.props.certifications).map((key, i) => {
-        return <CertCard name={key} key={'cert-'+i}/>
-      })
-    }
-
     return (
 			<div className='main-panel'>
 				{this.props.sharingDialog ? <SharingDialog /> : null}
@@ -63,10 +56,18 @@ class MainPanel extends React.Component {
             iconClassName="material-icons">delete
           </IconButton>
         </div>
-        <hr />
-        {certs}
-				{this.props.client ? 
-						(Object.keys(this.props.certifications).some((key) => {return this.props.certifications[key].selected}) ? 
+				<hr />
+				{this.props.noClientsError ?
+					<p className='no-clients-error'>User has no clients or certifications</p>
+					:
+					this.props.client ? 
+						Object.keys(this.props.certifications).map((key, i) => 
+							<CertCard name={key} key={'cert-'+i}/>
+						)
+					: null
+				}
+				{!this.props.noClientsError && this.props.client ? 
+					Object.keys(this.props.certifications).some((key) => this.props.certifications[key].selected) ? 
 					<div
 						onClick={()=> this.props.updateCertButtonClicked({})}
 						className='main-panel-update-cert'>
@@ -83,7 +84,7 @@ class MainPanel extends React.Component {
 							iconClassName="material-icons">add_circle
 						</IconButton> 
 						<p>New Certification</p>
-					</div>)
+					</div>
         : null }
       </div>
     )

@@ -1,5 +1,5 @@
 import randCert from 'fpad-rand-cert'
-import { set, when, toggle } from 'cerebral/operators'
+import { unset, set, when, toggle } from 'cerebral/operators'
 import {state, props, string, path} from 'cerebral/tags'
 import _ from 'lodash'
 import uuid from 'uuid';
@@ -10,13 +10,8 @@ let agent = require('superagent-promise')(require('superagent'), Promise);
 export let doneSharing = [
   set(state`sharing_dialog.url_text`, ''),
   set(state`sharing_dialog.username_text`, ''),
-  toggle(state`sharing_dialog.open`),
-]
-
-export let cancelSharing = [
-  set(state`sharing_dialog.url_text`, ''),
-  set(state`sharing_dialog.username_text`, ''),
-  toggle(state`sharing_dialog.open`),
+	toggle(state`sharing_dialog.open`),
+	unset(state`sharing_dialog.add_user_error`),
 ]
 
 export let showSharingDialog = [
@@ -35,13 +30,20 @@ export let addUser = [
 	//try to get current user
 	createClientUser, {
 		success: [
+			set(state`client_panel.clients.${state`client_panel.selected_client`}._meta._permissions.${props`user._id`}`, props`user`),
 		  addPermissions, {
 				success: [
+				  set(state`sharing_dialog.url_text`, ''),
+					set(state`sharing_dialog.username_text`, ''),
 	      ],
-				error: [],
+				error: [
+					set(state`sharing_dialog.add_user_error`, 'Unable to share with this user')
+				],
 			},
 		],
-		error: [],
+		error: [
+			set(state`sharing_dialog.add_user_error`, 'User not found with matching username and trellis domain')
+		],
 	}
 ]
 
@@ -62,7 +64,6 @@ function createClientUser({state, props, path}) {
 //      password: 'test'
     },
   }).then((response) => {
-		console.log(response)
 		return axios({
 			method: 'get',
 			url: 'https://'+domain+response.headers.location,
@@ -70,7 +71,6 @@ function createClientUser({state, props, path}) {
 				'Authorization': 'Bearer '+state.get('user_profile.user.token'),
 			},
 		}).then((res) => {
-			console.log(res)
 			return path.success({user:res.data})
 		})
 	  return path.success({})

@@ -1,5 +1,5 @@
 import randCert from 'fpad-rand-cert'
-import { set, when, toggle } from 'cerebral/operators'
+import { set, unset, when, toggle } from 'cerebral/operators'
 import {state, props, string, path} from 'cerebral/tags'
 import _ from 'lodash'
 import uuid from 'uuid';
@@ -17,7 +17,8 @@ export let setClient = [
       set(state`client_panel.clients.${props`id`}.certifications`, props`certifications`),
       setVisibleCertifications,
     ],
-    error: [],
+		error: [
+		],
   },
 ]
 
@@ -30,7 +31,9 @@ export let submitClient = [
       set(state`client_panel.client_dialog.text`, ''),
       setClient,
     ],
-    error: [],
+		error: [
+			set(state`client_panel.no_clients_error`, 'User does not have certifications')
+		],
 	},
 ]
 
@@ -53,9 +56,12 @@ export let init = [
   	set(props`token`, state`user_profile.user.token`),
       getClients, {
         success: [
+					unset(state`client_panel.no_clients_error`),
           set(state`client_panel.clients`, props`clients`),
         ],
-        error: [],
+				error: [
+					set(state`client_panel.no_clients_error`, 'User does not have clients')
+				],
 			},
 		],
 		false: [],
@@ -166,7 +172,6 @@ function getClients({state, props, path}) {
 						// Get each permissioned user (we need their names)
 						if (!r.body._permissions) return
 						return Promise.map(Object.keys(r.body._permissions), (user) => {
-							console.log(user)
 							return agent('GET', 'https://'+domain+'/'+user)
 					    .set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
 							.end()
@@ -181,5 +186,7 @@ function getClients({state, props, path}) {
     }, {concurrency:5})
   }).then(() => {
     return path.success({clients})
-  })
+	}).catch(() => {
+		return path.error({})
+	})
 }

@@ -10,7 +10,7 @@ export default {
   state: {
     open: false,
     url_text: '',
-    username_text: '',
+		username_text: '',
   },
 
   signals: {
