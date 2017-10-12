@@ -21,7 +21,8 @@ function loadCertificationsWebsocket({state, path, websocket}) {
             method: 'GET',
             url: '/bookmarks/fpad/certifications/'+key,
             headers: {Authorization: 'Bearer '+ state.get('UserProfile.user.token')}
-          }).then((res) => {
+				}).then((res) => {
+						console.log(res)
             certifications[key] = res.data;
           });
       }, {concurrency: 5});

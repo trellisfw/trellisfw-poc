@@ -32,6 +32,28 @@ if (process.env.NODE_ENV !== 'production') {
   ];
 }
 
+if (process.env.NODE_ENV !== 'prod-dev') {
+  //DEV values
+  _domain = 'http://auditormining.fpad.io:8080/oauth2/redirect.html';
+
+  _metadata = `
+eyJqa3UiOiJodHRwczovL2lkZW50aXR5Lm9hZGEtZGV2LmNvbS9jZXJ0cyIsImtpZCI6ImtqY1NjamMzMmR3SlhYTEpEczNyMTI0c2ExIiwidHlwIjoiSldUIiwiYWxnIjoiUlMyNTYifQ.eyJyZWRpcmVjdF91cmlzIjpbImh0dHA6Ly9hdWRpdG9ybWluaW5nLmZwYWQuaW86ODA4MC9vYXV0aDIvcmVkaXJlY3QuaHRtbCJdLCJ0b2tlbl9lbmRwb2ludF9hdXRoX21ldGhvZCI6InVybjppZXRmOnBhcmFtczpvYXV0aDpjbGllbnQtYXNzZXJ0aW9uLXR5cGU6and0LWJlYXJlciIsImdyYW50X3R5cGVzIjpbImltcGxpY2l0Il0sInJlc3BvbnNlX3R5cGVzIjpbInRva2VuIiwiaWRfdG9rZW4iLCJpZF90b2tlbiB0b2tlbiJdLCJjbGllbnRfbmFtZSI6IkF1ZGl0b3IgTWluaW5nIiwiY2xpZW50X3VyaSI6Imh0dHBzOi8vZnBhZC5pby8iLCJjb250YWN0cyI6WyJTYW0gTm9lbCA8c2Fub2VsQHB1cmR1ZS5lZHU-Il0sInNvZnR3YXJlX2lkIjoiNzE3MThhZTItYWE3OC00YWM2LWE4ZGItMzI4NzdjODIzZWU0IiwicmVnaXN0cmF0aW9uX3Byb3ZpZGVyIjoiaHR0cHM6Ly9pZGVudGl0eS5vYWRhLWRldi5jb20iLCJpYXQiOjE1MDc3NzMzMTV9.d8h0luhL8Sm0gduBcuWvUUKXJaCuYVWslR426D45hQLPHQYB83kVykdPsJkhNilyeiKiTeqrK_YjS4m3apeMwIIe63Yqom1Evcezg2_4sSuYP19q2DNLV9l6yv1k94GH9XIYr5bi_TvOougHOD924rh8i3HyX8ymzY33MR3UB0s
+  `.trim()
+
+  _devtoolsPort = 8585;
+
+  _fpadDomains = [
+    {
+      displayText: 'vip3',
+      url: 'https://vip3.ecn.purdue.edu'
+    },
+    {
+      displayText: 'ABC Audits',
+      url: 'https://api.abcaudits.fpad.io'
+    }
+  ];
+}
+
 export const domain = _domain;
 export const metadata = _metadata;
 export const devtoolsPort = _devtoolsPort;
