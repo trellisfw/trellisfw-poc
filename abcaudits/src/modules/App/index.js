@@ -5,12 +5,15 @@ import {
   setClient,
   toggleCertSelect,
   signAudit,
-  deleteAudits,
+	deleteAudits,
 } from './chains.js'
+import {
+	fpadDomains,
+} from '../../config.js'
 
 export default {
   state: {
-    oada_domain: 'vip3.ecn.purdue.edu',
+    oada_domain: fpadDomains[0].url,
     token: '',
     model: {
       audits: {

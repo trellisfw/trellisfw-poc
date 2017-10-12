@@ -76,7 +76,7 @@ function generateAuditSignature({state, props, path}) {
   let clientId = state.get('client_panel.selected_client')
   let audit = _.clone(props.audit)
   return signatures.generate(audit, prvKey, headers).then((signatures) => {
-    return agent('PUT', 'https://'+domain+'/bookmarks/fpad/clients/'+clientId+'/certifications/'+props.audit._id.split('/')[1]+'/signatures')
+    return agent('PUT', domain+'/bookmarks/fpad/clients/'+clientId+'/certifications/'+props.audit._id.split('/')[1]+'/signatures')
     .set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
     .set('Content-Type', 'application/vnd.oada.certifications.globalgap.1+json')
     .send(signatures)
@@ -93,11 +93,11 @@ function deleteSelectedAudits({state, props, path}) {
   let selectedCertifications = _.selectBy(state.get(`app.view.certifications`), 'selected')
   let certifications = state.get(`client_panel.clients.${clientId}.certifications`)
   return Promise.map(selectedCertifications, (key) => {
-    return agent('DELETE', 'https://'+domain+'/bookmarks/fpad/clients/'+clientId+'/certifications/'+key)
+    return agent('DELETE', domain+'/bookmarks/fpad/clients/'+clientId+'/certifications/'+key)
     .set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
     .end()
     .then(() => {
-      return agent('PUT', 'https://'+domain+'/resources/'+key)
+      return agent('PUT', domain+'/resources/'+key)
       .set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
       .end()
     })
@@ -125,7 +125,7 @@ function updateCerts({state, props, path}) {
 				operations: audits[key].scope.operations
 			}
 		})
-		return agent('POST', 'https://'+domain+'/resources')
+		return agent('POST', domain+'/resources')
 		.set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
 		.set('Content-Type', 'application/vnd.fpad.certifications.globalgap.1+json')
 		.send(audit)
@@ -135,7 +135,7 @@ function updateCerts({state, props, path}) {
 			id = id[id.length-1]
 			audit._id = 'resources/'+id
 			newAudits[id] = audit
-			return agent('PUT', 'https://'+domain+'/bookmarks/fpad/clients/'+clientId+'/certifications/'+id)
+			return agent('PUT', domain+'/bookmarks/fpad/clients/'+clientId+'/certifications/'+id)
 			.set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
 			.set('Content-Type', 'application/vnd.fpad.certifications.globalgap.1+json')
 			.send({_id:'resources/'+id, _rev: '0-0'})
@@ -156,7 +156,7 @@ function addRandomCert({state, props, path}) {
 		organization: {name: clientName},
 	})
 	let id;
-  return agent('POST', 'https://'+domain+'/resources')
+  return agent('POST', domain+'/resources')
   .set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
   .set('Content-Type', 'application/vnd.fpad.certifications.globalgap.1+json')
   .send(audit)
@@ -165,7 +165,7 @@ function addRandomCert({state, props, path}) {
     id = response.headers.location.split('/')
     id = id[id.length-1]
     audit._id = 'resources/'+id
-    return agent('PUT', 'https://'+domain+'/bookmarks/fpad/clients/'+clientId+'/certifications/'+id)
+    return agent('PUT', domain+'/bookmarks/fpad/clients/'+clientId+'/certifications/'+id)
     .set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
     .set('Content-Type', 'application/vnd.fpad.certifications.globalgap.1+json')
     .send({_id:'resources/'+id, _rev: '0-0'})

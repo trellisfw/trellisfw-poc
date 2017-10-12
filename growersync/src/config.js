@@ -7,7 +7,15 @@ var _fpadDomains = [
   {
     displayText: 'GrowerSync',
     url: 'https://api.growersync.fpad.io'
-  }
+  },
+  {
+    displayText: 'vip3',
+    url: 'https://vip3.ecn.purdue.edu'
+  },
+  {
+    displayText: 'localhost',
+    url: 'https://localhost'
+  },
 ];
 
 if (process.env.NODE_ENV === 'production') {
@@ -22,13 +30,13 @@ if (process.env.NODE_ENV === 'production') {
 
   _fpadDomains = [
     {
-      displayText: 'vip3',
-      url: 'https://vip3.ecn.purdue.edu'
-    },
-    {
       displayText: 'GrowerSync',
       url: 'https://api.growersync.fpad.io'
-    }
+		},
+		{
+			displayText: 'AbcAudits',
+			url: 'https://api.abcaudits.fpad.io'
+		}
   ];
 }
 
@@ -52,8 +60,8 @@ if (process.env.NODE_ENV === 'prod-dev') {
       url: 'https://api.abcaudits.fpad.io'
     }
     {
-      displayText: 'GrowerSync',
-      url: 'https://api.growersync.fpad.io'
+      displayText: 'AbcAudits',
+      url: 'https://api.abcaudits.fpad.io'
     }
   ];
 }

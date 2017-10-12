@@ -6,7 +6,6 @@ import uuid from 'uuid';
 import Promise from 'bluebird';
 import axios from 'axios';
 let agent = require('superagent-promise')(require('superagent'), Promise);
-let domain = 'https://vip3.ecn.purdue.edu'
 
 export let setClient = [
   set(state`app.view.certifications`, {}),
@@ -87,7 +86,7 @@ function getCertifications({state, props, path}) {
   let certifications = {}
   return Promise.map(Object.keys(certs), (key) => {
     if (key.charAt(0) === '_') return false
-    return agent('GET', 'https://'+domain+'/bookmarks/fpad/clients/'+clientId+'/certifications/'+key)
+    return agent('GET', domain+'/bookmarks/fpad/clients/'+clientId+'/certifications/'+key)
     .set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
     .end()
     .then((res) => {
@@ -103,13 +102,13 @@ function putClient({state, props, path}) {
   let domain = state.get('app.oada_domain')
   let text = state.get('client_panel.client_dialog.text')
 	// POST certifications resource
-  return agent('POST', 'https://'+domain+'/resources')
+  return agent('POST', domain+'/resources')
   .set('Authorization', 'Bearer '+state.get('user_profile.user.token'))
   .set('Content-Type', 'application/vnd.fpad.certifications.globalgap.1+json')
   .send({_type: 'application/vnd.fpad.certifications.globalgap.1+json'})
   .end()
   .then((response) => {
-	  return agent('POST', 'https://'+domain+'/resources')
+	  return agent('POST', domain+'/resources')
 		.set('Authorization', 'Bearer '+state.get('user_profile.user.token'))
 		.set('Content-Type', 'application/vnd.fpad.client.1+json')
 		.send({
@@ -124,14 +123,14 @@ function putClient({state, props, path}) {
 		.then((res) => {
 			let id = res.headers.location.replace(/^\/resources\//, '')
 			// Link to bookmarks
-			return agent('PUT', 'https://'+domain+'/bookmarks/fpad/clients/'+id)
+			return agent('PUT', domain+'/bookmarks/fpad/clients/'+id)
 			.set('Authorization', 'Bearer '+state.get('user_profile.user.token'))
 			.set('Content-Type', 'application/vnd.fpad.client.1+json')
 			.send({_id: 'resources/'+id, _rev: '0-0'})
 		  .end()
 			.then(() => {
 				//GET it to confirm
-				return agent('GET', 'https://'+domain+'/bookmarks/fpad/clients/'+id)
+				return agent('GET', domain+'/bookmarks/fpad/clients/'+id)
 				.set('Authorization', 'Bearer '+state.get('user_profile.user.token'))
 				.end()
 				.then((res) => {
@@ -146,25 +145,25 @@ function getClients({state, props, path}) {
   let domain = state.get('app.oada_domain')
   let clients = {}
 	// Get clients list
-  return agent('GET', 'https://'+domain+'/bookmarks/fpad/clients')
+  return agent('GET', domain+'/bookmarks/fpad/clients')
   .set('Authorization', 'Bearer '+state.get('user_profile.user.token'))
   .then((response) => {
 		// Get each client
     return Promise.map(Object.keys(response.body), (key) => {
       if (key.charAt(0) === '_') return
-      return agent('GET', 'https://'+domain+'/bookmarks/fpad/clients/'+key)
+      return agent('GET', domain+'/bookmarks/fpad/clients/'+key)
       .set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
       .end()
       .then((res) => {
         clients[key] = res.body
 				//Get certifications list
-	      return agent('GET', 'https://'+domain+'/bookmarks/fpad/clients/'+key+'/certifications')
+	      return agent('GET', domain+'/bookmarks/fpad/clients/'+key+'/certifications')
 		    .set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
 				.end()
 				.then((result) => {
 					clients[key].certifications = result.body
 					// Get _meta document
-					return agent('GET', 'https://'+domain+'/bookmarks/fpad/clients/'+key+'/_meta')
+					return agent('GET', domain+'/bookmarks/fpad/clients/'+key+'/_meta')
 			    .set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
 					.end()
 					.then((r) => {
@@ -172,7 +171,7 @@ function getClients({state, props, path}) {
 						// Get each permissioned user (we need their names)
 						if (!r.body._permissions) return
 						return Promise.map(Object.keys(r.body._permissions), (user) => {
-							return agent('GET', 'https://'+domain+'/'+user)
+							return agent('GET', domain+'/'+user)
 					    .set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
 							.end()
 							.then((resp) => {

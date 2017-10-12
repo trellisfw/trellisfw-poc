@@ -52,7 +52,7 @@ function createClientUser({state, props, path}) {
   let clientId = state.get('client_panel.selected_client')
 	return axios({
 		method: 'post',
-		url: 'https://'+domain+'/users',
+		url: domain+'/users',
 		headers: {
 			'Content-Type': 'application/vnd.oada.client.1+json',
 			'Authorization': 'Bearer '+state.get('user_profile.user.token'),
@@ -66,7 +66,7 @@ function createClientUser({state, props, path}) {
   }).then((response) => {
 		return axios({
 			method: 'get',
-			url: 'https://'+domain+response.headers.location,
+			url: domain+response.headers.location,
 			headers: {
 				'Authorization': 'Bearer '+state.get('user_profile.user.token'),
 			},
@@ -83,7 +83,7 @@ function addPermissions({state, props, path}) {
 	
   return axios({
     method: 'put',
-    url: 'https://'+domain+'/bookmarks/fpad/clients/'+clientId+'/_meta/_permissions',
+    url: domain+'/bookmarks/fpad/clients/'+clientId+'/_meta/_permissions',
     headers: {
       'Content-Type': 'application/vnd.fpad.client.1+json',
       'Authorization': 'Bearer '+state.get('user_profile.user.token'),

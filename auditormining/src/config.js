@@ -8,9 +8,21 @@ eyJqa3UiOiJodHRwczovL2lkZW50aXR5Lm9hZGEtZGV2LmNvbS9jZXJ0cyIsImtpZCI6ImtqY1NjamMz
 var _devtoolsPort = 8585;
 var _fpadDomains = [
   {
-    displayText: 'ABC Audits',
+    displayText: 'localhost',
+    url: 'http://localhost'
+  },
+  {
+    displayText: 'AbcAudits',
     url: 'https://api.abcaudits.fpad.io'
-  }
+  },
+  {
+    displayText: 'GrowerSync',
+    url: 'https://api.growersync.fpad.io'
+  },
+  {
+    displayText: 'vip3',
+    url: 'https://vip3.ecn.purdue.edu'
+  },
 ];
 
 if (process.env.NODE_ENV === 'production') {
@@ -24,13 +36,13 @@ if (process.env.NODE_ENV === 'production') {
 
   _fpadDomains = [
     {
-      displayText: 'vip3',
-      url: 'https://vip3.ecn.purdue.edu'
-    },
-    {
-      displayText: 'ABC Audits',
+      displayText: 'AbcAudits',
       url: 'https://api.abcaudits.fpad.io'
-    }
+    },
+	  {
+		  displayText: 'GrowerSync',
+			url: 'https://api.growersync.fpad.io'
+		},
   ];
 }
 
@@ -46,13 +58,17 @@ if (process.env.REACT_APP_PROD_DEV) {
 
   _fpadDomains = [
     {
-      displayText: 'vip3',
-      url: 'https://vip3.ecn.purdue.edu'
+      displayText: 'GrowerSync',
+      url: 'https://api.growersync.fpad.io'
     },
     {
-      displayText: 'ABC Audits',
+      displayText: 'AbcAudits',
       url: 'https://api.abcaudits.fpad.io'
-    }
+		},
+    {
+      displayText: 'vip3',
+      url: 'https://vip3.ecn.purdue.edu'
+		},
   ];
 }
 

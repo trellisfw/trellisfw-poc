@@ -4,10 +4,19 @@ eyJqa3UiOiJodHRwczovL2lkZW50aXR5Lm9hZGEtZGV2LmNvbS9jZXJ0cyIsImtpZCI6ImtqY1NjamMz
 `.trim()
 var _devtoolsPort = 8585;
 var _fpadDomains = [
+
+  {
+    displayText: 'localhost',
+    url: 'http://localhost'
+  },
   {
     displayText: 'DistributingExcellence',
     url: 'https://api.distributingexcellence.fpad.io'
-  }
+  },
+  {
+    displayText: 'vip3',
+    url: 'https://vip3.ecn.purdue.edu'
+  },
 ];
 
 if (process.env.NODE_ENV === 'production') {
@@ -21,10 +30,6 @@ if (process.env.NODE_ENV === 'production') {
   _devtoolsPort = 8585;
 
   _fpadDomains = [
-    {
-      displayText: 'vip3',
-      url: 'https://vip3.ecn.purdue.edu'
-    },
     {
       displayText: 'DistributingExcellence',
       url: 'https://api.distributingexcellence.fpad.io'
@@ -50,11 +55,7 @@ if (process.env.NODE_ENV === 'prod-dev') {
     {
       displayText: 'DistributingExcellence',
       url: 'https://api.abcaudits.fpad.io'
-    }
-    {
-      displayText: 'DistributingExcellence',
-      url: 'https://api.distributingexcellence.fpad.io'
-    }
+    },
   ];
 }
 

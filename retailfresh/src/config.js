@@ -7,7 +7,15 @@ var _fpadDomains = [
   {
     displayText: 'RetailFresh',
     url: 'https://api.retailfresh.fpad.io'
-  }
+  },
+  {
+    displayText: 'vip3',
+    url: 'https://vip3.ecn.purdue.edu'
+  },
+  {
+    displayText: 'localhost',
+    url: 'http://localhost'
+  } 
 ];
 
 if (process.env.NODE_ENV === 'production') {
@@ -22,13 +30,13 @@ eyJqa3UiOiJodHRwczovL2lkZW50aXR5Lm9hZGEtZGV2LmNvbS9jZXJ0cyIsImtpZCI6ImtqY1NjamMz
 
   _fpadDomains = [
     {
-      displayText: 'vip3',
-      url: 'https://vip3.ecn.purdue.edu'
-    },
-    {
       displayText: 'RetailFresh',
       url: 'https://api.retailfresh.fpad.io'
-    }
+    },
+    {
+      displayText: 'GrowerSync',
+      url: 'https://api.growersync.fpad.io'
+    },
   ];
 }
 
@@ -44,17 +52,17 @@ if (process.env.NODE_ENV === 'prod-dev') {
 
   _fpadDomains = [
     {
+      displayText: 'RetailFresh',
+      url: 'https://api.retailfresh.fpad.io'
+		},
+    {
+      displayText: 'GrowerSync',
+      url: 'https://api.growersync.fpad.io'
+    },
+    {
       displayText: 'vip3',
       url: 'https://vip3.ecn.purdue.edu'
     },
-    {
-      displayText: 'RetailFresh',
-      url: 'https://api.abcaudits.fpad.io'
-    }
-    {
-      displayText: 'RetailFresh',
-      url: 'https://api.retailfresh.fpad.io'
-    }
   ];
 }
 
