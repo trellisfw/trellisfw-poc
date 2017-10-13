@@ -2,9 +2,9 @@ var overrides = require('./config.dev.js').default;
 
 //----------- Define default configs here ----------
 
-//export const whatever = 'value';
+export const webhookType = 'oada-put'; //other option: `alex`
 const defaults = {
-  //whatever
+  webhookType
 };
 
 //--------------------------------------------------
@@ -17,10 +17,11 @@ if (process.env.REACT_APP_PROD_DEV) {
 
 var toExport =  {...defaults, ...overrides};
 
-export const apiDomain = toExport.apiDomain;
+export const oadaDomain = toExport.oadaDomain;
 export const websiteDomain = toExport.websiteDomain;
 export const redirectDomain = toExport.websiteDomain + '/oauth2/redirect.html';
 export const metadata = toExport.metadata;
 export const devtoolsPort = toExport.devtoolsPort;
+export const defaultNewConnectionURL = toExport.defaultNewConnectionURL;
 
 export default toExport;
