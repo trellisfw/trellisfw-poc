@@ -8,7 +8,6 @@ import uuid from 'uuid';
 import oadaIdClient from 'oada-id-client'
 import signatures from 'fpad-signatures'
 var agent = require('superagent-promise')(require('superagent'), Promise);
-//import config from '../../../config.js'
 
 export let toggleCertSelect = [
   set(state`app.view.certifications.${props`name`}.selected`, props`checked`)
