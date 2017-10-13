@@ -81,7 +81,7 @@ class TopBar extends React.Component {
 }
 
 TopBar.propTypes = {
-  modeClicked: PropTypes.func.isRequired
+  modeClicked: PropTypes.func
 };
 
 export default TopBar;

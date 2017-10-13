@@ -7,7 +7,7 @@ import NewConnection from '../../pure-components/NewConnection'
 
 export default connect({
   onDomainChanged: signal`Connections.onDomainChanged`,
-  onConnectAsMeClick: signal`Connections.onConnectAsMeClicked`,
+  onConnectAsMeClicked: signal`Connections.onConnectAsMeClicked`,
   onEmailLinkClick: signal`Connections.onEmailLinkClicked`,
   connection: state`Connections.newConnections.${props`id`}`
 },
@@ -16,10 +16,14 @@ class NewConnectionContainer extends React.Component {
   onDomainChange = (evt) => {
     this.props.onDomainChanged({domain: evt.target.value, id: this.props.id})
   }
+  onConnectAsMeClick = () => {
+    console.log({id: this.props.id})
+    this.props.onConnectAsMeClicked({id: this.props.id});
+  }
   render() {
-    var {onDomainChanged, ...other} = this.props;
+    var {onDomainChanged, onConnectAsMeClicked, ...other} = this.props;
     return (
-      <NewConnection {...other} onDomainChange={this.onDomainChange}/>
+      <NewConnection {...other} onConnectAsMeClick={this.onConnectAsMeClick} onDomainChange={this.onDomainChange}/>
     )
   }
 })

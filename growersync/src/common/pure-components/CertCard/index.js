@@ -1,5 +1,5 @@
 import React from 'react'
-import { FlatButton, Card, Divider, IconButton, Checkbox } from 'material-ui'
+import { Card, IconButton, Checkbox } from 'material-ui'
 import styles from './styles.css'
 import moment from 'moment'
 import _ from 'lodash'
@@ -12,7 +12,7 @@ import CheckIcon from 'material-ui/svg-icons/action/check-circle'
 class CertCard extends React.Component {
   getDate() {
     let date = _.get(this.props.audit,'conditions_during_audit.operation_observed_date');
-    if (date == null || moment(date).isValid() == false) {
+    if (date == null || moment(date).isValid() === false) {
       return '';
     } else {
       return moment(date).format('MMMM D, YYYY');
@@ -54,9 +54,9 @@ class CertCard extends React.Component {
        <div className='left-container'>
          <Checkbox
            label=''
-            checked={this.props.selected}
+            checked={this.props.checked}
             className={'checkbox'}
-            onCheck={(evt, checked) => {this.props.checked({name: this.props.name, checked})}}
+            onCheck={(evt, checked) => {this.props.onChecked({name: this.props.name, checked})}}
           />
         </div>
         <div className='middle-container'>
@@ -91,10 +91,10 @@ class CertCard extends React.Component {
 }
 
 CertCard.propTypes = {
-  checked: PropTypes.func.isRequired,
+  onChecked: PropTypes.func,
   audit: PropTypes.object.isRequired,
-  signAuditButtonClicked: PropTypes.func.isRequired,
-  selected: PropTypes.bool
+  signAuditButtonClicked: PropTypes.func,
+  checked: PropTypes.bool
 };
 
 export default CertCard;

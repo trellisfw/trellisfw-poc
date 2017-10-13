@@ -4,8 +4,8 @@ import signOut from './actions/signOut.js';
 export default {
 	state: {
 		user: {
-			name: 'Auditor Audrey',
-			token: 'aaa',
+			name: 'Gary Grower',
+			token: 'ggg',
 		}
   },
 

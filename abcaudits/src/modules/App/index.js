@@ -8,12 +8,12 @@ import {
 	deleteAudits,
 } from './chains.js'
 import {
-	fpadDomains,
-} from '../../config.js'
+	oadaDomain,
+} from '../../config'
 
 export default {
   state: {
-    oada_domain: fpadDomains[0].url,
+    oada_domain: oadaDomain,
     token: '',
     model: {
       audits: {

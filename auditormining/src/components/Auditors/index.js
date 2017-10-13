@@ -5,7 +5,7 @@ import SyncIcon from 'material-ui/svg-icons/notification/sync';
 import _ from 'lodash';
 
 import styles from './index.module.css'
-import {fpadDomains} from '../../config.js';
+import {oadaDomains} from '../../config';
 import Auditor from './Auditor';
 import computedAuditors from '../../common/computed/auditors.js';
 
@@ -23,7 +23,7 @@ class Auditors extends React.Component {
     })
   }
   render() {
-    let fpadDomain = _.find(fpadDomains, {url: this.props.fpadDomain}).displayText || '';
+    let fpadDomain = _.find(oadaDomains, {url: this.props.fpadDomain}).displayText || '';
     return (
       <div className={styles.root}>
         <div className={styles.top}>

@@ -5,15 +5,14 @@ import _ from 'lodash'
 import uuid from 'uuid';
 import Promise from 'bluebird';
 import axios from 'axios';
-import { metadata } from '../../config.js'
-import jwtDecode from 'jwt-decode'
+import { metadata, redirectDomain } from '../../config'
 const URL = require('url').Url
 //import oadaIdClient from 'oada-id-client'
 let getAccessToken = Promise.promisify(require('oada-id-client').getAccessToken)
 let agent = require('superagent-promise')(require('superagent'), Promise);
 
 export let init = [
-	
+
 ]
 
 export let signIn = [
@@ -50,7 +49,7 @@ function getOadaToken({state, props, path}) {
 	let options = {
 		metadata,
     scope: 'fpad:all',
-    redirect: jwtDecode(metadata).redirect_uris[0],
+    redirect: redirectDomain,
 	}
 	return getAccessToken(host, options).then((accessToken) => {
 		console.log(domain)
