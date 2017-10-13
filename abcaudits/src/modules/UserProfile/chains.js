@@ -34,8 +34,8 @@ export let signOut = [
 
 function oadaLogOut({state, props, path}) {
 	let domain = state.get('app.oada_domain')
-	var win = window.open(domain+'/oadaauth/logout', null, "height=5, width=5, status=yes,toolbar=no,scrollbars=yes,menubar=no,location=no");
-	win.onload = () => {win.close();}
+	// Make dummy image to go to /oadaauth/logout without using a window
+	let img = (new Image()).src = domain+"/oadaauth/logout";
 }
 
 function getOadaToken({state, props, path}) {
