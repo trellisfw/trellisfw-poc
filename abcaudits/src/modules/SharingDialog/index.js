@@ -9,7 +9,7 @@ import {
 export default {
   state: {
     open: false,
-    url_text: '',
+    trellis_domain_text: '',
 		username_text: '',
   },
 

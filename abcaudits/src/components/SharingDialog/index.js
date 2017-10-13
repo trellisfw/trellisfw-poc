@@ -7,7 +7,7 @@ import styles from './styles.css'
 export default connect({
   open: state`sharing_dialog.open`,
 	usernameText: state`sharing_dialog.username_text`,
-	urlText: state`sharing_dialog.url_text`,
+	urlText: state`sharing_dialog.trellis_domain_text`,
 	client: state`client_panel.clients.${state`client_panel.selected_client`}`,
 	addUserError: state`sharing_dialog.add_user_error`,
 
@@ -47,7 +47,7 @@ class SharingDialog extends React.Component {
 					/>
 					<TextField
 						hintText="supercloud.com"
-						floatingLabelText="fpad domain"
+						floatingLabelText="trellis domain"
 						value={this.props.urlText}
 						onChange={(evt, text)=>{this.props.urlTextChanged({text})}}
 					/>
@@ -75,7 +75,7 @@ class SharingDialog extends React.Component {
 						{this.props.client._meta._permissions ? Object.keys(this.props.client._meta._permissions).map((u) => 
 							<Chip
 								key={'shared-users-'+u}>
-								{this.props.client._meta._permissions[u].name || this.props.client._meta._permissions[u].username}
+								{this.props.client._meta._permissions[u].name || this.props.client._meta._permissions[u].oidc.username}
 							</Chip>
 						) : null}
 					</div>

@@ -67,8 +67,6 @@ export let init = [
 	}
 ]
 
-
-
 function setVisibleCertifications({state, props, path}) {
   let clientId = state.get(`client_panel.selected_client`)
   let audits = state.get(`client_panel.clients.${clientId}.certifications`)

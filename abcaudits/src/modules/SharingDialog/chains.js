@@ -5,10 +5,11 @@ import _ from 'lodash'
 import uuid from 'uuid';
 import Promise from 'bluebird';
 import axios from 'axios';
+import md5 from 'md5';
 let agent = require('superagent-promise')(require('superagent'), Promise);
 
 export let doneSharing = [
-  set(state`sharing_dialog.url_text`, ''),
+  set(state`sharing_dialog.trellis_domain_text`, ''),
   set(state`sharing_dialog.username_text`, ''),
 	toggle(state`sharing_dialog.open`),
 	unset(state`sharing_dialog.add_user_error`),
@@ -23,7 +24,7 @@ export let setUsernameText = [
 ]
 
 export let setUrlText = [
-  set(state`sharing_dialog.url_text`, props`text`),
+  set(state`sharing_dialog.trellis_domain_text`, props`text`),
 ]
 
 export let addUser = [
@@ -33,7 +34,7 @@ export let addUser = [
 			set(state`client_panel.clients.${state`client_panel.selected_client`}._meta._permissions.${props`user._id`}`, props`user`),
 		  addPermissions, {
 				success: [
-				  set(state`sharing_dialog.url_text`, ''),
+				  set(state`sharing_dialog.trellis_domain_text`, ''),
 					set(state`sharing_dialog.username_text`, ''),
 	      ],
 				error: [
@@ -49,7 +50,11 @@ export let addUser = [
 
 function createClientUser({state, props, path}) {
   let domain = state.get('app.oada_domain')
-  let clientId = state.get('client_panel.selected_client')
+	let clientId = state.get('client_panel.selected_client')
+	let oidc = {
+		username: state.get(`sharing_dialog.username_text`),
+		iss: state.get(`sharing_dialog.trellis_domain_text`)
+	}
 	return axios({
 		method: 'post',
 		url: domain+'/users',
@@ -58,10 +63,8 @@ function createClientUser({state, props, path}) {
 			'Authorization': 'Bearer '+state.get('user_profile.user.token'),
 		},
 		data: {
-//                  oadaid: state.get(`client_panel.client_dialog.selected_client`), 
-			username: state.get(`sharing_dialog.username_text`),
-//      name: state.get(`sharing_dialog.username_text`),
-//      password: 'test'
+			username: md5(oidc),
+			oidc
     },
   }).then((response) => {
 		return axios({
