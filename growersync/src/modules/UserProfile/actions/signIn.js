@@ -2,8 +2,7 @@ import { set } from 'cerebral/operators'
 import {state, props} from 'cerebral/tags'
 import Promise from 'bluebird';
 import axios from 'axios';
-import { fpadDomains, metadata } from '../../../config.js';
-import jwtDecode from 'jwt-decode'
+import {oadaDomain, redirectDomain, metadata} from '../../../config';
 
 //import oadaIdClient from 'oada-id-client'
 let getAccessToken = Promise.promisify(require('oada-id-client').getAccessToken)
@@ -12,14 +11,14 @@ function getOadaToken({state, props, path}) {
 	let domain = fpadDomains[0];
   let host = domain.replace(/^https?:\/\//, '')
   let options = {
-    metadata,
+    metadata: metadata,
     scope: 'fpad:all',
-    redirect: jwtDecode(metadata).redirect_uris[0],
+    redirect: redirectDomain
   }
-	return getAccessToken(host, options).then((accessToken) => {
+  return getAccessToken(oadaDomain.substr(oadaDomain.indexOf('://')+3), options).then((accessToken) => {
     return axios({
        method: 'GET',
-       url: domain+'/users/me',
+       url: oadaDomain+'/users/me',
        headers: {Authorization: accessToken.access_token}
     }).then((response)=> {
       let user = response.data;

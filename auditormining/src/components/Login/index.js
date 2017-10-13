@@ -6,7 +6,7 @@ import _ from 'lodash'
 
 import OADAIcon from '../../common/pure-components/OADAIcon'
 import styles from './index.module.css'
-import {fpadDomains} from '../../config.js';
+import {oadaDomains} from '../../config';
 
 export default connect({
   fpadDomain: state`Login.fpadDomain`,
@@ -49,7 +49,7 @@ class Login extends React.Component {
                   value={this.props.fpadDomain}
                   onChange={this.onUrlChange}>
                   {
-                    _.map(fpadDomains, (domain) => {
+                    _.map(oadaDomains, (domain) => {
                       return <MenuItem key={domain.url} value={domain.url} primaryText={domain.displayText} />
                     })
                   }

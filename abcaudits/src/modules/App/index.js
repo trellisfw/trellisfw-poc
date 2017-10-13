@@ -8,12 +8,12 @@ import {
 	deleteAudits,
 } from './chains.js'
 import {
-	apiServer,
-} from '../../config.js'
+	oadaDomain,
+} from '../../config'
 
 export default {
   state: {
-    oada_domain: apiServer,
+    oada_domain: oadaDomain,
     token: '',
     model: {
       audits: {

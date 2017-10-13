@@ -1,7 +1,7 @@
 import React from 'react'
 
 import {connect} from 'cerebral/react'
-import {state, signal, props} from 'cerebral/tags'
+import {state, signal} from 'cerebral/tags'
 
 import TopBar from '../../pure-components/TopBar'
 import styles from './index.module.css';

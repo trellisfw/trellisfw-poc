@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'cerebral/react'
-import {state, signal} from 'cerebral/tags'
-import { Divider, IconButton, Checkbox } from 'material-ui'
+import {state} from 'cerebral/tags'
+import { Divider, IconButton } from 'material-ui'
 
 import {
   Table,
@@ -14,7 +14,6 @@ import {
 
 import styles from './index.module.css'
 
-import TopBar from '../../common/components/TopBar'
 import CertCard from '../../common/components/CertCard'
 
 export default connect({

@@ -2,7 +2,7 @@ import { set } from 'cerebral/operators'
 import {state, props} from 'cerebral/tags'
 import Promise from 'bluebird';
 import axios from 'axios';
-import {domain, metadata} from '../../../config.js';
+import {redirectDomain, metadata} from '../../../config';
 import configureWebsocketProvider from './configureWebsocketProvider';
 import loadCertificationsWebsocket from '../../App/actions/loadCertificationsWebsocket';
 import changePage from '../../App/factories/changePage';
@@ -13,7 +13,7 @@ function getOadaToken({state, props, path}) {
   let options = {
     metadata: metadata,
     scope: 'fpad:all',
-    redirect: domain
+    redirect: redirectDomain
   }
   const fpadDomain = state.get('Login.fpadDomain');
   return getAccessToken(fpadDomain.substr(fpadDomain.indexOf('://')+3), options).then((accessToken) => {
