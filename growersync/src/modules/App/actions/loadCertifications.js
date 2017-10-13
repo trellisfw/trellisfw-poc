@@ -4,7 +4,6 @@ import Promise from 'bluebird';
 import axios from 'axios';
 import {oadaDomain} from '../../../config';
 import _ from 'lodash';
-import { fpadDomain } from '../../../config.js'
 
 /*
   Load certifications
