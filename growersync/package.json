@@ -22,9 +22,9 @@
     "react-scripts": "github:cyrusbowman/react-scripts-css-modules#b1a86b7b19b963f042e33660f775a5092e305816"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "prod-dev": "REACT_APP_PROD_DEV=true react-scripts start",
-    "build": "react-scripts build",
+    "start": "REACT_APP_OADA_DOMAIN=${OADA_DOMAIN:-${REACT_APP_OADA_DOMAIN}} REACT_APP_PROD_DEV=${PROD_DEV:-${REACT_APP_PROD_DEV}} react-scripts start",
+		"prod-dev": "REACT_APP_OADA_DOMAIN=${OADA_DOMAIN:-${REACT_APP_OADA_DOMAIN}} REACT_APP_PROD_DEV=true react-scripts start",
+    "build": "REACT_APP_OADA_DOMAIN=${OADA_DOMAIN:-${REACT_APP_OADA_DOMAIN}} REACT_APP_PROD_DEV=${PROD_DEV:-${REACT_APP_PROD_DEV}} react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   }
