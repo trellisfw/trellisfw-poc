@@ -2,14 +2,14 @@ var overrides = require('./config.dev.js').default;
 
 //----------- Define default configs here ----------
 
-//export const whatever = 'value'; 
+//export const whatever = 'value';
 const defaults = {
   //whatever
 };
 
 //--------------------------------------------------
 
-if (process.env.NODE_ENV === 'prod-dev') {
+if (process.env.REACT_APP_PROD_DEV) {
   overrides = require('./config.prod-dev.js').default;
 } else if (process.env.NODE_ENV === 'production') {
   overrides = require('./config.prod.js').default;
