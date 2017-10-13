@@ -3,6 +3,7 @@ import styles from './index.module.css'
 import { IconButton, MenuItem, Menu } from 'material-ui'
 import Popover from 'material-ui/Popover';
 import PropTypes from 'prop-types';
+import { oadaDomain } from '../../../config'
 
 class TopBar extends React.Component {
   constructor(props) {
@@ -38,8 +39,8 @@ class TopBar extends React.Component {
               anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
               targetOrigin={{horizontal: 'right', vertical: 'top'}}
               onRequestClose={this.closePopup}>
-                  <Menu onTouchTap={this.closePopup}>
-                  		<MenuItem primaryText="Sign out" onTouchTap={()=>{this.props.signOut({})}} />
+							<Menu onTouchTap={this.closePopup}>
+								<MenuItem primaryText="Sign out" onTouchTap={()=>{this.props.signOut({})}} >{<a href={oadaDomain+'/oadaauth/logout'}>Sign out</a>}</MenuItem>
                   </Menu>
           </Popover>
           {

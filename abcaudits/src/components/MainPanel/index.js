@@ -5,7 +5,6 @@ import CertCard from '../CertCard'
 import ClientPanel from '../ClientPanel'
 import SharingDialog from '../SharingDialog'
 import YearPanel from '../YearPanel'
-import UserProfile from '../UserProfile'
 import {
 	MenuItem,
 	Divider,

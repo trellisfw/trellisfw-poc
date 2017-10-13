@@ -33,14 +33,9 @@ export let signOut = [
 ]
 
 function oadaLogOut({state, props, path}) {
-  let domain = state.get('app.oada_domain')
-  return axios({
-    method: 'GET',
-    url: domain+'/oadaauth/logout',
-    headers: {
-      'Authorization': 'Bearer '+state.get('user_profile.user.token')
-    }
-  })
+	let domain = state.get('app.oada_domain')
+	var win = window.open(domain+'/oadaauth/logout', null, "height-400, width=600, status=yes,toolbar=no,scrollbars=yes,menubar=no,location=no");
+	win.close();
 }
 
 function getOadaToken({state, props, path}) {
