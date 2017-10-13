@@ -1,7 +1,7 @@
 import mounted from './signals/mounted';
 
 export default {
-  state: {
+	state: {
     model: {
       certifications: {
 

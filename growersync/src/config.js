@@ -1,13 +1,9 @@
 var _domain = 'http://localhost:3000/oauth2/redirect.html';
 var _metadata = `
-eyJqa3UiOiJodHRwczovL2lkZW50aXR5Lm9hZGEtZGV2LmNvbS9jZXJ0cyIsImtpZCI6ImtqY1NjamMzMmR3SlhYTEpEczNyMTI0c2ExIiwidHlwIjoiSldUIiwiYWxnIjoiUlMyNTYifQ.eyJyZWRpcmVjdF91cmlzIjpbImh0dHA6Ly9sb2NhbGhvc3Q6MzAwMC9vYXV0aDIvcmVkaXJlY3QuaHRtbCJdLCJ0b2tlbl9lbmRwb2ludF9hdXRoX21ldGhvZCI6InVybjppZXRmOnBhcmFtczpvYXV0aDpjbGllbnQtYXNzZXJ0aW9uLXR5cGU6and0LWJlYXJlciIsImdyYW50X3R5cGVzIjpbImltcGxpY2l0Il0sInJlc3BvbnNlX3R5cGVzIjpbInRva2VuIiwiaWRfdG9rZW4iLCJpZF90b2tlbiB0b2tlbiJdLCJjbGllbnRfbmFtZSI6Ikdyb3dlclN5bmMiLCJjbGllbnRfdXJpIjoiaHR0cHM6Ly9mcGFkLmlvLyIsImNvbnRhY3RzIjpbIlNhbSBOb2VsIDxzYW5vZWxAcHVyZHVlLmVkdT4iXSwic29mdHdhcmVfaWQiOiJlNjMyYTdhNS02MmZjLTRlNzUtYTkwYy02MTE5YWFjYzEwZmUiLCJyZWdpc3RyYXRpb25fcHJvdmlkZXIiOiJodHRwczovL2lkZW50aXR5Lm9hZGEtZGV2LmNvbSIsImlhdCI6MTUwNzgyODYxM30.U_hlHdkLnAf3bBfgoHvfK7bretfIZszGsa5EuYxNjVZT-0Gm6NLOGa1hL-p1VxyBDwv8TRa0TBnb1beUTXNkucIGDQBI9rvZYTY9hHiYHVUddx0MrSL6g4X0N7SDfw_6lY8IbHNAKaDBcbDG97YmvV79xwxojiX8aDS6ouyf8yI
+eyJqa3UiOiJodHRwczovL2lkZW50aXR5Lm9hZGEtZGV2LmNvbS9jZXJ0cyIsImtpZCI6ImtqY1NjamMzMmR3SlhYTEpEczNyMTI0c2ExIiwidHlwIjoiSldUIiwiYWxnIjoiUlMyNTYifQ.eyJyZWRpcmVjdF91cmlzIjpbImh0dHA6Ly9sb2NhbGhvc3Q6MzAwMC9vYXV0aDIvcmVkaXJlY3QuaHRtbCIsImh0dHA6Ly9sb2NhbGhvc3Q6MzAwMS9vYXV0aDIvcmVkaXJlY3QuaHRtbCIsImh0dHA6Ly9sb2NhbGhvc3Q6MzAwMi9vYXV0aDIvcmVkaXJlY3QuaHRtbCIsImh0dHA6Ly9sb2NhbGhvc3Q6MzAwMy9vYXV0aDIvcmVkaXJlY3QuaHRtbCIsImh0dHA6Ly9sb2NhbGhvc3Q6MzAwNC9vYXV0aDIvcmVkaXJlY3QuaHRtbCIsImh0dHA6Ly9sb2NhbGhvc3Q6MzAwNS9vYXV0aDIvcmVkaXJlY3QuaHRtbCIsImh0dHA6Ly9sb2NhbGhvc3Q6MzAwNi9vYXV0aDIvcmVkaXJlY3QuaHRtbCIsImh0dHA6Ly9sb2NhbGhvc3Q6MzAwNy9vYXV0aDIvcmVkaXJlY3QuaHRtbCIsImh0dHA6Ly9sb2NhbGhvc3Q6MzAwOC9vYXV0aDIvcmVkaXJlY3QuaHRtbCIsImh0dHA6Ly9sb2NhbGhvc3Q6MzAwOS9vYXV0aDIvcmVkaXJlY3QuaHRtbCJdLCJ0b2tlbl9lbmRwb2ludF9hdXRoX21ldGhvZCI6InVybjppZXRmOnBhcmFtczpvYXV0aDpjbGllbnQtYXNzZXJ0aW9uLXR5cGU6and0LWJlYXJlciIsImdyYW50X3R5cGVzIjpbImltcGxpY2l0Il0sInJlc3BvbnNlX3R5cGVzIjpbInRva2VuIiwiaWRfdG9rZW4iLCJpZF90b2tlbiB0b2tlbiJdLCJjbGllbnRfbmFtZSI6Ikdyb3dlclN5bmMiLCJjbGllbnRfdXJpIjoiaHR0cHM6Ly9mcGFkLmlvLyIsImNvbnRhY3RzIjpbIlNhbSBOb2VsIDxzYW5vZWxAcHVyZHVlLmVkdT4iXSwic29mdHdhcmVfaWQiOiIwMWE4ZWFjNS1hOWJjLTQ5Y2MtOTBkYS0wYzNkYjNjYzAyYmUiLCJyZWdpc3RyYXRpb25fcHJvdmlkZXIiOiJodHRwczovL2lkZW50aXR5Lm9hZGEtZGV2LmNvbSIsImlhdCI6MTUwNzg2NDQ0MH0
 `.trim()
 var _devtoolsPort = 8585;
 var _fpadDomains = [
-  {
-    displayText: 'GrowerSync',
-    url: 'https://api.growersync.fpad.io'
-  },
   {
     displayText: 'vip3',
     url: 'https://vip3.ecn.purdue.edu'
@@ -15,6 +11,10 @@ var _fpadDomains = [
   {
     displayText: 'localhost',
     url: 'https://localhost'
+  },
+  {
+    displayText: 'GrowerSync',
+    url: 'https://api.growersync.fpad.io'
   },
 ];
 
@@ -52,13 +52,13 @@ if (process.env.NODE_ENV === 'prod-dev') {
 
   _fpadDomains = [
     {
+      displayText: 'GrowerSync',
+      url: 'https://api.abcaudits.fpad.io'
+    },
+    {
       displayText: 'vip3',
       url: 'https://vip3.ecn.purdue.edu'
     },
-    {
-      displayText: 'GrowerSync',
-      url: 'https://api.abcaudits.fpad.io'
-    }
     {
       displayText: 'AbcAudits',
       url: 'https://api.abcaudits.fpad.io'
@@ -66,10 +66,14 @@ if (process.env.NODE_ENV === 'prod-dev') {
   ];
 }
 
-
+export const domain = _domain;
+export const metadata = _metadata;
+export const devtoolsPort = _devtoolsPort;
+export const fpadDomains = _fpadDomains;
 
 export default {
-  fpadDomain: fpadDomain,
-  domain: domain,
-  devtoolsPort: devtoolsPort
+  fpadDomains,
+  domain,
+	devtoolsPort,
+	metadata
 };
