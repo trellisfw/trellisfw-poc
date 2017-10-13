@@ -1,15 +1,9 @@
-import randCert from 'fpad-rand-cert'
-import { unset, set, when, toggle } from 'cerebral/operators'
-import {state, props, string, path} from 'cerebral/tags'
-import _ from 'lodash'
-import uuid from 'uuid';
+import { unset, set } from 'cerebral/operators'
+import {state, props } from 'cerebral/tags'
 import Promise from 'bluebird';
 import axios from 'axios';
 import { metadata, redirectDomain } from '../../config'
-const URL = require('url').Url
-//import oadaIdClient from 'oada-id-client'
 let getAccessToken = Promise.promisify(require('oada-id-client').getAccessToken)
-let agent = require('superagent-promise')(require('superagent'), Promise);
 
 export let init = [
 
@@ -35,6 +29,7 @@ export let signOut = [
 function oadaLogOut({state, props, path}) {
 	let domain = state.get('app.oada_domain')
 	// Make dummy image to go to /oadaauth/logout without using a window
+	// eslint-disable-next-line
 	let img = (new Image()).src = domain+"/oadaauth/logout";
 }
 

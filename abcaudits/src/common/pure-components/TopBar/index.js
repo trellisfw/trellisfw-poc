@@ -3,7 +3,6 @@ import styles from './index.module.css'
 import { IconButton, MenuItem, Menu } from 'material-ui'
 import Popover from 'material-ui/Popover';
 import PropTypes from 'prop-types';
-import { oadaDomain } from '../../../config'
 
 class TopBar extends React.Component {
   constructor(props) {

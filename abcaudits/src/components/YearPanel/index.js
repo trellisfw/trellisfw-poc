@@ -1,9 +1,6 @@
 import React from 'react'
 import {connect} from 'cerebral/react'
 import {state, signal} from 'cerebral/tags'
-import { Divider, IconButton, Checkbox } from 'material-ui'
-import CertCard from '../CertCard'
-import styles from './styles.css'
 import {
   Table,
   TableBody,
@@ -12,6 +9,8 @@ import {
   TableRow,
   TableRowColumn,
 } from 'material-ui/Table';
+// eslint-disable-next-line
+import styles from './styles.css'
 
 export default connect({
   audits: state`app.model.audits`,
@@ -24,9 +23,9 @@ class YearPanel extends React.Component {
     let years = {}
     Object.keys(this.props.audits).map((key, i) => {
       if (years[this.props.audits[key].expiration]) {
-        years[this.props.audits[key].expiration]++ 
+        return years[this.props.audits[key].expiration]++ 
       } else {
-        years[this.props.audits[key].expiration] = 1;
+        return years[this.props.audits[key].expiration] = 1;
       }
     })
 

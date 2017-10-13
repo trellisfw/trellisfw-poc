@@ -1,5 +1,4 @@
 import {
-  addClient,
   showClientDialog,
   cancelClient,
   submitClient,

@@ -25,8 +25,20 @@
 .expiration {
   order: 1;
 }
-.score {
+.score-certlinks {
   order: 2;
+	display: flex;
+}
+.score {
+  order: 1;
+	flex: 1;
+}
+.certlinks {
+	display: flex;
+	order: 2;
+}
+.certlink {
+	cursor: pointer;
 }
 .signature {
   order: 2;
