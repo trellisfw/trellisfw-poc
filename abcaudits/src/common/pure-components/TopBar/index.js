@@ -40,7 +40,7 @@ class TopBar extends React.Component {
               targetOrigin={{horizontal: 'right', vertical: 'top'}}
               onRequestClose={this.closePopup}>
 							<Menu onTouchTap={this.closePopup}>
-								<MenuItem primaryText="Sign out" onTouchTap={()=>{this.props.signOut({})}} >{<a href={oadaDomain+'/oadaauth/logout'}>Sign out</a>}</MenuItem>
+								<MenuItem primaryText="Sign out" onTouchTap={()=>{this.props.signOut({})}} />
                   </Menu>
           </Popover>
           {
