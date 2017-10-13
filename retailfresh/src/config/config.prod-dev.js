@@ -1,16 +1,14 @@
 //Production Development Values
 const devtoolsPort = 8585;
-const apiDomain = process.env.REACT_APP_API_DOMAIN || 'https://api.growersync.fpad.io';
-const oadaDomain = 'https://api.growersync.fpad.io';
-const websiteDomain = 'https://growersync.fpad.io:8080';
+const oadaDomain = process.env.REACT_APP_OADA_DOMAIN || 'https://api.retailfresh.fpad.io';
+const websiteDomain = 'https://retailfresh.fpad.io:8080';
 const metadata = `
 	eyJqa3UiOiJodHRwczovL2lkZW50aXR5Lm9hZGEtZGV2LmNvbS9jZXJ0cyIsImtpZCI6ImtqY1NjamMzMmR3SlhYTEpEczNyMTI0c2ExIiwidHlwIjoiSldUIiwiYWxnIjoiUlMyNTYifQ.eyJyZWRpcmVjdF91cmlzIjpbImh0dHA6Ly9yZXRhaWxmcmVzaC5mcGFkLmlvOjgwODAvb2F1dGgyL3JlZGlyZWN0Lmh0bWwiXSwidG9rZW5fZW5kcG9pbnRfYXV0aF9tZXRob2QiOiJ1cm46aWV0ZjpwYXJhbXM6b2F1dGg6Y2xpZW50LWFzc2VydGlvbi10eXBlOmp3dC1iZWFyZXIiLCJncmFudF90eXBlcyI6WyJpbXBsaWNpdCJdLCJyZXNwb25zZV90eXBlcyI6WyJ0b2tlbiIsImlkX3Rva2VuIiwiaWRfdG9rZW4gdG9rZW4iXSwiY2xpZW50X25hbWUiOiJSZXRhaWxGcmVzaCIsImNsaWVudF91cmkiOiJodHRwczovL2ZwYWQuaW8vIiwiY29udGFjdHMiOlsiU2FtIE5vZWwgPHNhbm9lbEBwdXJkdWUuZWR1PiJdLCJzb2Z0d2FyZV9pZCI6ImI2NDEzYmNiLTU5MGUtNGRmNi1iYWI0LTg0MGQwYmFjYTAxNCIsInJlZ2lzdHJhdGlvbl9wcm92aWRlciI6Imh0dHBzOi8vaWRlbnRpdHkub2FkYS1kZXYuY29tIiwiaWF0IjoxNTA3ODIyNzYxfQ.doJZdcR5lN4YyKGZTnC5DesnIQ7txxjHT50-NHKJpCnPwc_FinZ0OXXaZ8HRn6bTvMCn2tFKbyC_gm5KZdiR4_smywAV2alxBmyfMgtu59xFbR_UJacoHVOx6wj8bsjmHkhpLUdB2peeRGDTsQvVjktLIo729wsbcaTgT22NVv0
 `.trim()
 
-const defaultNewConnectionURL = 'https://api.abcaudits.fpad.io';
+const defaultNewConnectionURL = 'https://api.distibutingexcellence.fpad.io';
 
 export default {
-	apiDomain,
   oadaDomain,
   devtoolsPort,
   websiteDomain,

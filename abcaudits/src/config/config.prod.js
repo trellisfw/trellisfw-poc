@@ -1,6 +1,6 @@
 //Production Values
 const devtoolsPort = 8585;
-const apiDomain = process.env.REACT_APP_API_DOMAIN || 'https://api.abcaudits.fpad.io';
+const oadaDomain = process.env.REACT_APP_OADA_DOMAIN || 'http://localhost';
 const oadaDomain = 'https://api.abcaudits.fpad.io';
 const websiteDomain = 'https://abcaudits.fpad.io';
 const metadata = `
@@ -8,7 +8,6 @@ eyJqa3UiOiJodHRwczovL2lkZW50aXR5Lm9hZGEtZGV2LmNvbS9jZXJ0cyIsImtpZCI6ImtqY1NjamMz
 `.trim()
 
 export default {
-	apiDomain,
   oadaDomain,
   devtoolsPort,
   websiteDomain,

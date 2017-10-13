@@ -28,6 +28,7 @@ if (process.env.REACT_APP_PROD_DEV) {
 var toExport =  {...defaults, ...overrides};
 
 export const oadaDomains = toExport.oadaDomains;
+export const oadaDomain = toExport.oadaDomain;
 export const websiteDomain = toExport.websiteDomain;
 export const redirectDomain = toExport.websiteDomain + '/oauth2/redirect.html';
 export const metadata = toExport.metadata;
