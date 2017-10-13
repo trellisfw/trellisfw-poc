@@ -4,12 +4,9 @@ import Promise from 'bluebird';
 import axios from 'axios';
 import {oadaDomain, redirectDomain, metadata} from '../../../config';
 
-//import oadaIdClient from 'oada-id-client'
 let getAccessToken = Promise.promisify(require('oada-id-client').getAccessToken)
 
 function getOadaToken({state, props, path}) {
-	let domain = fpadDomains[0];
-  let host = domain.replace(/^https?:\/\//, '')
   let options = {
     metadata: metadata,
     scope: 'fpad:all',

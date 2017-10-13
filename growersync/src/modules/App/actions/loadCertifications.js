@@ -11,7 +11,6 @@ import _ from 'lodash';
       - add /fpad & /fpad/certifications to /bookmarks
 */
 function loadCertifications({state, path}) {
-	let domain = state.get('app.oada_domain')
   //Get the certifications list
   let certifications = {};
   return axios({

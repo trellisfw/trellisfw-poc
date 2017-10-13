@@ -1,6 +1,6 @@
 import React from 'react'
 import { Card, IconButton, Checkbox } from 'material-ui'
-import styles from './styles.css'
+import './styles.css'
 import moment from 'moment'
 import _ from 'lodash'
 import PropTypes from 'prop-types';
