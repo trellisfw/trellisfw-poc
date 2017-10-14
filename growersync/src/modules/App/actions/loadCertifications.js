@@ -136,11 +136,12 @@ export default [
         missing: [addFpadResource],
         exists: []
       },
+      /* TODO - uncommment once alex's webhook smoosh works.
       checkCertsResource,
       {
         missing: [addCertsResource],
         exists: []
-      },
+      },*/
       loadCertifications, {
         success: [
           set(state`App.model.certifications`, props`certifications`),

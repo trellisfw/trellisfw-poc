@@ -2,7 +2,7 @@ var overrides = require('./config.dev.js').default;
 
 //----------- Define default configs here ----------
 
-export const webhookType = 'oada-put'; //other option: `alex`
+export const webhookType = 'alex'; //options: `oada-put`, `alex`
 const defaults = {
   webhookType
 };

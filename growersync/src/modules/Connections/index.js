@@ -6,7 +6,7 @@ import onEmailLinkClicked from './signals/NewConnection/onEmailLinkClicked'
 export default {
   state: {
     connections: {
-      1: {}
+
     },
     newConnections: {
 

@@ -1,4 +1,5 @@
 import loadCertifications from '../actions/loadCertifications';
+import loadConnections from '../../Connections/actions/loadConnections';
 
 function isLoggedIn ({state, path}) {
   let user = state.get('UserProfile.user');
@@ -7,10 +8,11 @@ function isLoggedIn ({state, path}) {
 }
 
 export default [
-  isLoggedIn, {
-    yes: [
-      loadCertifications
-    ],
-    no: []
-  }
-];
+    isLoggedIn, {
+      yes: [
+        loadCertifications,
+        loadConnections
+      ],
+      no: []
+    }
+]
