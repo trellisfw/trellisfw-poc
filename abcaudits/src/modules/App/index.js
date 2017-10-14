@@ -2,10 +2,10 @@ import {
   initialize,
 	addCertification,
 	updateCertifications,
-  setClient,
   toggleCertSelect,
   signAudit,
 	deleteAudits,
+	showViewer,
 } from './chains.js'
 import {
 	oadaDomain,
@@ -15,10 +15,6 @@ export default {
   state: {
     oada_domain: oadaDomain,
     token: '',
-    model: {
-      audits: {
-      }
-    },
     view: {
       mode: 'certifications',
       certifications: {},
@@ -31,7 +27,8 @@ export default {
     updateCertButtonClicked: updateCertifications,
     certChecked: toggleCertSelect,
     signAuditButtonClicked: signAudit,
-    deleteAuditsButtonClicked: deleteAudits,
+		deleteAuditsButtonClicked: deleteAudits,
+		certViewerClicked: showViewer,
   },
 
   modules: {

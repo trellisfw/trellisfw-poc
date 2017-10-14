@@ -38,8 +38,8 @@ class TopBar extends React.Component {
               anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
               targetOrigin={{horizontal: 'right', vertical: 'top'}}
               onRequestClose={this.closePopup}>
-                  <Menu onTouchTap={this.closePopup}>
-                  		<MenuItem primaryText="Sign out" onTouchTap={()=>{this.props.signOut({})}} />
+							<Menu onTouchTap={this.closePopup}>
+								<MenuItem primaryText="Sign out" onTouchTap={()=>{this.props.signOut({})}} />
                   </Menu>
           </Popover>
           {

@@ -2,25 +2,11 @@ import React from 'react'
 import {connect} from 'cerebral/react'
 import {state, signal} from 'cerebral/tags'
 import CertCard from '../CertCard'
-import ClientPanel from '../ClientPanel'
 import SharingDialog from '../SharingDialog'
-import YearPanel from '../YearPanel'
-import UserProfile from '../UserProfile'
 import {
-	MenuItem,
-	Divider,
 	IconButton,
-	Checkbox,
-	IconMenu,
 } from 'material-ui'
-import {
-  Table,
-  TableBody,
-  TableHeader,
-  TableHeaderColumn,
-  TableRow,
-  TableRowColumn,
-} from 'material-ui/Table';
+// eslint-disable-next-line
 import styles from './styles.css'
 
 export default connect({

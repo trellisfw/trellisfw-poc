@@ -1,12 +1,7 @@
-import randCert from 'fpad-rand-cert'
-import { unset, set, when, toggle } from 'cerebral/operators'
-import {state, props, string, path} from 'cerebral/tags'
-import _ from 'lodash'
-import uuid from 'uuid';
-import Promise from 'bluebird';
+import { unset, set, toggle } from 'cerebral/operators'
+import {state, props } from 'cerebral/tags'
 import axios from 'axios';
 import md5 from 'md5';
-let agent = require('superagent-promise')(require('superagent'), Promise);
 
 export let doneSharing = [
   set(state`sharing_dialog.trellis_domain_text`, ''),
@@ -50,7 +45,6 @@ export let addUser = [
 
 function createClientUser({state, props, path}) {
   let domain = state.get('app.oada_domain')
-	let clientId = state.get('client_panel.selected_client')
 	let oidc = {
 		username: state.get(`sharing_dialog.username_text`),
 		iss: state.get(`sharing_dialog.trellis_domain_text`)
@@ -76,7 +70,6 @@ function createClientUser({state, props, path}) {
 		}).then((res) => {
 			return path.success({user:res.data})
 		})
-	  return path.success({})
 	})
 }
 

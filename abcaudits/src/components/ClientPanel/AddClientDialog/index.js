@@ -2,7 +2,6 @@ import React from 'react'
 import {connect} from 'cerebral/react'
 import {state, signal} from 'cerebral/tags'
 import { TextField, Dialog, FlatButton } from 'material-ui'
-import styles from './styles.css'
 
 export default connect({
   open: state`client_panel.client_dialog.open`,
