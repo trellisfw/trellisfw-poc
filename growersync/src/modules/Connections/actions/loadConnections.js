@@ -1,3 +1,4 @@
+import {sequence} from 'cerebral'
 import get from '../../OADA/factories/get';
 import _ from 'lodash';
 
@@ -8,7 +9,7 @@ function parseConnections({props, state}) {
   });
 }
 
-export default [
+export default sequence('loadConnections', [
   get({path: '/bookmarks/fpad/connections'}),
   {
     success: [
@@ -16,4 +17,4 @@ export default [
     ],
     error: []
   }
-]
+]);

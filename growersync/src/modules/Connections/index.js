@@ -2,6 +2,7 @@ import addConnectionClicked from './signals/addConnectionClicked'
 import onDomainChanged from './signals/NewConnection/onDomainChanged'
 import onConnectAsMeClicked from './signals/NewConnection/onConnectAsMeClicked'
 import onEmailLinkClicked from './signals/NewConnection/onEmailLinkClicked'
+import connectionsChanged from './signals/connectionsChanged';
 
 export default {
   state: {
@@ -16,6 +17,7 @@ export default {
     addConnectionClicked,
     onDomainChanged,
     onConnectAsMeClicked,
-    onEmailLinkClicked
+    onEmailLinkClicked,
+    connectionsChanged
   }
 }

@@ -2,7 +2,7 @@ import axios from 'axios';
 import {oadaDomain} from '../../../config';
 
 /*
-  GET a resource on oada cloud, using websocket if available
+  HEAD a resource on oada cloud, using websocket if available
 
   Parameters:
     Required:
@@ -12,8 +12,8 @@ import {oadaDomain} from '../../../config';
       `token`
 */
 
-function getFactory ({path: resPath, domain, token, funcMode}) {
-  function get({state, resolve, path, websocket}) {
+function headFactory ({path: resPath, domain, token, funcMode}) {
+  function head({state, resolve, path, websocket}) {
     return Promise.resolve().then(() => {
       //Remove the path if we are running in function mode, so paths in original action work
       if (funcMode) path = null;
@@ -43,15 +43,15 @@ function getFactory ({path: resPath, domain, token, funcMode}) {
       });
     });
   }
-  return get
+  return head
 }
 
-getFactory.func = function func(args) {
-  function get(options) {
+headFactory.func = function func(args) {
+  function head(options) {
     options.funcMode = true;
-    return getFactory(options)(args[0]);
+    return headFactory(options)(args[0]);
   }
-  return get;
+  return head;
 }
 
-export default getFactory;
+export default headFactory;

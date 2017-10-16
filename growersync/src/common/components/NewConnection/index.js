@@ -17,7 +17,6 @@ class NewConnectionContainer extends React.Component {
     this.props.onDomainChanged({domain: evt.target.value, id: this.props.id})
   }
   onConnectAsMeClick = () => {
-    console.log({id: this.props.id})
     this.props.onConnectAsMeClicked({id: this.props.id});
   }
   render() {

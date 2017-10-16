@@ -29,6 +29,7 @@ class App extends React.Component {
     return (
       <div className={styles.app}>
         <TopBar
+          style={{minHeight: 100}}
           title={'GrowerSync'}
           description={'Automatic Data Connections for Growers'} />
         <div className={styles.page}>

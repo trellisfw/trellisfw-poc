@@ -1,6 +1,4 @@
-import axios from 'axios';
-import {oadaDomain} from '../../../config';
-
+import head from './head.js';
 /*
   Checks if a resource exists at an OADA cloud
 
@@ -15,29 +13,22 @@ import {oadaDomain} from '../../../config';
     path: `yes`, `no`, `error`
 */
 
-function checkIfExists({domain, token, path}) {
-  return axios({
-    method: 'HEAD',
-    url: domain+path,
-    headers: {
-      Authorization: 'Bearer '+token
-    }
-  }).then((res) => {
+function checkIfExists({domain, token, path, args}) {
+  return head.func(args)({domain, path, token}).then(({response}) => {
     return true;
   }).catch((error) => {
     if (error.response && error.response.status === 404) return false;
+    console.log('here', error);
     throw error;
   });
 }
 
-function doesResourceExistFactory ({path: resPath, domain, token}) {
+function doesResourceExistFactory ({path: resPath, domain, token, funcMode}) {
   function doesResourceExist({state, path, resolve}) {
-    //Resolve arguments if they are tags, or provide defaults
-    resPath = resolve.value(resPath);
-    token = resolve.value(token) || state.get('UserProfile.user.token')
-    domain = resolve.value(domain) || oadaDomain;
+    //Remove the path if we are running in function mode, so paths in original action work
+    if (funcMode) path = null;
     //Check if exists
-    return checkIfExists({domain, path: resPath, token}).then((exists) => {
+    return checkIfExists({domain, path: resPath, token, args: arguments}).then((exists) => {
       if (!path) return {resourceExists: exists};
       if (exists) return path.yes();
       return path.no();
@@ -48,5 +39,14 @@ function doesResourceExistFactory ({path: resPath, domain, token}) {
   }
   return doesResourceExist
 }
+
+doesResourceExistFactory.func = function func(args) {
+  function doesResourceExist(options) {
+    options.funcMode = true;
+    return doesResourceExistFactory(options)(args[0]);
+  }
+  return doesResourceExist;
+}
+
 
 export default doesResourceExistFactory;

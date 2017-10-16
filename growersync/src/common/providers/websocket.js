@@ -2,17 +2,20 @@ import Promise  from 'bluebird';
 const uuid = require('uuid/v4');
 var cachedProvider = null;
 
-function websocketClient(context, config) {
+function websocketClient(context, config, promise) {
     //Create the message queue
     var messages = [];
     //Create the socket
-    var socket = new WebSocket('wss://'+config.url);
+    let url = config.url.replace('https://', 'wss://').replace('http://', 'ws://');
+    if (url.indexOf('ws') !== 0) url = url + 'wss://';
+    var socket = new WebSocket(url);
     var connected = false;
     var httpCallbacks = {};
     var watchSignals = {};
 
     socket.onopen = function(event) {
       connected = true;
+      promise.resolve();
       sendMessages();
     }
     socket.onmessage = function(event) {
@@ -21,7 +24,20 @@ function websocketClient(context, config) {
       if (response.requestId) {
         if (httpCallbacks[response.requestId]) {
           //Resolve Promise
-          httpCallbacks[response.requestId].resolve(response);
+          if (response.status >= 200 && response.status < 300) {
+            httpCallbacks[response.requestId].resolve(response);
+          } else {
+            //Create error like axios
+            let err = new Error('Request failed with status code '+response.status);
+            err.request = httpCallbacks[response.requestId].request;
+            err.response = {
+              status: response.status,
+              statusText: response.status,
+              headers: response.headers,
+              data: response.data
+            };
+            httpCallbacks[response.requestId].reject(err);
+          }
           delete httpCallbacks[response.requestId];
         } else if (watchSignals[response.requestId]) {
           if (watchSignals[response.requestId].resolve) {
@@ -29,14 +45,20 @@ function websocketClient(context, config) {
               //Successfully setup websocket, resolve promise
               watchSignals[response.requestId].resolve(response);
             } else {
-              watchSignals[response.requestId].reject(response);
+              let err = new Error('Request failed with status code '+response.status);
+              err.response = response;
+              watchSignals[response.requestId].reject(err);
             }
             //Remove resolve and reject so we process change as a signal next time
             delete watchSignals[response.requestId]['resolve'];
             delete watchSignals[response.requestId]['reject'];
           } else {
             //Call signal assigned during .watch() passing response
-            context.controller.getSignal(watchSignals[response.requestId].signalPath)({response});
+            let signalPath = watchSignals[response.requestId].signalPath;
+            let signal = context.controller.getSignal(signalPath);
+            if (signal == null) throw new Error('Signal at path `'+signalPath+'` is not defined.');
+            console.log('Signal', signalPath);
+            signal({response});
           }
         }
       }
@@ -53,16 +75,22 @@ function websocketClient(context, config) {
     function _http(request) {
       //Do a HTTP request
       return new Promise((resolve, reject) => {
+        if (request.url.indexOf(config.url) === 0) request.url = request.url.replace(config.url, '');
         let message = {
           requestId: uuid(),
           method: request.method.toLowerCase(),
-          path: request.url
+          path: request.url,
+          data: request.data
         };
         if (request.headers && request.headers.Authorization) {
           message.authorization = request.headers.Authorization;
         }
+        if (request.headers && request.headers['Content-Type']) {
+          message.contentType = request.headers['Content-Type'];
+        }
         messages.push(message);
         httpCallbacks[message.requestId] = {
+          request: request,
           resolve: resolve,
           reject: reject
         };
@@ -97,7 +125,12 @@ function websocketClient(context, config) {
       socket.close();
     }
 
+    function _url() {
+      return config.url
+    }
+
     return {
+      url: _url,
       http: _http,
       close: _close,
       watch: _watch
@@ -105,14 +138,16 @@ function websocketClient(context, config) {
 }
 
 
-function createProvider(context, config) {
+function createProvider(context, config, promise) {
   var provider = {};
   if (config) {
-    provider = websocketClient(context, config);
+    provider = websocketClient(context, config, promise);
   }
   provider.configure = function configure(config) {
-    cachedProvider = createProvider(context, config);
-    return;
+    return new Promise((resolve, reject) => {
+      let promise = {resolve, reject};
+      cachedProvider = createProvider(context, config, promise);
+    });
   }
   return provider;
 }

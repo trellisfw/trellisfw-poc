@@ -4,6 +4,7 @@ import TopBar from './modules/TopBar'
 import Connections from './modules/Connections'
 import UserProfile from './modules/UserProfile'
 import Certifications from './modules/Certifications'
+import websocket from './common/providers/websocket';
 
 import {devtoolsPort} from './config';
 
@@ -25,5 +26,8 @@ export default Controller({
     Connections,
     Certifications,
     UserProfile
-  }
+  },
+  providers: [
+    websocket
+  ]
 })

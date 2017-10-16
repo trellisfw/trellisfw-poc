@@ -1,4 +1,5 @@
 import certChecked from './signals/certChecked';
+import certificationsChanged from './signals/certificationsChanged';
 
 export default {
   state: {
@@ -11,7 +12,8 @@ export default {
   },
 
   signals: {
-    certChecked
+    certChecked,
+    certificationsChanged
   },
   modules: {
 
