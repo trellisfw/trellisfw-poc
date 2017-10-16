@@ -21,7 +21,7 @@ function loadCertifications({state, path}) {
         //Load the certifications
         return axios({
             method: 'GET',
-            url: fpadDomain+'/bookmarks/fpad/certifications/'+key,
+            url: fpadDomain+'/bookmarks/fpad/certifications/'+key+'/audit',
             headers: {Authorization: 'Bearer '+ state.get('UserProfile.user.token')}
           }).then((res) => {
             certifications[key] = res.data;

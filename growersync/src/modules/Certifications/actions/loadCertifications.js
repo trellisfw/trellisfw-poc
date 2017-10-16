@@ -15,7 +15,7 @@ function loadCertifications({path, state}) {
     let certKeys = _.filter(Object.keys(response.data), key=>(_.startsWith(key, '_')===false));
     return Promise.map(certKeys, (key) => {
       //Load the certifications
-      return get.func(arguments)({path: '/bookmarks/fpad/certifications/'+key}).then(({response}) => {
+      return get.func(arguments)({path: '/bookmarks/fpad/certifications/'+key+'/audit'}).then(({response}) => {
         certifications[key] = response.data;
       });
     }, {concurrency: 5});

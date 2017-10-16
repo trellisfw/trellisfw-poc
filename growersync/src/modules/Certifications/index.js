@@ -3,6 +3,7 @@ import certificationsChanged from './signals/certificationsChanged';
 
 export default {
   state: {
+    pendingChanges: {},
     model: {
 
     },
