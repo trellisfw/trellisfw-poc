@@ -61,16 +61,14 @@ class TopBar extends React.Component {
           {
             this.props.mode ?
               <div className={styles.modes}>
-                <p
-                  className={this.props.mode === 'certifications' ? classnames(styles.mode, styles.highlighted) : styles.mode}
+                <div className={this.props.mode === 'certifications' ? classnames(styles.mode, styles.highlighted) : styles.mode}
                   onClick={()=>{this.props.modeClicked({mode: 'certifications'})}}>
                   <u>{'Certifications'}</u>
-                </p>
-                <p
-                  className={this.props.mode === 'connections' ? classnames(styles.mode, styles.highlighted) : styles.mode }
+                </div>
+                <div className={this.props.mode === 'connections' ? classnames(styles.mode, styles.highlighted) : styles.mode }
                   onClick={()=>{this.props.modeClicked({mode: 'connections'})}}>
                   <u>{'Connections'}</u>
-                </p>
+                </div>
               </div>
             :
             null

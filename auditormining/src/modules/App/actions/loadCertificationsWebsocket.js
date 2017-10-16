@@ -19,7 +19,7 @@ function loadCertificationsWebsocket({state, path, websocket}) {
         //Load the certifications
         return websocket.http({
             method: 'GET',
-            url: '/bookmarks/fpad/certifications/'+key,
+            url: '/bookmarks/fpad/certifications/'+key+'/audit',
             headers: {Authorization: 'Bearer '+ state.get('UserProfile.user.token')}
 				}).then((res) => {
 						console.log(res)
