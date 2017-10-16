@@ -6,6 +6,7 @@ import {
   signAudit,
 	deleteCertifications,
 	showViewer,
+	closeViewer
 } from './chains.js'
 import {
 	oadaDomain,
@@ -29,6 +30,7 @@ export default {
     signAuditButtonClicked: signAudit,
 		deleteAuditsButtonClicked: deleteCertifications,
 		certViewerClicked: showViewer,
+		closeViewerClicked: closeViewer,
   },
 
   modules: {

@@ -5,6 +5,8 @@ import { FlatButton, Card, IconButton, Checkbox } from 'material-ui'
 import moment from 'moment'
 // eslint-disable-next-line
 import styles from './styles.css'
+import ReactJsonView from 'react-json-view'
+import JSONTree from 'react-json-tree'
 
 export default connect({
   certification: state`client_panel.clients.${state`client_panel.selected_client`}.certifications.${props`name`}`,
@@ -14,14 +16,17 @@ export default connect({
   checked: signal`app.certChecked`,
 	signAuditButtonClicked: signal`app.signAuditButtonClicked`,
 	certViewerClicked: signal`app.certViewerClicked`,
+	closeViewer: signal`app.closeViewerClicked`,
 },
 
 class CertCard extends React.Component {
 
   render() {
-    let date = new moment(this.props.certification.audit.conditions_during_audit.operation_observed_date).format('MMMM D, YYYY')
+		let date = new moment(this.props.certification.audit.conditions_during_audit.operation_observed_date).format('MMMM D, YYYY')
+		let temp = this.props.certification.audit.signatures
     return (
-     <Card className={'cert-card'} containerStyle={{display:'flex', flex:'1'}}>
+     <Card className='cert-card'>
+       <div className='main-content'>
        <div className='left-container'>
          <Checkbox
            label=''
@@ -39,19 +44,19 @@ class CertCard extends React.Component {
 								disabled={!this.props.certification.audit}
 								label="Audit" 
 								className='certlink'
-								onTouchTap={() => {this.props.certViewerClicked({name: this.props.name, doc:'audit'})}}
+								onTouchTap={() => {this.props.certViewerClicked({name:this.props.name, doc:'audit'})}}
 							/>
 							<FlatButton 
 								disabled={!this.props.certification.corrective_actions}
 								label="Corrective Actions" 
 								className='certlink'
-								onTouchTap={() => {this.props.certViewerClicked({name: this.props.name, doc:'corrective_actions'})}}
+								onTouchTap={() => {this.props.certViewerClicked({name:this.props.name, doc:'corrective_actions'})}}
 							/>
 							<FlatButton 
 								disabled={!this.props.certification.certificate}
 								label="Certificate" 
 								className='certlink'
-								onTouchTap={() => {this.props.certViewerClicked({name: this.props.name, doc:'certificate'})}}
+								onTouchTap={() => {this.props.certViewerClicked({name:this.props.name, doc:'certificate'})}}
 							/>
 						</div>
 					</div>
@@ -77,10 +82,18 @@ class CertCard extends React.Component {
             <FlatButton
 							className={'sign-button'}
 							primary={true}
-              onTouchTap={()=>{this.props.signAuditButtonClicked({audit:this.props.certification.audit})}}
+              onTouchTap={()=>{this.props.signAuditButtonClicked({audit:this.props.certification.audit, name: this.props.name})}}
               label="Finish and sign">
             </FlatButton>}
         </div>
+        </div>
+				{this.props.certViewer ? <div className='expandable-doc-viewer'>
+          <FlatButton
+            onTouchTap={()=>{this.props.closeViewer({name:this.props.name})}}
+            label="Close Viewer">
+            </FlatButton>
+				 <JSONTree data={this.props.certification.audit} theme={"summerfruit:inverted"} />
+			 </div> : null }
       </Card>
     )
   }

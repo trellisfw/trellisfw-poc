@@ -14,8 +14,16 @@ export let closeViewer = [
 ]
 
 export let showViewer = [
-	set(state`app.view.certifications.${props`name`}.cert_viewer`, {doc: props`doc`, expanded: ''})
+	showDoc,
+	//set(state`app.view.certifications.${props`name`}`, {cert_viewer: {doc: props`doc_type`, expanded: ''}})
 ]
+
+function showDoc({state, props, path}) {
+	state.set(`app.view.certifications.${props.name}.cert_viewer`, {
+		doc: props.doc, 
+		expanded: ''
+	})
+}
 
 export let toggleCertSelect = [
   set(state`app.view.certifications.${props`name`}.selected`, props`checked`)
@@ -28,7 +36,7 @@ export let initialize = [
 export let signAudit = [
   generateAuditSignature, {
     success: [
-      set(state`client_panel.clients.${state`client_panel.selected_client`}.certifications.${(props`id`)}.audit.signatures`, props`signatures`),
+      set(state`client_panel.clients.${state`client_panel.selected_client`}.certifications.${(props`name`)}.audit.signatures`, props`signatures`),
     ],
     error: [],
   },
@@ -81,13 +89,13 @@ function generateAuditSignature({state, props, path}) {
   let clientId = state.get('client_panel.selected_client')
   let audit = _.clone(props.audit)
   return signatures.generate(audit, prvKey, headers).then((signatures) => {
-    return agent('PUT', domain+'/bookmarks/fpad/clients/'+clientId+'/certifications/audit'+props.audit._id.split('/')[1]+'/signatures')
+		return agent('PUT', domain+'/bookmarks/fpad/clients/'+clientId+'/certifications/'+props.name+'/audit/signatures')
     .set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
     .set('Content-Type', 'application/vnd.oada.certifications.globalgap.1+json')
     .send(signatures)
     .end()
     .then((res) => {
-      return path.success({signatures, id: audit._id.split('/')[1]})
+      return path.success({signatures})
     })
   })
 }

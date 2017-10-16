@@ -1,7 +1,17 @@
 .cert-card {
-  display: flex;
+	display: flex;
+	flex-direction: column;
   margin: 10px;
   padding: 10px;
+}
+.main-content {
+	display: flex;
+	order: 1;
+}
+.expandable-doc-viewer {
+	display:flex;
+	order: 2;
+	flex-direction: column;
 }
 .left-container {
   display: flex;
