@@ -1,5 +1,5 @@
 import React from 'react'
-import {connect} from 'cerebral/react'
+import {connect} from '@cerebral/react'
 import {state, signal, props} from 'cerebral/tags'
 import { FlatButton, Card, IconButton, Checkbox } from 'material-ui'
 import moment from 'moment'
@@ -39,19 +39,19 @@ class CertCard extends React.Component {
 								disabled={!this.props.certification.audit}
 								label="Audit" 
 								className='certlink'
-								onTouchTap={() => {this.props.certViewerClicked({name: props`name`, doc:'audit'})}}
+								onTouchTap={() => {this.props.certViewerClicked({name: this.props.name, doc:'audit'})}}
 							/>
 							<FlatButton 
 								disabled={!this.props.certification.corrective_actions}
 								label="Corrective Actions" 
 								className='certlink'
-								onTouchTap={() => {this.props.certViewerClicked({name: props`name`, doc:'corrective_actions'})}}
+								onTouchTap={() => {this.props.certViewerClicked({name: this.props.name, doc:'corrective_actions'})}}
 							/>
 							<FlatButton 
 								disabled={!this.props.certification.certificate}
 								label="Certificate" 
 								className='certlink'
-								onTouchTap={() => {this.props.certViewerClicked({name: props`name`, doc:'certificate'})}}
+								onTouchTap={() => {this.props.certViewerClicked({name: this.props.name, doc:'certificate'})}}
 							/>
 						</div>
 					</div>

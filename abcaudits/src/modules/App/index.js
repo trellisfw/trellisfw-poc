@@ -4,7 +4,7 @@ import {
 	updateCertifications,
   toggleCertSelect,
   signAudit,
-	deleteAudits,
+	deleteCertifications,
 	showViewer,
 } from './chains.js'
 import {
@@ -27,7 +27,7 @@ export default {
     updateCertButtonClicked: updateCertifications,
     certChecked: toggleCertSelect,
     signAuditButtonClicked: signAudit,
-		deleteAuditsButtonClicked: deleteAudits,
+		deleteAuditsButtonClicked: deleteCertifications,
 		certViewerClicked: showViewer,
   },
 

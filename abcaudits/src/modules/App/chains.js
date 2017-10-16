@@ -7,7 +7,6 @@ import Promise from 'bluebird';
 import signatures from 'fpad-signatures'
 import prvKey from '../../prvKey.js'
 import pubKey from '../../pubKey.js'
-import {setClient} from '../ClientPanel/chains.js'
 var agent = require('superagent-promise')(require('superagent'), Promise);
 
 export let closeViewer = [
@@ -38,17 +37,17 @@ export let signAudit = [
 export let addCertification = [
   addRandomCert, {
     success: [
-      set(state`client_panel.clients.${props`clientId`}.certifications.${props`id`}.audit`, props`audit`),
-      set(state`app.view.certifications.${props`id`}`, {selected: false}),
+      set(state`client_panel.clients.${props`clientId`}.certifications.${props`certid`}.audit`, props`audit`),
+      set(state`app.view.certifications.${props`certid`}`, {selected: false}),
     ],
     error: [],
   },
 ] 
 
-export let deleteAudits = [
-  deleteSelectedAudits, {
+export let deleteCertifications = [
+  deleteSelectedCertifications, {
     success: [
-      setClient, //use this to reset visible certifications
+			unsetCerts,
     ],
     error: [],
   }
@@ -93,22 +92,29 @@ function generateAuditSignature({state, props, path}) {
   })
 }
 
-function deleteSelectedAudits({state, props, path}) {
+function deleteSelectedCertifications({state, props, path}) {
   let domain = state.get('app.oada_domain')
-  let clientId = state.get('client_panel.selected_client')
-  let selectedCertifications = _.selectBy(state.get(`app.view.certifications`), 'selected')
-  return Promise.map(selectedCertifications, (key) => {
-    return agent('DELETE', domain+'/bookmarks/fpad/clients/'+clientId+'/certifications/'+key)
+	let id = state.get('client_panel.selected_client')
+	let selectedCerts = []
+	let certs = state.get(`app.view.certifications`)
+	Object.keys(certs).forEach((key) => {
+		if (certs[key].selected) selectedCerts.push(key)
+	})
+  return Promise.map(selectedCerts, (key) => {
+    return agent('DELETE', domain+'/bookmarks/fpad/clients/'+id+'/certifications/'+key)
     .set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
     .end()
-    .then(() => {
-      return agent('PUT', domain+'/resources/'+key)
-      .set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
-      .end()
-    })
   }).then(() => {
-    return path.success({selectedCertifications})
-  })
+		return path.success({deletedCerts:selectedCerts})
+	})
+}
+
+function unsetCerts({state, props}) {
+	let clientId = state.get('client_panel.selected_client')
+	props.deletedCerts.forEach(key => {
+		state.unset(`client_panel.clients.${clientId}.certifications.${key}`)
+		state.unset(`app.view.certifications.${key}`)
+	})
 }
 
 function updateCerts({state, props, path}) {
@@ -164,7 +170,7 @@ function addRandomCert({state, props, path}) {
 	let certid;
   return agent('POST', domain+'/resources')
   .set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
-  .set('Content-Type', 'application/vnd.fpad.certifications.globalgap.1+json')
+  .set('Content-Type', 'application/vnd.fpad.audit.globalgap.1+json')
   .send(audit)
   .end()
 	.then((response) => {
@@ -173,7 +179,7 @@ function addRandomCert({state, props, path}) {
 		audit._id = 'resources/'+auditid
 		return agent('POST', domain+'/resources')
 		.set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
-		.set('Content-Type', 'application/vnd.fpad.certifications.globalgap.1+json')
+		.set('Content-Type', 'application/vnd.fpad.certification.globalgap.1+json')
 		.send({audit: {_id:'resources/'+auditid, _rev: '0-0'}})
 		.end()
 		.then((response) => {
