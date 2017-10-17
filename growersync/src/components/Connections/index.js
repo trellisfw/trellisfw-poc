@@ -26,7 +26,7 @@ class Connections extends React.Component {
     var i=0;
     return _.map(this.props.connections, (connection) => {
       i++;
-      return <div key={i}><Connection /><Divider /></div>
+      return <div key={i}><Connection connection={connection} /><Divider /></div>
     });
   }
   render() {

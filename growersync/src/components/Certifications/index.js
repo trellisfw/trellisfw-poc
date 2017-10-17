@@ -23,6 +23,7 @@ export default connect({
   certifications: state`App.model.certifications`,
   selectedYear: state`Certifications.view.selectedYear`,
   yearClicked: signal`Certifications.yearClicked`,
+
   sharingDialogOpen: state`SharingDialog.open`,
 	shareButtonClicked: signal`SharingDialog.shareButtonClicked`,
 },

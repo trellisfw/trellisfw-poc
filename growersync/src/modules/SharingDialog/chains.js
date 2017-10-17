@@ -12,6 +12,11 @@ export let doneSharing = [
 ]
 
 export let showSharingDialog = [
+  loadSharingMeta,
+  {
+    success: [],
+    error: []
+  },
   toggle(state`SharingDialog.open`),
 ]
 
@@ -43,6 +48,38 @@ export let addUser = [
 		],
 	}
 ]
+
+
+function loadSharingMeta({state, props, path}) {
+  return axios({
+    method: 'get',
+    url: oadaDomain+'/bookmarks/fpad/certifications/_meta',
+    headers: {
+      'Authorization': 'Bearer '+state.get('UserProfile.user.token'),
+    },
+  }).then((res) => {
+    //Now get names of users from their ids
+    let meta = res.data
+    // Get each permissioned user (we need their names)
+    state.set('SharingDialog.shared_users', {});
+    if (!meta._permissions) return;
+    return Promise.map(Object.keys(meta._permissions), (user) => {
+      return axios({
+        method:'GET',
+        url: oadaDomain+'/'+user,
+        headers: {
+          'Authorization': 'Bearer '+state.get('UserProfile.user.token'),
+        }
+      }).then((res) => {
+        state.set('SharingDialog.shared_users.'+user, res.data);
+      });
+    }).then(() => {
+      return path.success({})
+    })
+  }).catch((error) => {
+    return path.error({error})
+  });
+}
 
 function createClientUser({state, props, path}) {
 	let oidc = {
