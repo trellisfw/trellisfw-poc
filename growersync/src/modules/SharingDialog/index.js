@@ -11,10 +11,11 @@ export default {
     open: false,
     trellis_domain_text: '',
 		username_text: '',
+		shared_users: {},
   },
 
   signals: {
-    shareClientButtonClicked: showSharingDialog, 
+    shareButtonClicked: showSharingDialog, 
     sharingDialogDoneClicked: doneSharing, 
     usernameTextChanged: setUsernameText,
     urlTextChanged: setUrlText,

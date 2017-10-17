@@ -15,10 +15,13 @@ import {
 import styles from './index.module.css'
 
 import CertCard from '../../common/components/CertCard'
+import SharingDialog from '../../common/components/SharingDialog'
 
 export default connect({
   certifications: state`App.model.certifications`,
 	mode: state`App.view.main.mode`,
+	sharingDialogOpen: state`SharingDialog.open`,
+
 	shareButtonClicked: signal`SharingDialog.shareButtonClicked`,
 },
 
@@ -36,7 +39,8 @@ class Certifications extends React.Component {
     })
 
     return (
-      <div className={styles.root}>
+			<div className={styles.root}>
+				{this.props.sharingDialogOpen ? <SharingDialog /> : null}
         <div className={styles.leftPanel}>
           <Table>
             <TableHeader

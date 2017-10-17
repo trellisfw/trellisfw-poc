@@ -1,21 +1,22 @@
 import React from 'react'
-import {connect} from '@cerebral/react'
+import {connect} from 'cerebral/react'
 import {state, signal} from 'cerebral/tags'
 import { Chip, IconButton, TextField, Dialog, FlatButton } from 'material-ui'
 // eslint-disable-next-line
 import styles from './styles.css'
 
 export default connect({
-  open: state`sharing_dialog.open`,
-	usernameText: state`sharing_dialog.username_text`,
-	urlText: state`sharing_dialog.trellis_domain_text`,
+  open: state`SharingDialog.open`,
+	usernameText: state`SharingDialog.username_text`,
+	urlText: state`SharingDialog.trellis_domain_text`,
 	client: state`client_panel.clients.${state`client_panel.selected_client`}`,
-	addUserError: state`sharing_dialog.add_user_error`,
+	addUserError: state`SharingDialog.add_user_error`,
+	sharedUsers: state`SharingDialog.shared_users`,
 
-  sharingDialogDone: signal`sharing_dialog.sharingDialogDoneClicked`,
-  urlTextChanged: signal`sharing_dialog.urlTextChanged`,
-  usernameTextChanged: signal`sharing_dialog.usernameTextChanged`,
-	addUserButtonClicked: signal`sharing_dialog.addUserButtonClicked`
+  sharingDialogDone: signal`SharingDialog.sharingDialogDoneClicked`,
+  urlTextChanged: signal`SharingDialog.urlTextChanged`,
+  usernameTextChanged: signal`SharingDialog.usernameTextChanged`,
+	addUserButtonClicked: signal`SharingDialog.addUserButtonClicked`
 },
 
 class SharingDialog extends React.Component {
@@ -32,13 +33,12 @@ class SharingDialog extends React.Component {
 
     return (
       <Dialog
-        title={"Sharing for "+this.props.client.name}
         actions={actions}
         modal={false}
         open={this.props.open}
         onRequestClose={()=> {this.props.sharingDialogCancelled({})}}
 			>
-				<p>{'Who should be able to view '+this.props.client.name+'\'s data?'}</p>
+      <p>{'Who would you like to share these certifications with?'}</p>
 				<div className='sharing-dialog-user-entry'>
 	        <TextField
 		        hintText="gary@gmail.com..."
@@ -70,12 +70,12 @@ class SharingDialog extends React.Component {
 				<div>
 					<p>Currently shared with: </p>
 					<div className='share-dialog-shared users'>
-						{this.props.client._meta._permissions ? Object.keys(this.props.client._meta._permissions).map((u) => 
-							<Chip
+						{Object.keys(this.props.sharedUsers).map((u) => 
+							<chip
 								key={'shared-users-'+u}>
-								{this.props.client._meta._permissions[u].name || this.props.client._meta._permissions[u].oidc.username}
-							</Chip>
-						) : null}
+								{this.props.sharedUsers[u].name || this.props.sharedUsers[u].oidc.username}
+							</chip>
+						)}
 					</div>
 				</div>
       </Dialog>
