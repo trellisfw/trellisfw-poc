@@ -7,13 +7,10 @@
 .row {
   cursor: pointer;
 }
-.sharing-dialog-add-user-button {
+.sharing-dialog-add-user {
 	display: flex;
 	align-items: center;
 	cursor: pointer;
-}
-.sharing-dialog-add-user {
-
 }
 .sharing-dialog-user-entry {
 	display:flex;

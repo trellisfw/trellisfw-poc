@@ -69,7 +69,11 @@ function createClientUser({state, props, path}) {
 			},
 		}).then((res) => {
 			return path.success({user:res.data})
+		}).catch((err) => {
+			return path.error({err})
 		})
+	}).catch((err) => {
+		return path.error({err})
 	})
 }
 

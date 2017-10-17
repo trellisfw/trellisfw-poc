@@ -5,7 +5,6 @@ import { FlatButton, Card, IconButton, Checkbox } from 'material-ui'
 import moment from 'moment'
 // eslint-disable-next-line
 import styles from './styles.css'
-import ReactJsonView from 'react-json-view'
 import JSONTree from 'react-json-tree'
 
 export default connect({
@@ -23,7 +22,6 @@ class CertCard extends React.Component {
 
   render() {
 		let date = new moment(this.props.certification.audit.conditions_during_audit.operation_observed_date).format('MMMM D, YYYY')
-		let temp = this.props.certification.audit.signatures
     return (
      <Card className='cert-card'>
        <div className='main-content'>

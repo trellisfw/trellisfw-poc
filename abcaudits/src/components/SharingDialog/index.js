@@ -2,6 +2,8 @@ import React from 'react'
 import {connect} from '@cerebral/react'
 import {state, signal} from 'cerebral/tags'
 import { Chip, IconButton, TextField, Dialog, FlatButton } from 'material-ui'
+// eslint-disable-next-line
+import styles from './styles.css'
 
 export default connect({
   open: state`sharing_dialog.open`,
@@ -39,7 +41,7 @@ class SharingDialog extends React.Component {
 				<p>{'Who should be able to view '+this.props.client.name+'\'s data?'}</p>
 				<div className='sharing-dialog-user-entry'>
 	        <TextField
-		        hintText="gary@mail.com..."
+		        hintText="gary@gmail.com..."
 			      value={this.props.usernameText}
 				    floatingLabelText="username"
 					  onChange={(evt, text)=>{this.props.usernameTextChanged({text})}}
@@ -51,23 +53,20 @@ class SharingDialog extends React.Component {
 						onChange={(evt, text)=>{this.props.urlTextChanged({text})}}
 					/>
 					<div
-						className='sharing-dialog-add-user'>
-						<div
-							onTouchTap={() => this.props.addUserButtonClicked({})}      
-							className='sharing-dialog-add-user-button'>
-							<IconButton        
-								disabled={(this.props.urlText === '') || (this.props.usernameText === '')}
-								className='client-panel-share-button'                          
-								iconClassName="material-icons">add_circle
-							</IconButton>
-							<p>Add user</p>
-						</div>
-						{this.props.addUserError ? 
-							<p className='add-user-error'>{this.props.addUserError}</p> 
-							: null
-						}
+						className='sharing-dialog-add-user'
+						onTouchTap={() => this.props.addUserButtonClicked({})}>
+						<IconButton        
+							disabled={(this.props.urlText === '') || (this.props.usernameText === '')}
+							className='client-panel-share-button'
+							iconClassName="material-icons">add_circle
+						</IconButton>
+						<p>Add user</p>
 					</div>
 				</div>
+				{this.props.addUserError ? 
+					<p className='add-user-error'>{this.props.addUserError}</p> 
+					: null
+				}
 				<div>
 					<p>Currently shared with: </p>
 					<div className='share-dialog-shared users'>
