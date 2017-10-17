@@ -4,6 +4,7 @@ import TopBar from './modules/TopBar'
 import Connections from './modules/Connections'
 import UserProfile from './modules/UserProfile'
 import Certifications from './modules/Certifications'
+import SharingDialog from './modules/SharingDialog';
 import websocket from './common/providers/websocket';
 
 import {devtoolsPort} from './config';
@@ -20,7 +21,8 @@ export default Controller({
   devtools: Devtools && Devtools({
     host: 'localhost:'+devPort
   }),
-  modules: {
+	modules: {
+		SharingDialog,
     App,
     TopBar,
     Connections,

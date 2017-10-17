@@ -1,0 +1,21 @@
+.rowtext {
+  display: flex;
+}
+.category-title {
+  flex: 1;
+}
+.row {
+  cursor: pointer;
+}
+.sharing-dialog-add-user {
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+}
+.sharing-dialog-user-entry {
+	display:flex;
+	align-items: center;
+}
+.add-user-error {
+	color: #ff0000;
+}

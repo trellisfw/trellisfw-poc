@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'cerebral/react'
-import {state} from 'cerebral/tags'
+import {state, signal} from 'cerebral/tags'
 import { Divider, IconButton } from 'material-ui'
 
 import {
@@ -18,7 +18,8 @@ import CertCard from '../../common/components/CertCard'
 
 export default connect({
   certifications: state`App.model.certifications`,
-  mode: state`App.view.main.mode`,
+	mode: state`App.view.main.mode`,
+	shareButtonClicked: signal`SharingDialog.shareButtonClicked`,
 },
 
 class Certifications extends React.Component {
@@ -67,7 +68,9 @@ class Certifications extends React.Component {
               iconClassName="material-icons">delete
             </IconButton>
             <IconButton
-              iconClassName="material-icons">group
+							className='share-button'
+							onTouchTap={()=>{this.props.shareButtonClicked({})}}
+							iconClassName="material-icons">group
             </IconButton>
           </div>
           <Divider/>
