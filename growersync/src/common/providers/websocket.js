@@ -18,6 +18,9 @@ function websocketClient(context, config, promise) {
       promise.resolve();
       sendMessages();
     }
+    socket.onclose = function(event) {
+
+    }
     socket.onmessage = function(event) {
       var response = JSON.parse(event.data);
       //Look for id in httpCallbacks
@@ -57,7 +60,6 @@ function websocketClient(context, config, promise) {
             let signalPath = watchSignals[response.requestId].signalPath;
             let signal = context.controller.getSignal(signalPath);
             if (signal == null) throw new Error('Signal at path `'+signalPath+'` is not defined.');
-            console.log('Signal', signalPath);
             signal({response});
           }
         }

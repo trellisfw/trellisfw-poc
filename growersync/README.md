@@ -1,13 +1,7 @@
 
 TODO:
 ---
-    - Add logos/names to connection list (hardcode) based on url
-
-
-    - Why aren't shared users loaded?
-      - Need to get the meta from certs
-
-    - Merge audits in UI based on (what are the determining factors again?)
+    DONE - Merge audits in UI based on (what are the determining factors again?)
       - This component will wrap Sam's CertCard
       - Organization, product, operation
         - Product: /scope/products_observed/0/name (merge of alpha order?)
@@ -15,21 +9,13 @@ TODO:
         - Operation: /scope/operations/0/operation_type (merge of alpha order?)
 
 
-    - Pull authorizated apps list from GET @ /authorizations
+    DONE - Pull authorizated apps list from GET @ /authorizations
       - Fill in info from software statement
       - Don't show expired apps (time is in seconds)
-
-    - Load everything after login (not just on app mounted)
-
-
+      - xxxx.client.client_name
 
     - Received counters for connections
-
-
     - Have connections resolve oada domain from well-known
-
-
-
 
 
     - Add delete button for new connections

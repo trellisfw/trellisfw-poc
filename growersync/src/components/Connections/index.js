@@ -9,10 +9,12 @@ import styles from './index.module.css'
 
 import NewConnection from '../../common/components/NewConnection';
 import Connection from '../../common/pure-components/Connection';
+import AuthorizedApp from '../../common/pure-components/AuthorizedApp';
 
 export default connect({
   newConnections: state`Connections.newConnections`,
   connections: state`Connections.connections`,
+  authorizedApps: state`Connections.authorizedApps`,
   addConnectionClicked: signal`Connections.addConnectionClicked`
 },
 
@@ -29,9 +31,17 @@ class Connections extends React.Component {
       return <div key={i}><Connection connection={connection} /><Divider /></div>
     });
   }
+  getAuthorizedApps = () => {
+    var i=0;
+    return _.map(this.props.authorizedApps, (app) => {
+      i++;
+      return <div key={i}><AuthorizedApp app={app} /><Divider /></div>
+    });
+  }
   render() {
     var connections = this.getConnections();
     var newConnections = this.getNewConnections();
+    var authorizedApps = this.getAuthorizedApps();
     return (
       <div className={styles.root}>
         <div className={styles.mainPanel}>
@@ -42,6 +52,7 @@ class Connections extends React.Component {
           </div>
           <Divider/>
           {connections}
+          {authorizedApps}
           {newConnections}
           {(connections.length > 0 || newConnections.length > 0) ? <Divider /> : null}
           <div className={styles.addConnectionContainer}>

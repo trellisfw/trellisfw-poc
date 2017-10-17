@@ -17,6 +17,8 @@ function loadCertifications({path, state}) {
       //Load the certifications
       return get.func(arguments)({path: '/bookmarks/fpad/certifications/'+key+'/audit'}).then(({response}) => {
         certifications[key] = response.data;
+      }).catch((err) => {
+        console.log('Error. Failed to load certification', key);
       });
     }, {concurrency: 5});
   }).then(() => {

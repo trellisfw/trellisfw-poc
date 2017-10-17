@@ -11,5 +11,6 @@ export default [
   signOutOfOADA,
   unset(state`UserProfile.user`),
   set(state`App.model.certifications`, {}),
-  set(state`Connections.connections`, {})
+  set(state`Connections.connections`, {}),
+  set(state`Connections.authorizedApps`, {})
 ]

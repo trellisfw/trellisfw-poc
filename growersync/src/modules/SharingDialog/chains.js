@@ -1,6 +1,7 @@
 import { unset, set, toggle } from 'cerebral/operators'
 import {state, props } from 'cerebral/tags'
 import axios from 'axios';
+import Promise from 'bluebird';
 import md5 from 'md5';
 import {oadaDomain, sharePassword} from '../../config';
 
@@ -71,13 +72,14 @@ function loadSharingMeta({state, props, path}) {
           'Authorization': 'Bearer '+state.get('UserProfile.user.token'),
         }
       }).then((res) => {
+        console.log('res.data', res.data);
         state.set('SharingDialog.shared_users.'+user, res.data);
       });
-    }).then(() => {
-      return path.success({})
-    })
+    });
+  }).then(() => {
+    return path.success({});
   }).catch((error) => {
-    return path.error({error})
+    return path.error({error});
   });
 }
 

@@ -2,6 +2,7 @@ import watchCertifications from '../../Certifications/actions/watchCertification
 import loadCertifications from '../../Certifications/actions/loadCertifications';
 import loadConnections from '../../Connections/actions/loadConnections';
 import watchConnections from '../../Connections/actions/watchConnections';
+import loadAuthorizedApps from '../../Connections/actions/loadAuthorizedApps';
 import configureWebsocketProvider from '../actions/configureWebsocketProvider';
 import initFpadResource from '../actions/initFpadResource';
 
@@ -11,5 +12,6 @@ export default [
   watchCertifications,
   loadCertifications,
   watchConnections,
-  loadConnections
+  loadConnections,
+  loadAuthorizedApps
 ]
