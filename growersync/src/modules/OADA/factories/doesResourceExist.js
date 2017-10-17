@@ -18,7 +18,7 @@ function checkIfExists({domain, token, path, args}) {
     return true;
   }).catch((error) => {
     if (error.response && error.response.status === 404) return false;
-    console.log('here', error);
+    console.log('Error', error);
     throw error;
   });
 }
@@ -33,7 +33,8 @@ function doesResourceExistFactory ({path: resPath, domain, token, funcMode}) {
       if (exists) return path.yes();
       return path.no();
     }).catch((error) => {
-      if (path) return path.error({error});
+      console.log('Error', error.response);
+      if (path && path.error) return path.error({error});
       throw error;
     });
   }
