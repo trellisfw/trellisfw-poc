@@ -57,7 +57,7 @@ function createClientUser({state, props, path}) {
 			'Authorization': 'Bearer '+state.get('user_profile.user.token'),
 		},
 		data: {
-			username: md5(oidc),
+			username: md5(JSON.stringify(oidc)),
 			oidc
     },
   }).then((response) => {

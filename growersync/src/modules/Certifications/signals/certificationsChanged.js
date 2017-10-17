@@ -3,8 +3,11 @@ import {debounce} from 'cerebral/operators'
 import loadCertificationsByIds from '../actions/loadCertificationsByIds'
 import removeCertificationsFromState from '../actions/removeCertificationsFromState'
 
-function certificationsChanged ({props, path}) {
+function certificationsChanged ({props, path, state}) {
   if (props.response.merge) {
+    if (_.get(props.response.merge, '_meta._permissions') != null) {
+      //TODO reload the meta
+    }
     //Get all the ids of the certifications that have updated revs
     let certIds = _.filter(Object.keys(props.response.merge), key=>(_.startsWith(key, '_')===false));
     return path.merge({ids: certIds});

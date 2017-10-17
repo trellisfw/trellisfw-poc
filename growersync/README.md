@@ -3,18 +3,13 @@ TODO:
 ---
     - Load everything after login (not just on app mounted)
     - Fix Year panel in UI
-    - Add Sam's CertCard for displaying certs once it is complete.
-    - Change `loadCertifications` to load .audit once new data structure is complete.
 
     - Merge audits in UI based on (what are the determining factors again?)
       - This component will wrap Sam's CertCard
-
-    - Websockets to GrowerSync /bookmarks/fpad/certifications
-
-    - Test with alexs new webhooks
-      - Turn back on /certifications creation
-
-    - Add logout code `let img = (new Image()).src = domain+"/oadaauth/logout";`
+      - Organization, product, operation
+        - Product: /scope/products_observed/0/name (merge of alpha order?)
+        - Organization: /organization/organizationid/id (or: /organization/name)
+        - Operation: /scope/operations/0/operation_type (merge of alpha order?)
 
     - Have connections resolve oada domain from well-known
     - Add logos/names to connection list (hardcode) based on url
@@ -22,6 +17,9 @@ TODO:
     - Pull authorizated apps list from GET @ /authorizations
       - Fill in info from software statement
       - Don't show expired apps (time is in seconds)
+
+    - Why aren't shared users loaded?
+      - Need to get the meta from certs
 
     - Add delete button for new connections
     - Add delete button for existing connections

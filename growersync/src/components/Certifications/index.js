@@ -17,11 +17,14 @@ import moment from 'moment'
 import styles from './index.module.css'
 
 import CertCard from '../../common/components/CertCard'
+import SharingDialog from '../../common/components/SharingDialog'
 
 export default connect({
   certifications: state`App.model.certifications`,
   selectedYear: state`Certifications.view.selectedYear`,
-  yearClicked: signal`Certifications.yearClicked`
+  yearClicked: signal`Certifications.yearClicked`,
+  sharingDialogOpen: state`SharingDialog.open`,
+	shareButtonClicked: signal`SharingDialog.shareButtonClicked`,
 },
 
 class Certifications extends React.Component {
@@ -112,6 +115,7 @@ class Certifications extends React.Component {
   render() {
     return (
       <div className={styles.root}>
+        {this.props.sharingDialogOpen ? <SharingDialog /> : null}
         <div className={styles.leftPanel}>
           {this.renderYears()}
         </div>
@@ -121,10 +125,9 @@ class Certifications extends React.Component {
               {'Current Certifications'}
             </div>
             <IconButton
-              iconClassName="material-icons">delete
-            </IconButton>
-            <IconButton
-              iconClassName="material-icons">group
+							className='share-button'
+							onTouchTap={()=>{this.props.shareButtonClicked({})}}
+							iconClassName="material-icons">group
             </IconButton>
           </div>
           <Divider/>

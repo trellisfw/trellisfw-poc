@@ -146,19 +146,28 @@ function updateCerts({state, props, path}) {
 		})
 		return agent('POST', domain+'/resources')
 		.set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
-		.set('Content-Type', 'application/vnd.fpad.certifications.globalgap.1+json')
+		.set('Content-Type', 'application/vnd.fpad.audit.globalgap.1+json')
 		.send(audit)
 		.end()
 		.then((response) => {
 			let id = response.headers.location.split('/')
 			id = id[id.length-1]
 			audit._id = 'resources/'+id
-			newAudits[id] = audit
-			return agent('PUT', domain+'/bookmarks/fpad/clients/'+clientId+'/certifications/'+id)
+			return agent('POST', domain+'/resources')
 			.set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
-			.set('Content-Type', 'application/vnd.fpad.certifications.globalgap.1+json')
-			.send({_id:'resources/'+id, _rev: '0-0'})
+			.set('Content-Type', 'application/vnd.fpad.certification.globalgap.1+json')
+			.send({audit: { _id: id, _rev: '0-0'}})
 			.end()
+			.then((res) => {
+				let certid = response.headers.location.split('/')
+				certid = certid[certid.length-1]
+				newAudits[certid] = audit
+				return agent('PUT', domain+'/bookmarks/fpad/clients/'+clientId+'/certifications/'+certid)
+				.set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
+				.set('Content-Type', 'application/vnd.fpad.certification.globalgap.1+json')
+				.send({_id:'resources/'+certid, _rev: '0-0'})
+				.end()
+			})
 		})
 	}).then(() => {
 		return path.success({newAudits, clientId})
