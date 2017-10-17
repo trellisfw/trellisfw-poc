@@ -1,7 +1,6 @@
 import {sequence} from 'cerebral'
 import get from '../../OADA/factories/get';
 import _ from 'lodash';
-import { state } from 'cerebral/tags'
 
 function parseAuthorizedApps({props, state}) {
   //Add connections to state

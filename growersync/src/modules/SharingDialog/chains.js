@@ -72,7 +72,6 @@ function loadSharingMeta({state, props, path}) {
           'Authorization': 'Bearer '+state.get('UserProfile.user.token'),
         }
       }).then((res) => {
-        console.log('res.data', res.data);
         state.set('SharingDialog.shared_users.'+user, res.data);
       });
     });
@@ -93,7 +92,6 @@ function createClientUser({state, props, path}) {
     oidc
   };
   if (sharePassword) data.password = sharePassword;
-  console.log('data', data);
 	return axios({
 		method: 'post',
 		url: oadaDomain+'/users',
