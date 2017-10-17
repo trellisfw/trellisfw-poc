@@ -9,5 +9,6 @@
   font-family: sans-serif;
 }
 .page {
+  flex-grow: 1;
   display: flex;
 }

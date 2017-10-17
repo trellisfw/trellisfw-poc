@@ -45,16 +45,18 @@ class TopBar extends React.Component {
           </Popover>
           {
 						this.props.user ?
-              <div ref='profileContainer' className={styles.profileContainer} onClick={()=>this.openPopup()}>
-                <IconButton iconClassName="material-icons">
-                  account_circle
-                </IconButton>
-                <div>{this.props.user.name}</div>
+              <div ref='profileContainer' className={styles.profileContainer}>
+                <div className={styles.signIn} onTouchTap={()=>{this.openPopup()}}>
+                  <IconButton iconClassName="material-icons">
+                    account_circle
+                  </IconButton>
+                  <div>{this.props.user.name}</div>
+                </div>
               </div>
 						:
               <div className={styles.profileContainer}>
-  							<div className={styles.signIn} onTouchTap={()=>{this.props.signIn({})}}>
-  								Sign in
+  							<div className={styles.signIn} style={{marginTop: 7}} onTouchTap={()=>{this.props.signIn({})}}>
+  								{'Sign in'}
   							</div>
               </div>
 					}

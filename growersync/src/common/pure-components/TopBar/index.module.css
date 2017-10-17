@@ -17,8 +17,13 @@
 }
 .profileContainer {
   display: flex;
-  align-items: center;
   justify-content: flex-end;
+  margin-right: 7px;
+}
+.profileContainer > .signIn {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 }
 .modes {
   display: flex;
