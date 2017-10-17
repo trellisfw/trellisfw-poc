@@ -33,5 +33,8 @@ export const websiteDomain = toExport.websiteDomain;
 export const redirectDomain = toExport.websiteDomain + '/oauth2/redirect.html';
 export const metadata = toExport.metadata;
 export const devtoolsPort = toExport.devtoolsPort;
+export const title = 'Auditor Mining'
+export const description = 'Improving Food Safety through Analytics'
+export const background = '#ffe599'
 
 export default toExport;

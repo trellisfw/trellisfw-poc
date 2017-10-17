@@ -7,6 +7,7 @@ import MainPanel from '../MainPanel'
 import TopBar from '../../common/components/TopBar'
 // eslint-disable-next-line
 import styles from './styles.css'
+import { title, description, background } from '../../config'
 
 export default connect({
 	user: state`user_profile.user`,
@@ -23,8 +24,9 @@ class App extends React.Component {
     return (
       <div className='app'>
 				<TopBar
-          title={'ABC Audits'}
-          description={'Audits done right!'} />
+          style={{backgroundColor: background}}
+          title={title}
+          description={description} />
         <div className='lower'>
           <div className='left-panel'>
 						{this.props.user ? <ClientPanel /> : null }

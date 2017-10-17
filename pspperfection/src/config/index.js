@@ -18,10 +18,15 @@ if (process.env.REACT_APP_PROD_DEV) {
 var toExport =  {...defaults, ...overrides};
 
 export const oadaDomain = toExport.oadaDomain;
+export const sharePassword = toExport.sharePassword;
 export const websiteDomain = toExport.websiteDomain;
 export const redirectDomain = toExport.websiteDomain + '/oauth2/redirect.html';
 export const metadata = toExport.metadata;
 export const devtoolsPort = toExport.devtoolsPort;
 export const defaultNewConnectionURL = toExport.defaultNewConnectionURL;
+export const title = 'PSP Perfection';
+export const background = '#b4a7d6';
+export const description = 'Our own internal system here at PSP Perfection';
+
 
 export default toExport;

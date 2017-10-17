@@ -23,5 +23,8 @@ export const redirectDomain = toExport.websiteDomain + '/oauth2/redirect.html';
 export const metadata = toExport.metadata;
 export const devtoolsPort = toExport.devtoolsPort;
 export const defaultNewConnectionURL = toExport.defaultNewConnectionURL;
+export const title = 'GrowerSync';
+export const description = 'Automatic Data Connections for Growers';
+export const background = '#b6d7a8';
 
 export default toExport;

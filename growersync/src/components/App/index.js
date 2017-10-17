@@ -7,6 +7,7 @@ import styles from './index.module.css'
 import TopBar from '../../common/components/TopBar'
 import Certifications from '../Certifications';
 import Connections from '../Connections';
+import {title, description, background} from '../../config'
 
 export default connect({
   mode: state`TopBar.mode`,
@@ -29,9 +30,9 @@ class App extends React.Component {
     return (
       <div className={styles.app}>
         <TopBar
-          style={{minHeight: 100}}
-          title={'GrowerSync'}
-          description={'Automatic Data Connections for Growers'} />
+          style={{minHeight: 100, backgroundColor: background}}
+          title={title}
+          description={description} />
         <div className={styles.page}>
           {page}
         </div>
