@@ -2,9 +2,9 @@ var overrides = require('./config.dev.js').default;
 
 //----------- Define default configs here ----------
 
-export const webhookType = 'alex'; //options: `oada-put`, `alex`
+export const sharePassword = '$2a$10$l64QftVz6.7KR5BXNc29IORcuhcay48jl9f5jb4dOneuGMPcrkCLC';
 const defaults = {
-  webhookType
+  sharePassword
 };
 
 //--------------------------------------------------

@@ -2,7 +2,7 @@ import { unset, set, toggle } from 'cerebral/operators'
 import {state, props } from 'cerebral/tags'
 import axios from 'axios';
 import md5 from 'md5';
-import {oadaDomain} from '../../config';
+import {oadaDomain, sharePassword} from '../../config';
 
 export let doneSharing = [
   set(state`SharingDialog.trellis_domain_text`, ''),
@@ -49,23 +49,26 @@ function createClientUser({state, props, path}) {
 		username: state.get(`SharingDialog.username_text`),
 		iss: state.get(`SharingDialog.trellis_domain_text`)
 	}
+  let data = {
+    username: md5(JSON.stringify(oidc)),
+    oidc
+  };
+  if (sharePassword) data.password = sharePassword;
+  console.log('data', data);
 	return axios({
 		method: 'post',
 		url: oadaDomain+'/users',
 		headers: {
 			'Content-Type': 'application/vnd.oada.user.1+json',
-			'Authorization': 'Bearer '+state.get('user_profile.user.token'),
+			'Authorization': 'Bearer '+state.get('UserProfile.user.token'),
 		},
-		data: {
-			username: md5(oidc),
-			oidc
-    },
+		data
   }).then((response) => {
 		return axios({
 			method: 'get',
 			url: oadaDomain+response.headers.location,
 			headers: {
-				'Authorization': 'Bearer '+state.get('user_profile.user.token'),
+				'Authorization': 'Bearer '+state.get('UserProfile.user.token'),
 			},
 		}).then((res) => {
 			return path.success({user:res.data})
@@ -83,16 +86,19 @@ function addPermissions({state, props, path}) {
     url: oadaDomain+'/bookmarks/fpad/certifications/_meta/_permissions',
     headers: {
       'Content-Type': 'application/vnd.fpad.certifications.1+json',
-      'Authorization': 'Bearer '+state.get('user_profile.user.token'),
+      'Authorization': 'Bearer '+state.get('UserProfile.user.token'),
     },
-    data: { 
+    data: {
       [props.user._id]: {
         read: true,
-        write: true, 
+        write: true,
         owner: false
       }
     }
-	}).then((res) => {
-	  return path.success({user:res.body })
+	}).then((response) => {
+    if (response.status >= 200 && response.status < 300) return path.success({});
+    return path.error({response});
+  }).catch((error) => {
+    return path.error({error});
   })
 }
