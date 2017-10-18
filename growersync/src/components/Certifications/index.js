@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'cerebral/react'
 import {state, signal} from 'cerebral/tags'
 import { Divider, IconButton } from 'material-ui'
+import {tabColor} from '../../config'
 
 import {
   Table,
@@ -125,7 +126,7 @@ class Certifications extends React.Component {
               textAlign: 'center',
               fontSize: 17,
               color: '#fff',
-              backgroundColor: '#009e0f',
+              backgroundColor: tabColor,
               height: 46
             }}>
               Year

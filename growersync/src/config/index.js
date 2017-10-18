@@ -3,8 +3,16 @@ var overrides = require('./config.dev.js').default;
 //----------- Define default configs here ----------
 
 export const sharePassword = '$2a$10$l64QftVz6.7KR5BXNc29IORcuhcay48jl9f5jb4dOneuGMPcrkCLC';
+export const title = 'GrowerSync';
+export const description = 'Automatic Data Connections for Growers';
+export const background = '#b6d7a8';
+export const tabColor = '#039100';
 const defaults = {
-  sharePassword
+  sharePassword,
+  title,
+  description,
+  background,
+  tabColor
 };
 
 //--------------------------------------------------
@@ -23,8 +31,5 @@ export const redirectDomain = toExport.websiteDomain + '/oauth2/redirect.html';
 export const metadata = toExport.metadata;
 export const devtoolsPort = toExport.devtoolsPort;
 export const defaultNewConnectionURL = toExport.defaultNewConnectionURL;
-export const title = 'GrowerSync';
-export const description = 'Automatic Data Connections for Growers';
-export const background = '#b6d7a8';
 
 export default toExport;

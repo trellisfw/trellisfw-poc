@@ -3,7 +3,7 @@ import styles from './index.module.css'
 import { IconButton, MenuItem, Menu } from 'material-ui'
 import Popover from 'material-ui/Popover';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
+import {tabColor} from '../../../config'
 
 class TopBar extends React.Component {
   constructor(props) {
@@ -63,11 +63,13 @@ class TopBar extends React.Component {
           {
             this.props.mode ?
               <div className={styles.modes}>
-                <div className={this.props.mode === 'certifications' ? classnames(styles.mode, styles.highlighted) : styles.mode}
+                <div style={(this.props.mode === 'certifications') ? {backgroundColor: tabColor, color: '#fff'} : null}
+                  className={styles.mode}
                   onClick={()=>{this.props.modeClicked({mode: 'certifications'})}}>
                   <u>{'Certifications'}</u>
                 </div>
-                <div className={this.props.mode === 'connections' ? classnames(styles.mode, styles.highlighted) : styles.mode }
+                <div style={(this.props.mode === 'connections') ? {backgroundColor: tabColor, color: '#fff'} : null}
+                  className={styles.mode}
                   onClick={()=>{this.props.modeClicked({mode: 'connections'})}}>
                   <u>{'Connections'}</u>
                 </div>

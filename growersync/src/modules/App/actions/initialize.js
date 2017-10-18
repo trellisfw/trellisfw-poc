@@ -5,13 +5,20 @@ import watchConnections from '../../Connections/actions/watchConnections';
 import loadAuthorizedApps from '../../Connections/actions/loadAuthorizedApps';
 import configureWebsocketProvider from '../actions/configureWebsocketProvider';
 import initFpadResource from '../actions/initFpadResource';
+import { equals } from 'cerebral/operators'
+import {props} from 'cerebral/tags'
 
 export default [
   configureWebsocketProvider,
   initFpadResource,
-  watchCertifications,
-  loadCertifications,
-  watchConnections,
-  loadConnections,
-  loadAuthorizedApps
+  equals(props`error`), {
+    true: [],
+    otherwise: [
+      watchCertifications,
+      loadCertifications,
+      watchConnections,
+      loadConnections,
+      loadAuthorizedApps
+    ]
+  }
 ]

@@ -33,7 +33,6 @@ function doesResourceExistFactory ({path: resPath, domain, token, funcMode}) {
       if (exists) return path.yes();
       return path.no();
     }).catch((error) => {
-      console.log('Error', error.response);
       if (path && path.error) return path.error({error});
       throw error;
     });
