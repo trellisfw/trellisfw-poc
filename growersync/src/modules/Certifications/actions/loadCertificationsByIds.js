@@ -10,6 +10,8 @@ function loadCertificationsByIds({state, props, path, websocket}) {
       path: '/bookmarks/fpad/certifications/'+key+'/audit'
     }).then(({response}) => {
       state.set('App.model.certifications.'+key, response.data);
+    }).catch((err) => {
+      console.log('Error. Failed to load certification', key);
     });
   }, {concurrency: 5}).then(() => {
     return {};
