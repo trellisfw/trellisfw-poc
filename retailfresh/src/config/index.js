@@ -26,5 +26,5 @@ export const defaultNewConnectionURL = toExport.defaultNewConnectionURL;
 export const title = 'RetailFresh';
 export const description = 'We sell retail stuff...fresh!';
 export const background = '#ea9999';
-
+export const sharePassword = '$2a$10$l64QftVz6.7KR5BXNc29IORcuhcay48jl9f5jb4dOneuGMPcrkCLC';
 export default toExport;
