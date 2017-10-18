@@ -9,7 +9,7 @@ export default {
 
     },
     view: {
-      selectedYear: null
+      selectedYear: 'All'
     }
   },
 

@@ -1,25 +1,22 @@
 
 TODO:
 ---
-    - Load everything after login (not just on app mounted)
-    - Fix Year panel in UI
-
-    - Merge audits in UI based on (what are the determining factors again?)
+    DONE - Merge audits in UI based on (what are the determining factors again?)
       - This component will wrap Sam's CertCard
       - Organization, product, operation
         - Product: /scope/products_observed/0/name (merge of alpha order?)
         - Organization: /organization/organizationid/id (or: /organization/name)
         - Operation: /scope/operations/0/operation_type (merge of alpha order?)
 
-    - Have connections resolve oada domain from well-known
-    - Add logos/names to connection list (hardcode) based on url
 
-    - Pull authorizated apps list from GET @ /authorizations
+    DONE - Pull authorizated apps list from GET @ /authorizations
       - Fill in info from software statement
       - Don't show expired apps (time is in seconds)
+      - xxxx.client.client_name
 
-    - Why aren't shared users loaded?
-      - Need to get the meta from certs
+    - Received counters for connections
+    - Have connections resolve oada domain from well-known
+
 
     - Add delete button for new connections
     - Add delete button for existing connections
@@ -37,6 +34,14 @@ How to logout of OAuth:
 ----
  - Go to: https://api.abcaudits.fpad.io/oadaauth/logout
 ---
+
+- Pete Packer
+
+- Rick (Retail fresh)
+
+- Dian distributor ()
+
+
 
 
 Webhooks

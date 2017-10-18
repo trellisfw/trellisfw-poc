@@ -11,6 +11,9 @@ export default {
     },
     newConnections: {
 
+    },
+    authorizedApps: {
+
     }
   },
   signals: {

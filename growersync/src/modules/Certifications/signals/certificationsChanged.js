@@ -29,7 +29,6 @@ function gatherChanges({props, state}) {
 function executeChanges({state}) {
   var certIds = _.values(state.get('Certifications.pendingChanges') || {});
   state.set('Certifications.pendingChanges', {});
-  console.log('certIds', certIds);
   return {ids: certIds};
 }
 
