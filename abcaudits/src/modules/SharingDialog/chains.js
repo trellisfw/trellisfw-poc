@@ -1,22 +1,13 @@
-import randCert from 'fpad-rand-cert'
-import { set, when, toggle } from 'cerebral/operators'
-import {state, props, string, path} from 'cerebral/tags'
-import _ from 'lodash'
-import uuid from 'uuid';
-import Promise from 'bluebird';
+import { unset, set, toggle } from 'cerebral/operators'
+import {state, props } from 'cerebral/tags'
 import axios from 'axios';
-let agent = require('superagent-promise')(require('superagent'), Promise);
+import md5 from 'md5';
 
 export let doneSharing = [
-  set(state`sharing_dialog.url_text`, ''),
+  set(state`sharing_dialog.trellis_domain_text`, ''),
   set(state`sharing_dialog.username_text`, ''),
-  toggle(state`sharing_dialog.open`),
-]
-
-export let cancelSharing = [
-  set(state`sharing_dialog.url_text`, ''),
-  set(state`sharing_dialog.username_text`, ''),
-  toggle(state`sharing_dialog.open`),
+	toggle(state`sharing_dialog.open`),
+	unset(state`sharing_dialog.add_user_error`),
 ]
 
 export let showSharingDialog = [
@@ -28,66 +19,77 @@ export let setUsernameText = [
 ]
 
 export let setUrlText = [
-  set(state`sharing_dialog.url_text`, props`text`),
+  set(state`sharing_dialog.trellis_domain_text`, props`text`),
 ]
 
 export let addUser = [
 	//try to get current user
 	createClientUser, {
 		success: [
+			set(state`client_panel.clients.${state`client_panel.selected_client`}._meta._permissions.${props`user._id`}`, props`user`),
 		  addPermissions, {
 				success: [
+				  set(state`sharing_dialog.trellis_domain_text`, ''),
+					set(state`sharing_dialog.username_text`, ''),
 	      ],
-				error: [],
+				error: [
+					set(state`sharing_dialog.add_user_error`, 'Unable to share with this user')
+				],
 			},
 		],
-		error: [],
+		error: [
+			set(state`sharing_dialog.add_user_error`, 'User not found with matching username and trellis domain')
+		],
 	}
 ]
 
 function createClientUser({state, props, path}) {
   let domain = state.get('app.oada_domain')
+	let oidc = {
+		username: state.get(`sharing_dialog.username_text`),
+		iss: state.get(`sharing_dialog.trellis_domain_text`)
+	}
 	return axios({
 		method: 'post',
-		url: 'https://'+domain+'/users',
+		url: domain+'/users',
 		headers: {
 			'Content-Type': 'application/vnd.oada.client.1+json',
 			'Authorization': 'Bearer '+state.get('user_profile.user.token'),
 		},
 		data: {
-//                  oadaid: state.get(`client_panel.client_dialog.selected_client`), 
-			username: state.get(`sharing_dialog.username_text`),
-      name: state.get(`sharing_dialog.username_text`),
-      password: 'test'
+			username: md5(JSON.stringify(oidc)),
+			oidc
     },
   }).then((response) => {
-		console.log(response)
 		return axios({
 			method: 'get',
-			url: 'https://'+domain+response.headers.location,
+			url: domain+response.headers.location,
 			headers: {
 				'Authorization': 'Bearer '+state.get('user_profile.user.token'),
 			},
 		}).then((res) => {
-			console.log(res)
-			return path.success({user:res})
+			return path.success({user:res.data})
+		}).catch((err) => {
+			return path.error({err})
 		})
-	  return path.success({})
+	}).catch((err) => {
+		return path.error({err})
 	})
 }
 
 function addPermissions({state, props, path}) {
   let domain = state.get('app.oada_domain')
   let clientId = state.get('client_panel.selected_client')
+	
   return axios({
     method: 'put',
-    url: 'https://'+domain+'/bookmarks/fpad/clients/'+clientId+'/_meta/_permissions',
+    url: domain+'/bookmarks/fpad/clients/'+clientId+'/_meta/_permissions',
     headers: {
       'Content-Type': 'application/vnd.fpad.client.1+json',
       'Authorization': 'Bearer '+state.get('user_profile.user.token'),
     },
     data: { 
-      [props.user._key]: {
+      [props.user._id]: {
         read: true,
         write: true, 
         owner: false

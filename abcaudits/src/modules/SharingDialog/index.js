@@ -9,8 +9,8 @@ import {
 export default {
   state: {
     open: false,
-    url_text: '',
-    username_text: '',
+    trellis_domain_text: '',
+		username_text: '',
   },
 
   signals: {

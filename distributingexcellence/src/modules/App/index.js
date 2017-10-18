@@ -1,30 +1,20 @@
-import {
-  initialize ,
-  addCertification,
-  setClient,
-  toggleCertSelect
-} from './chains.js'
+import mounted from './signals/mounted';
 
 export default {
-  state: {
-    token: '',
+	state: {
     model: {
-      audits: {
+      certifications: {
+
       }
     },
     view: {
-      mode: 'certifications',
-      certifications: {},
-    },
+
+    }
   },
 
   signals: {
-    initialize,
-    addCertButtonClicked: addCertification,
-    clientClicked: setClient,
-    certChecked: toggleCertSelect,
+    mounted
   },
-
   modules: {
 
   },

@@ -1,9 +1,7 @@
 import React from 'react'
-import {connect} from 'cerebral/react'
+import {connect} from '@cerebral/react'
 import {state, signal} from 'cerebral/tags'
-import { Divider, IconButton, Checkbox } from 'material-ui'
-import styles from './styles.css'
-import CertCard from '../CertCard'
+import { IconButton, } from 'material-ui'
 import AddClientDialog from './AddClientDialog'
 import _ from 'lodash'
 import {
@@ -15,12 +13,14 @@ import {
   TableRow,
   TableRowColumn,
 } from 'material-ui/Table';
+// eslint-disable-next-line
+import styles from './styles.css'
 
 export default connect({
   open: state`client_panel.client_dialog.open`,
-  audits: state`app.model.audits`,
   client: state`client_panel.selected_client`,
-  clients: state`client_panel.clients`,
+	clients: state`client_panel.clients`,
+	noClientsError: state`client_panel.no_clients_error`,
 
   initialize: signal`client_panel.initialize`,
   clientClicked: signal`client_panel.clientClicked`,
@@ -34,15 +34,11 @@ class ClientPanel extends React.Component {
     this.props.initialize({});
   }
 
-  render() {
-    let clients = _.map(_.keys(this.props.clients), id => {
-      const c = this.props.clients[id];
-      c.id = id;
-      return c;
-    });
-    clients = _.sortBy(clients, 'name')
+	render() {
 
-    return (
+		return (
+			this.props.noClientsError ? <p className='no-clients-error'>User has no clients</p>
+				:
       <Table
         fixedFooter={true}
         selectable={true}
@@ -63,20 +59,25 @@ class ClientPanel extends React.Component {
         </TableHeader>
         <TableBody
           displayRowCheckbox={false}>
-          {clients.map(c => {
-            return <TableRow 
-              onTouchTap={() => {this.props.clientClicked({id:c.id})}}
-              className={'row'}
-              selected={c.id === this.props.client}
-              key={'client-category-'+c.id}>
-              <TableRowColumn>
-                <div className={'rowtext'}>
-                  <p className={'category-title'}>{c.name}</p>
-                  <p>{`(${Object.keys(c.certifications).filter((k) => {return k.charAt(0) !== '_'}).length})`}</p>
-                </div>
-              </TableRowColumn>
-            </TableRow> }
-          )}
+					{_.sortBy(_.map(_.keys(this.props.clients), id => {
+							const c = this.props.clients[id];
+							c.id = id;
+							return c;
+						}), 'name').map(c =>
+							<TableRow 
+								onTouchTap={() => {this.props.clientClicked({id:c.id})}}
+								className={'row'}
+								selected={c.id === this.props.client}
+								key={'client-category-'+c.id}>
+								<TableRowColumn>
+									<div className={'rowtext'}>
+										<p className={'category-title'}>{c.name}</p>
+										<p>{`(${Object.keys(c.certifications).filter((k) => {return k.charAt(0) !== '_'}).length})`}</p>
+									</div>
+								</TableRowColumn>
+							</TableRow>
+						)
+					}
         </TableBody>
         <TableFooter adjustForCheckbox={false}>
           <TableRow>

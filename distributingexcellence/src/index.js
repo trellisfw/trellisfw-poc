@@ -12,7 +12,7 @@ injectTapEventPlugin();
 render((
   <Container controller={controller}>
     <MuiThemeProvider>
-      <App /> 
+      <App />
     </MuiThemeProvider>
   </Container>
 ), document.querySelector('#root'))

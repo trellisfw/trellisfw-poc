@@ -12,3 +12,10 @@
   display:flex;
   align-items: center;
 }
+.no-clients-error {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: #ff0000;
+	flex:1;
+}

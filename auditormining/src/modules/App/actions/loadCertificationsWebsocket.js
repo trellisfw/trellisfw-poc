@@ -13,21 +13,23 @@ function loadCertificationsWebsocket({state, path, websocket}) {
       headers: {Authorization: 'Bearer '+ state.get('UserProfile.user.token')}
     }).then((res) => {
       //Extract only list of certification ids
-      let certKeys = _.filter(Object.keys(res.data), key=>(_.startsWith(key, '_')===false));
+      if (res.status !== 200) throw res;
+      let certKeys = _.filter(_.keys(res.data), key=>(_.startsWith(key, '_')===false));
       return Promise.map(certKeys, (key) => {
         //Load the certifications
         return websocket.http({
             method: 'GET',
-            url: '/bookmarks/fpad/certifications/'+key,
+            url: '/bookmarks/fpad/certifications/'+key+'/audit',
             headers: {Authorization: 'Bearer '+ state.get('UserProfile.user.token')}
-          }).then((res) => {
+				}).then((res) => {
+						console.log(res)
             certifications[key] = res.data;
           });
       }, {concurrency: 5});
     }).then(() => {
       return path.success({certifications});
     }).catch((error) => {
-      return path.error({error});
+      return path.error({error: error});
     });
 }
 

@@ -1,20 +1,21 @@
 import {
-  initialize ,
-  addCertification,
-  setClient,
+  initialize,
+	addCertification,
+	updateCertifications,
   toggleCertSelect,
   signAudit,
-  deleteAudits,
+	deleteCertifications,
+	showViewer,
+	closeViewer
 } from './chains.js'
+import {
+	oadaDomain,
+} from '../../config'
 
 export default {
   state: {
-    oada_domain: 'vip3.ecn.purdue.edu',
+    oada_domain: oadaDomain,
     token: '',
-    model: {
-      audits: {
-      }
-    },
     view: {
       mode: 'certifications',
       certifications: {},
@@ -24,9 +25,12 @@ export default {
   signals: {
 		initialize,
     addCertButtonClicked: addCertification,
+    updateCertButtonClicked: updateCertifications,
     certChecked: toggleCertSelect,
     signAuditButtonClicked: signAudit,
-    deleteAuditsButtonClicked: deleteAudits,
+		deleteAuditsButtonClicked: deleteCertifications,
+		certViewerClicked: showViewer,
+		closeViewerClicked: closeViewer,
   },
 
   modules: {

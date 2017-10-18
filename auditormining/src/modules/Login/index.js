@@ -1,10 +1,10 @@
 import connectWithFpadClicked from './signals/connectWithFpadClicked'
 import fpadDomainChanged from './signals/fpadDomainChanged'
-import {fpadDomains} from '../../config.js';
+import {oadaDomain} from '../../config';
 
 export default {
   state: {
-    fpadDomain: fpadDomains[0].url,
+    fpadDomain: oadaDomain,
   },
   signals: {
     connectWithFpadClicked,

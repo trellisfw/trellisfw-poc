@@ -5,7 +5,7 @@ import {state, signal} from 'cerebral/tags'
 
 import TopBar from '../../pure-components/TopBar'
 import styles from './index.module.css';
-import svgLogo from '../../svg/auditor_mining.svg'
+import svgLogo from '../../svg/domains/auditorMining.svg'
 
 export default connect({
   signOut: signal`TopBar.signOutClicked`,

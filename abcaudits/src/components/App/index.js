@@ -1,16 +1,13 @@
 import React from 'react'
-import {connect} from 'cerebral/react'
+import {connect} from '@cerebral/react'
 import {state, signal} from 'cerebral/tags'
-import styles from './styles.css'
 
-import CertCard from '../CertCard'
 import ClientPanel from '../ClientPanel'
-import SharingDialog from '../SharingDialog'
-import YearPanel from '../YearPanel'
-import UserProfile from '../UserProfile'
 import MainPanel from '../MainPanel'
 import TopBar from '../../common/components/TopBar'
-
+// eslint-disable-next-line
+import styles from './styles.css'
+import { title, description, background } from '../../config'
 
 export default connect({
 	user: state`user_profile.user`,
@@ -24,12 +21,12 @@ class App extends React.Component {
   }
 
   render() {
-    let years = {}
     return (
       <div className='app'>
 				<TopBar
-          title={'ABC Audits'}
-          description={'Audits done right!'} />
+          style={{backgroundColor: background}}
+          title={title}
+          description={description} />
         <div className='lower'>
           <div className='left-panel'>
 						{this.props.user ? <ClientPanel /> : null }

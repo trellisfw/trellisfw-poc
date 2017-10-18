@@ -10,7 +10,7 @@ function loadCertificationsByIds({state, props, path}) {
     //Load the certifications
     return axios({
         method: 'GET',
-        url: fpadDomain+'/bookmarks/fpad/certifications/'+key,
+        url: fpadDomain+'/bookmarks/fpad/certifications/'+key+'/audit',
         headers: {Authorization: 'Bearer '+ state.get('UserProfile.user.token')}
       }).then((res) => {
         state.set('App.model.certifications.'+key, res.data);

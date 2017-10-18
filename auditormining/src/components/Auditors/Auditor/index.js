@@ -4,7 +4,7 @@ import Gradient from 'tinygradient';
 
 import styles from './index.module.css'
 import computedAuditScore from '../../../common/computed/auditorScore.js';
-import {auditorRatings, auditorRatingColorScale} from '../../../config.js';
+import {auditorRatings, auditorRatingColorScale} from '../../../config';
 
 let ColorScale = Gradient(auditorRatingColorScale).rgb(101).reverse();
 const increment = 100.0 / auditorRatings.length;

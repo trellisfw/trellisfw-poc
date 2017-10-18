@@ -8,6 +8,13 @@
 .lower {
   display: flex;
 }
+.no-clients-error {
+	display: flex;
+	flex: 1;
+	justify-content: center;
+	align-items: center;
+	color: #ff0000;
+}
 .modes {
   display: flex;
   flex-direction: row;
@@ -35,6 +42,12 @@
   order: 1;
 }
 .main-panel-add-cert {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  flex: 1;
+}
+.main-panel-update-cert {
   display: flex;
   align-items: center;
   cursor: pointer;

@@ -7,6 +7,7 @@ import styles from './index.module.css'
 import TopBar from '../../common/components/TopBar'
 import Auditors from '../Auditors';
 import Login from '../Login';
+import {title, description, background} from '../../config'
 
 export default connect({
   page: state`App.view.page`,
@@ -32,17 +33,17 @@ class App extends React.Component {
     return (
       <div className={styles.app}>
         <TopBar
-          style={{backgroundColor: '#ffe599'}}
-          title={'AuditorMining'}
-          description={'Improving Food Safety through Analytics'}
+          style={{backgroundColor: background}}
+          title={title}
+          description={description}
           hideUser={true} />
         <div className={styles.page}>
           {page}
         </div>
         <Snackbar
           className={styles.snackBar}
-          contentStyle={{backgroundColor: '#ffe599', color: '#000'}}
-          bodyStyle={{backgroundColor: '#ffe599'}}
+          contentStyle={{backgroundColor: background, color: '#000'}}
+          bodyStyle={{backgroundColor: background}}
           open={this.props.snackBar.open}
           message={this.props.snackBar.message}
           autoHideDuration={4000}
