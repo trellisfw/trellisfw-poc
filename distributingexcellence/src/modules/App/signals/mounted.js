@@ -1,9 +1,4 @@
-import watchCertifications from '../../Certifications/actions/watchCertifications';
-import loadCertifications from '../../Certifications/actions/loadCertifications';
-import loadConnections from '../../Connections/actions/loadConnections';
-import watchConnections from '../../Connections/actions/watchConnections';
-import configureWebsocketProvider from '../actions/configureWebsocketProvider';
-import initFpadResource from '../actions/initFpadResource';
+import initialize from '../actions/initialize';
 
 function isLoggedIn ({state, path}) {
   let user = state.get('UserProfile.user');
@@ -14,12 +9,7 @@ function isLoggedIn ({state, path}) {
 export default [
     isLoggedIn, {
       yes: [
-        configureWebsocketProvider,
-        initFpadResource,
-        watchCertifications,
-        loadCertifications,
-        watchConnections,
-        loadConnections
+        initialize
       ],
       no: []
     }

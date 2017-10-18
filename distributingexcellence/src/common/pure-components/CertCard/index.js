@@ -9,6 +9,7 @@ class CertCard extends React.Component {
     let parser = Parsers(this.props.audit);
     return (
      <Card
+       audit={this.props.audit}
        score={parser.score()}
        product={parser.product()}
        organization={parser.organization()}
@@ -19,9 +20,12 @@ class CertCard extends React.Component {
 }
 
 CertCard.propTypes = {
-  onChecked: PropTypes.func,
   audit: PropTypes.object.isRequired,
-  signAuditButtonClicked: PropTypes.func,
+  correctiveActions: PropTypes.object,
+  certificate: PropTypes.object,
+
+  onChecked: PropTypes.func,
+  finishAndSignClicked: PropTypes.func,
   checked: PropTypes.bool
 };
 
