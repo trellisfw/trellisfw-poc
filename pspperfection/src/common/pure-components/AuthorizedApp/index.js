@@ -1,7 +1,7 @@
 import React from 'react'
-
+import _ from 'lodash';
 import styles from './index.module.css'
-import svgIncomingConnection from '../../svg/incoming.svg'
+import svgAuthorizedApp from '../../svg/authorizedApp.svg'
 
 import svgABC from '../../svg/domains/abcAudits.svg'
 import svgGrowerSync from '../../svg/domains/growerSync.svg'
@@ -13,23 +13,23 @@ import svgDistributing from '../../svg/domains/distributingExcellence.svg'
 class NewConnection extends React.Component {
   render() {
     let logo = svgABC;
-    let name = 'ABC Audits';
-    if (this.props.connection.url.toLowerCase().indexOf('abcaudits') !== -1) {
+    let name = _.get(this.props.app, 'client.client_name') || '';
+    if (name.toLowerCase().indexOf('abcaudits') !== -1) {
       logo = svgABC;
-      name = 'ABC Auditsa';
-    } else if (this.props.connection.url.toLowerCase().indexOf('growersync') !== -1) {
+      name = 'ABC Audits';
+    } else if (name.toLowerCase().indexOf('growersync') !== -1) {
       logo = svgGrowerSync;
       name = 'GrowerSync';
-    } else if (this.props.connection.url.toLowerCase().indexOf('retailfresh') !== -1) {
+    } else if (name.toLowerCase().indexOf('retailfresh') !== -1) {
       logo = svgRetailFresh;
       name = 'RetailFresh';
-    } else if (this.props.connection.url.toLowerCase().indexOf('pspperfection') !== -1) {
+    } else if (name.toLowerCase().indexOf('pspperfection') !== -1) {
       logo = svgPSP;
       name = 'PSP Perfection';
-    } else if (this.props.connection.url.toLowerCase().indexOf('auditormining') !== -1) {
+    } else if (name.toLowerCase().indexOf('auditormining') !== -1) {
       logo = svgAuditorMining;
       name = 'AuditorMining';
-    } else if (this.props.connection.url.toLowerCase().indexOf('distributing') !== -1) {
+    } else if (name.toLowerCase().indexOf('distributing') !== -1) {
       logo = svgDistributing;
       name = 'DistributingExcellence';
     }
@@ -41,10 +41,10 @@ class NewConnection extends React.Component {
             {'Connection Type'}
           </div>
           <div>
-            <img src={svgIncomingConnection} className={styles.typeIcon} alt="Incoming Connection" />
+            <img src={svgAuthorizedApp} className={styles.typeIcon} alt="Authorized App" />
           </div>
           <div className={styles.label}>
-            {'Incoming'}
+            {'Authorized App'}
           </div>
         </div>
         <div className={styles.right}>
@@ -54,14 +54,14 @@ class NewConnection extends React.Component {
                 <div>{name}</div>
             </div>
             <div className={styles.status}>
-              {'Received 0 Certifications'}
+              <a href="">{'Privacy and Use Statement'}</a>
             </div>
             <div className={styles.updatedContainer}>
               <div className={styles.label}>
-                {'Last Update:'}
+                {'Expires:'}
               </div>
               <div className={styles.time}>
-                {' 0 minutes ago'}
+                {' Never'}
               </div>
             </div>
           </div>

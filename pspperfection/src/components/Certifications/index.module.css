@@ -1,8 +1,11 @@
 .root {
   display: flex;
+  flex-grow: 1;
 }
 .mainPanel {
-  width: 75%;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }
   .mainPanel > .header {
     display: flex;
@@ -16,5 +19,16 @@
 .leftPanel {
   display: flex;
   flex-direction: column;
-  width: 25%;
+  flex-grow: 1;
+  max-width: 200px;
+}
+.certifications {
+  overflow-y: scroll;
+  flex: 1;
+}
+.tableRow {
+  cursor: 'pointer';
+  display: flex;
+  justify-content: 'space-between';
+  align-items: 'center';
 }

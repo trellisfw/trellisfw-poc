@@ -4,7 +4,7 @@ import signOutClicked from './signals/signOutClicked'
 
 export default {
   state: {
-    mode: 'connections'
+    mode: 'certifications'
   },
   signals: {
     modeClicked,

@@ -5,6 +5,7 @@ import Connections from './modules/Connections'
 import UserProfile from './modules/UserProfile'
 import Certifications from './modules/Certifications'
 import SharingDialog from './modules/SharingDialog';
+import Error from './modules/Error';
 import websocket from './common/providers/websocket';
 
 import {devtoolsPort} from './config';
@@ -27,7 +28,8 @@ export default Controller({
     TopBar,
     Connections,
     Certifications,
-    UserProfile
+    UserProfile,
+    Error
   },
   providers: [
     websocket
