@@ -23,5 +23,8 @@ export const redirectDomain = toExport.websiteDomain + '/oauth2/redirect.html';
 export const metadata = toExport.metadata;
 export const devtoolsPort = toExport.devtoolsPort;
 export const defaultNewConnectionURL = toExport.defaultNewConnectionURL;
+export const title = 'DistributingExcellence';
+export const description = 'We deliver excellence!';
+export const background = '#d5a6bd';
 
 export default toExport;
