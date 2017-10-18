@@ -6,7 +6,7 @@ export const sharePassword = '$2a$10$l64QftVz6.7KR5BXNc29IORcuhcay48jl9f5jb4dOne
 export const title = 'RetailFresh';
 export const description = 'We sell retail stuff...fresh!';
 export const background = '#ea9999';
-export const tabColor = '#039100';
+export const tabColor = '#cf2a27';
 
 const defaults = {
   sharePassword,

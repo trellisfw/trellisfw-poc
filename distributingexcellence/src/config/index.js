@@ -6,7 +6,7 @@ export const sharePassword = '$2a$10$l64QftVz6.7KR5BXNc29IORcuhcay48jl9f5jb4dOne
 export const title = 'DistributingExcellence';
 export const description = 'We deliver excellence!';
 export const background = '#d5a6bd';
-export const tabColor = '#039100';
+export const tabColor = '#ff00ff';
 
 const defaults = {
   sharePassword,

@@ -6,7 +6,7 @@ export const sharePassword = '$2a$10$l64QftVz6.7KR5BXNc29IORcuhcay48jl9f5jb4dOne
 export const title = 'PSP Perfection';
 export const description = 'Our own internal system here at PSP Perfection';
 export const background = '#b4a7d6';
-export const tabColor = '#039100';
+export const tabColor = '#9900ff';
 
 const defaults = {
   sharePassword,
