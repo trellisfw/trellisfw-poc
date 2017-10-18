@@ -16,7 +16,7 @@ class NewConnection extends React.Component {
     let name = 'ABC Audits';
     if (this.props.connection.url.toLowerCase().indexOf('abcaudits') !== -1) {
       logo = svgABC;
-      name = 'ABC Auditsa';
+      name = 'ABC Audits';
     } else if (this.props.connection.url.toLowerCase().indexOf('growersync') !== -1) {
       logo = svgGrowerSync;
       name = 'GrowerSync';
