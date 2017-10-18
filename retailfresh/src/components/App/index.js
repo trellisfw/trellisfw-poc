@@ -7,7 +7,8 @@ import styles from './index.module.css'
 import TopBar from '../../common/components/TopBar'
 import Certifications from '../Certifications';
 import Connections from '../Connections';
-import { title, description, background } from '../../config'
+import ErrorDialog from '../ErrorDialog';
+import {title, description, background} from '../../config'
 
 export default connect({
   mode: state`TopBar.mode`,
@@ -36,6 +37,7 @@ class App extends React.Component {
         <div className={styles.page}>
           {page}
         </div>
+        <ErrorDialog />
       </div>
     )
   }

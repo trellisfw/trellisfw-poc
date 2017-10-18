@@ -3,7 +3,7 @@ import {state, props} from 'cerebral/tags'
 import Promise from 'bluebird';
 import axios from 'axios';
 import {oadaDomain, redirectDomain, metadata} from '../../../config';
-
+import initialize from '../../App/actions/initialize.js';
 let getAccessToken = Promise.promisify(require('oada-id-client').getAccessToken)
 
 function getOadaToken({state, props, path}) {
@@ -29,6 +29,7 @@ export default [
 	getOadaToken, {
 		success: [
 		  set(state`UserProfile.user`, props`user`),
+      initialize
 		],
 		error: [],
 	},

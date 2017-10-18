@@ -15,11 +15,12 @@ export default {
   },
 
   signals: {
-    shareButtonClicked: showSharingDialog, 
-    sharingDialogDoneClicked: doneSharing, 
+    shareButtonClicked: showSharingDialog,
+    sharingDialogDoneClicked: doneSharing,
+
+    addUserButtonClicked: addUser,
     usernameTextChanged: setUsernameText,
     urlTextChanged: setUrlText,
-		addUserButtonClicked: addUser,
   },
 
   modules: {

@@ -13,19 +13,7 @@ import put from './put';
 */
 
 function _createResource({domain, path, contentType, token, args}) {
-  /*
-  return axios({
-    method: 'POST',
-    url: domain+'/resources',
-    headers: {
-      Authorization: 'Bearer '+token,
-      'Content-Type': contentType
-    },
-    data: {}
-  })
-  */
   //Remove the path if we are running in function mode, so paths in original action work
-  console.log('Create resource', contentType);
   return post.func(args)({
     domain,
     token,
@@ -35,7 +23,6 @@ function _createResource({domain, path, contentType, token, args}) {
     },
     data: {}
   }).then(({response}) => {
-    console.log('Created', response);
     var id = response.headers.location.split('/')
     id = id[id.length-1]
 
@@ -51,19 +38,6 @@ function _createResource({domain, path, contentType, token, args}) {
         _rev: '0-0'
       }
     });
-
-    /*return axios({
-      method: 'PUT',
-      url: domain+path,
-      headers: {
-        Authorization: 'Bearer '+token,
-        'Content-Type': contentType
-      },
-      data: {
-        _id:'resources/'+id,
-        _rev: '0-0'
-      }
-    });*/
   });
 }
 
