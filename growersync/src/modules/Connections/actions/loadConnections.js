@@ -9,16 +9,8 @@ function parseConnections({props, state}) {
   });
 }
 
-function loadConnections({path}) {
-  return get.func(arguments)({path: '/bookmarks/fpad/connections'}).then(({response}) => {
-    return path.success({response});
-  }).catch((error) => {
-    return path.error({error});
-  });
-}
-
 export default sequence('loadConnections', [
-  loadConnections,
+  get({path: '/bookmarks/fpad/connections'}),
   {
     success: [
       parseConnections

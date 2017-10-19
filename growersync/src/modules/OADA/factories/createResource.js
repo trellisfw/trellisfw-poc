@@ -44,8 +44,8 @@ function _createResource({domain, path, contentType, token, args}) {
 function createResourceFactory ({path, domain, contentType, token}) {
   function createResource({state, resolve}) {
     //TODO require contentType (don't default)
-    contentType = resolve.value(contentType) || 'application/vnd.fpad.certifications.globalgap.1+json';
-    return _createResource({domain, path, token, contentType, args: arguments});
+    let _contentType = resolve.value(contentType) || 'application/vnd.fpad.certifications.globalgap.1+json';
+    return _createResource({domain, path, token, _contentType, args: arguments});
   }
   return createResource
 }

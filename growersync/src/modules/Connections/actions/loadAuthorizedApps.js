@@ -21,16 +21,8 @@ function parseAuthorizedApps({props, state}) {
   });
 }
 
-function loadAuthorizedApps({path}) {
-  return get.func(arguments)({path: '/authorizations'}).then(({response}) => {
-    return path.success({response});
-  }).catch((error) => {
-    return path.error({error});
-  });
-}
-
 export default sequence('loadAuthorizedApps', [
-  loadAuthorizedApps,
+  get({path: '/authorizations'}),
   {
     success: [
       parseAuthorizedApps
