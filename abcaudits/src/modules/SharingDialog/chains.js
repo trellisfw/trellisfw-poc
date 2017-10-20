@@ -26,7 +26,7 @@ export let addUser = [
 	//try to get current user
 	createClientUser, {
 		success: [
-			set(state`client_panel.clients.${state`client_panel.selected_client`}._meta._permissions.${props`user._id`}`, props`user`),
+			set(state`client_panel.clients.${state`client_panel.selected_client`}.certifications._meta._permissions.${props`user._id`}`, props`user`),
 		  addPermissions, {
 				success: [
 				  set(state`sharing_dialog.trellis_domain_text`, ''),
@@ -83,9 +83,9 @@ function addPermissions({state, props, path}) {
 	
   return axios({
     method: 'put',
-    url: domain+'/bookmarks/fpad/clients/'+clientId+'/_meta/_permissions',
+		url: domain+'/bookmarks/fpad/clients/'+clientId+'/certifications/_meta/_permissions',
     headers: {
-      'Content-Type': 'application/vnd.fpad.client.1+json',
+      'Content-Type': 'application/vnd.fpad.certifications.globalgap.1+json',
       'Authorization': 'Bearer '+state.get('user_profile.user.token'),
     },
     data: { 

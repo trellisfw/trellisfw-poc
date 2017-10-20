@@ -48,7 +48,7 @@ class MainPanel extends React.Component {
 					:
 					this.props.client ? 
 						Object.keys(this.props.certifications).map((key, i) => 
-							<CertCard name={key} key={'cert-'+i}/>
+							key.charAt(0) !== '_' ? <CertCard name={key} key={'cert-'+i}/> : null
 						)
 					: null
 				}

@@ -30,7 +30,7 @@ class SharingDialog extends React.Component {
       />,
     ];
 
-    return (
+		return (
       <Dialog
         title={"Sharing for "+this.props.client.name}
         actions={actions}
@@ -70,12 +70,12 @@ class SharingDialog extends React.Component {
 				<div>
 					<p>Currently shared with: </p>
 					<div className='share-dialog-shared users'>
-						{this.props.client._meta._permissions ? Object.keys(this.props.client._meta._permissions).map((u) => 
+						{Object.keys(this.props.client.certifications._meta._permissions || {}).map((u) => 
 							<Chip
 								key={'shared-users-'+u}>
-								{this.props.client._meta._permissions[u].name || this.props.client._meta._permissions[u].oidc.username}
+								{this.props.client.certifications._meta._permissions[u].name || this.props.client.certifications._meta._permissions[u].oidc.username}
 							</Chip>
-						) : null}
+						)}
 					</div>
 				</div>
       </Dialog>
