@@ -119,7 +119,11 @@ function putClient({state, props, path}) {
 			'Authorization': 'Bearer '+token,
 			'Content-Type': 'application/vnd.fpad.certifications.globalgap.1+json',
 		},
-		data: {_type: 'application/vnd.fpad.certifications.globalgap.1+json'},
+		data: {
+			_type: 'application/vnd.fpad.certifications.globalgap.1+json',
+			// TODO: do context right...
+			_context: {client: text}
+		}
 	}).then((response) => {
 		return axios({
 			method: 'POST',
