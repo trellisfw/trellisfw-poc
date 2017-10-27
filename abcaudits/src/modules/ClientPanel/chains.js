@@ -1,5 +1,6 @@
 import { set, unset, when, toggle } from 'cerebral/operators'
 import {state, props } from 'cerebral/tags'
+import _ from 'lodash'
 import Promise from 'bluebird'
 import axios from 'axios'
 
@@ -77,7 +78,7 @@ function getCertifications({state, props, path}) {
   let domain = state.get('app.oada_domain')
 	let clientId = state.get(`client_panel.selected_client`)
   let certs = state.get(`client_panel.clients.${clientId}.certifications`)
-  let certifications = {}
+  let certifications = _.cloneDeep(certs)
   return Promise.map(Object.keys(certs), (key) => {
     if (key.charAt(0) === '_') return false
 		return axios({
@@ -107,23 +108,28 @@ function getCertifications({state, props, path}) {
 }
 
 function putClient({state, props, path}) {
-  let domain = state.get('app.oada_domain')
+	let domain = state.get('app.oada_domain');
+	let token = state.get('user_profile.user.token');
   let text = state.get('client_panel.client_dialog.text')
 	// POST certifications resource
 	return axios({
 		method: 'POST',
 		url: domain+'/resources',
 		headers: {
-			'Authorization': 'Bearer '+state.get('user_profile.user.token'),
+			'Authorization': 'Bearer '+token,
 			'Content-Type': 'application/vnd.fpad.certifications.globalgap.1+json',
 		},
-		data: {_type: 'application/vnd.fpad.certifications.globalgap.1+json'},
+		data: {
+			_type: 'application/vnd.fpad.certifications.globalgap.1+json',
+			// TODO: do context right...
+			_context: {client: text}
+		}
 	}).then((response) => {
 		return axios({
 			method: 'POST',
 			url: domain+'/resources',
 			headers: {
-				'Authorization': 'Bearer '+state.get('user_profile.user.token'),
+				'Authorization': 'Bearer '+token,
 				'Content-Type': 'application/vnd.fpad.client.1+json',
 			},
 			data: {
@@ -141,7 +147,7 @@ function putClient({state, props, path}) {
 				method: 'PUT', 
 				url: domain+'/bookmarks/fpad/clients/'+id,
 				headers: {
-					'Authorization': 'Bearer '+state.get('user_profile.user.token'),
+					'Authorization': 'Bearer '+token,
 					'Content-Type': 'application/vnd.fpad.client.1+json',
 				},
 				data: {
@@ -150,76 +156,80 @@ function putClient({state, props, path}) {
 				}
 			}).then(() => {
 				//GET it to confirm
-				return axios({
-					method: 'GET', 
-					url: domain+'/bookmarks/fpad/clients/'+id,
-					headers: {
-						'Authorization': 'Bearer '+state.get('user_profile.user.token'),
-					}
-				}).then((res) => {
-					return path.success({id, client: res.data})
+				return getClient(id, domain, token).then((client) => {
+					return path.success({id, client})
 				})
 			})
     })
   })
 }
 
+function getClient(clientId, domain, token) {
+	let data = {}
+	return axios({
+		method: 'GET', 
+		url: domain+'/bookmarks/fpad/clients/'+clientId,
+		headers: {
+			'Authorization': 'Bearer '+ token,
+		}
+	}).then((res) => {
+    data = res.data
+		//Get certifications list
+		return axios({
+			method: 'GET', 
+			url: domain+'/bookmarks/fpad/clients/'+clientId+'/certifications',
+			headers: {
+				'Authorization': 'Bearer '+ token,
+			}
+		}).then((result) => {
+			data.certifications = result.data
+			// Get _meta document on certifications
+			return axios({
+				method:'GET', 
+				url: domain+'/bookmarks/fpad/clients/'+clientId+'/certifications/_meta',
+				headers: {
+					'Authorization': 'Bearer '+ token,
+				}
+			}).then((r) => {
+				data.certifications._meta = r.data
+				// Get each permissioned user (we need their names)
+				if (!r.data._permissions) return data
+				return Promise.map(Object.keys(r.data._permissions), (user) => {
+					return axios({
+						method:'GET', 
+						url: domain+'/'+user,
+							headers: {
+							'Authorization': 'Bearer '+ token,
+						}
+					}).then((resp) => {
+						data.certifications._meta._permissions[user] = resp.data
+					})
+				}).then(() => {
+					return data
+				})
+			})
+		})
+	})
+}
+
 function getClients({state, props, path}) {
-  let domain = state.get('app.oada_domain')
+	let domain = state.get('app.oada_domain');
+	let token = state.get('user_profile.user.token');
   let clients = {}
 	// Get clients list
 	return axios({
 		method: 'GET', 
 		url: domain+'/bookmarks/fpad/clients',
 		headers: {
-			'Authorization': 'Bearer '+state.get('user_profile.user.token'),
+			'Authorization': 'Bearer '+ token,
 		}
 	}).then((response) => {
 		// Get each client
 		return Promise.map(Object.keys(response.data), (key) => {
 			if (key.charAt(0) === '_') return
-			return axios({
-				method: 'GET', 
-				url: domain+'/bookmarks/fpad/clients/'+key,
-				headers: {
-					'Authorization': 'Bearer '+ state.get('user_profile.user.token'),
-				}
-			}).then((res) => {
-        clients[key] = res.data
-				//Get certifications list
-				return axios({
-					method: 'GET', 
-					url: domain+'/bookmarks/fpad/clients/'+key+'/certifications',
-					headers: {
-						'Authorization': 'Bearer '+ state.get('user_profile.user.token'),
-					}
-				}).then((result) => {
-					clients[key].certifications = result.data
-					// Get _meta document
-					return axios({
-						method:'GET', 
-						url: domain+'/bookmarks/fpad/clients/'+key+'/_meta',
-						headers: {
-							'Authorization': 'Bearer '+ state.get('user_profile.user.token'),
-						}
-					}).then((r) => {
-						clients[key]._meta = r.data
-						// Get each permissioned user (we need their names)
-						if (!r.data._permissions) return
-						return Promise.map(Object.keys(r.data._permissions), (user) => {
-							return axios({
-								method:'GET', 
-								url: domain+'/'+user,
-								headers: {
-									'Authorization': 'Bearer '+ state.get('user_profile.user.token'),
-								}
-							}).then((resp) => {
-								clients[key]._meta._permissions[user] = resp.data
-								return
-							})
-						})
-					})
-				})
+			return getClient(key, domain, token).then((res) => {
+				clients[key] = res;
+				return 
 			})
     }, {concurrency:5})
   }).then(() => {

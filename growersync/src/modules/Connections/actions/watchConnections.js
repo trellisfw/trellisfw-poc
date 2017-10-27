@@ -19,7 +19,7 @@ export default sequence('watchConnections', [
     no: [
       createResource({
         path: '/bookmarks/fpad/connections',
-        contentType: 'application/vnd.fpad.certifications.globalgap.1+json'
+        contentType: 'application/vnd.fpad.connection.1+json'
       })
     ]
   },
