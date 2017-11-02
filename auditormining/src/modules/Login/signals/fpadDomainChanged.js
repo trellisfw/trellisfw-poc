@@ -1,4 +1,4 @@
-function fpadDomainChanged ({state, props}) {
-  state.set(`Login.fpadDomain`, props.domain)
+function trellisDomainChanged ({state, props}) {
+  state.set(`Login.trellisDomain`, props.domain)
 }
-export default fpadDomainChanged;
+export default trellisDomainChanged;

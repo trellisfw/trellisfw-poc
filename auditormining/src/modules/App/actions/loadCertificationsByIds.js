@@ -5,12 +5,12 @@ import axios from 'axios';
 
 function loadCertificationsByIds({state, props, path}) {
   //Get the certifications with the props.ids and merge them into state
-  const fpadDomain = state.get('Login.fpadDomain');
+  const trellisDomain = state.get('Login.trellisDomain');
   return Promise.map(props.ids, (key) => {
     //Load the certifications
     return axios({
         method: 'GET',
-        url: fpadDomain+'/bookmarks/fpad/certifications/'+key+'/audit',
+        url: trellisDomain+'/bookmarks/trellisfw/certifications/'+key+'/audit',
         headers: {Authorization: 'Bearer '+ state.get('UserProfile.user.token')}
       }).then((res) => {
         state.set('App.model.certifications.'+key, res.data);

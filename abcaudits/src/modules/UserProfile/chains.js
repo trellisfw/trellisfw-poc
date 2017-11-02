@@ -38,7 +38,7 @@ function getOadaToken({state, props, path}) {
 	let host = domain.replace(/^https?:\/\//, '')
 	let options = {
 		metadata,
-    scope: 'fpad:all',
+    scope: 'trellisfw:all',
     redirect: redirectDomain,
 	}
 	return getAccessToken(host, options).then((accessToken) => {

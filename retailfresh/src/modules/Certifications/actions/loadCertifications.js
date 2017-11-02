@@ -10,12 +10,12 @@ import get from '../../OADA/factories/get';
 function loadCertifications({path, state}) {
   //Get the certifications list
   let certifications = {};
-  return get.func(arguments)({path: '/bookmarks/fpad/certifications'}).then(({response}) => {
+  return get.func(arguments)({path: '/bookmarks/trellisfw/certifications'}).then(({response}) => {
     //Extract only list of certification ids
     let certKeys = _.filter(Object.keys(response.data), key=>(_.startsWith(key, '_')===false));
     return Promise.map(certKeys, (key) => {
       //Load the certifications
-      return get.func(arguments)({path: '/bookmarks/fpad/certifications/'+key+'/audit'}).then(({response}) => {
+      return get.func(arguments)({path: '/bookmarks/trellisfw/certifications/'+key+'/audit'}).then(({response}) => {
         certifications[key] = response.data;
       }).catch((err) => {
         console.log('Error. Failed to load certification', key);

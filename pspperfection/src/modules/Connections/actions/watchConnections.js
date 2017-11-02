@@ -1,5 +1,5 @@
 /*
-  Create /bookmarks/fpad/connections if it doesn't exist, then watch
+  Create /bookmarks/trellisfw/connections if it doesn't exist, then watch
 */
 import {sequence} from 'cerebral'
 import doesResourceExist from '../../OADA/factories/doesResourceExist';
@@ -7,19 +7,19 @@ import createResource from '../../OADA/factories/createResource';
 
 function watchConnections({state, websocket}) {
   return websocket.watch({
-    url: '/bookmarks/fpad/connections',
+    url: '/bookmarks/trellisfw/connections',
     headers: {Authorization: 'Bearer '+ state.get('UserProfile.user.token')}
   }, 'Connections.connectionsChanged');
 }
 
 export default sequence('watchConnections', [
-  doesResourceExist({path: '/bookmarks/fpad/connections'}),
+  doesResourceExist({path: '/bookmarks/trellisfw/connections'}),
   {
     yes: [],
     no: [
       createResource({
-        path: '/bookmarks/fpad/connections',
-        contentType: 'application/vnd.fpad.certifications.globalgap.1+json'
+        path: '/bookmarks/trellisfw/connections',
+        contentType: 'application/vnd.trellisfw.certifications.globalgap.1+json'
       })
     ]
   },

@@ -16,7 +16,8 @@ export default {
   state: {
     oada_domain: oadaDomain,
     token: '',
-    view: {
+		view: {
+			loading: false,
       mode: 'certifications',
       certifications: {},
     },

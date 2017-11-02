@@ -83,7 +83,7 @@ function getCertifications({state, props, path}) {
     if (key.charAt(0) === '_') return false
 		return axios({
 			method: 'get', 
-			url: domain+'/bookmarks/fpad/clients/'+clientId+'/certifications/'+key,
+			url: domain+'/bookmarks/trellisfw/clients/'+clientId+'/certifications/'+key,
 			headers: {
 				Authorization: 'Bearer '+ state.get('user_profile.user.token'),
 			}
@@ -93,7 +93,7 @@ function getCertifications({state, props, path}) {
 				if (doc.charAt(0) === '_') return false
 				return axios({
 					method: 'get', 
-					url: domain+'/bookmarks/fpad/clients/'+clientId+'/certifications/'+key+'/'+doc,
+					url: domain+'/bookmarks/trellisfw/clients/'+clientId+'/certifications/'+key+'/'+doc,
 					headers: {
 						Authorization: 'Bearer '+ state.get('user_profile.user.token'),
 					}
@@ -117,10 +117,10 @@ function putClient({state, props, path}) {
 		url: domain+'/resources',
 		headers: {
 			'Authorization': 'Bearer '+token,
-			'Content-Type': 'application/vnd.fpad.certifications.globalgap.1+json',
+			'Content-Type': 'application/vnd.trellisfw.certifications.globalgap.1+json',
 		},
 		data: {
-			_type: 'application/vnd.fpad.certifications.globalgap.1+json',
+			_type: 'application/vnd.trellisfw.certifications.globalgap.1+json',
 			// TODO: do context right...
 			_context: {client: text}
 		}
@@ -130,10 +130,10 @@ function putClient({state, props, path}) {
 			url: domain+'/resources',
 			headers: {
 				'Authorization': 'Bearer '+token,
-				'Content-Type': 'application/vnd.fpad.client.1+json',
+				'Content-Type': 'application/vnd.trellisfw.client.1+json',
 			},
 			data: {
-				_type: 'application/vnd.fpad.client.1+json',
+				_type: 'application/vnd.trellisfw.client.1+json',
 				name: text,
 				certifications: {
 					_id: response.headers.location.replace(/^\//, ''),
@@ -145,10 +145,10 @@ function putClient({state, props, path}) {
 			// Link to bookmarks
 			return axios({
 				method: 'PUT', 
-				url: domain+'/bookmarks/fpad/clients/'+id,
+				url: domain+'/bookmarks/trellisfw/clients/'+id,
 				headers: {
 					'Authorization': 'Bearer '+token,
-					'Content-Type': 'application/vnd.fpad.client.1+json',
+					'Content-Type': 'application/vnd.trellisfw.client.1+json',
 				},
 				data: {
 					_id: 'resources/'+id, 
@@ -168,7 +168,7 @@ function getClient(clientId, domain, token) {
 	let data = {}
 	return axios({
 		method: 'GET', 
-		url: domain+'/bookmarks/fpad/clients/'+clientId,
+		url: domain+'/bookmarks/trellisfw/clients/'+clientId,
 		headers: {
 			'Authorization': 'Bearer '+ token,
 		}
@@ -177,7 +177,7 @@ function getClient(clientId, domain, token) {
 		//Get certifications list
 		return axios({
 			method: 'GET', 
-			url: domain+'/bookmarks/fpad/clients/'+clientId+'/certifications',
+			url: domain+'/bookmarks/trellisfw/clients/'+clientId+'/certifications',
 			headers: {
 				'Authorization': 'Bearer '+ token,
 			}
@@ -186,7 +186,7 @@ function getClient(clientId, domain, token) {
 			// Get _meta document on certifications
 			return axios({
 				method:'GET', 
-				url: domain+'/bookmarks/fpad/clients/'+clientId+'/certifications/_meta',
+				url: domain+'/bookmarks/trellisfw/clients/'+clientId+'/certifications/_meta',
 				headers: {
 					'Authorization': 'Bearer '+ token,
 				}
@@ -219,7 +219,7 @@ function getClients({state, props, path}) {
 	// Get clients list
 	return axios({
 		method: 'GET', 
-		url: domain+'/bookmarks/fpad/clients',
+		url: domain+'/bookmarks/trellisfw/clients',
 		headers: {
 			'Authorization': 'Bearer '+ token,
 		}
