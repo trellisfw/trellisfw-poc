@@ -44,7 +44,7 @@ export default sequence('createCertificationsWebhook', [
         token: props`accessToken`,
         domain: props`remoteOadaDomain`,
         path: '/bookmarks/trellisfw/certifications',
-        contentType: 'application/vnd.trellisfw.certifications.globalgap.1+json'
+        contentType: 'application/vnd.trellisfw.connection.1+json'
       })
     ]
   },

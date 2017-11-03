@@ -8,8 +8,8 @@ import {oadaDomain, sharePassword} from '../../config';
 export let doneSharing = [
   set(state`SharingDialog.trellis_domain_text`, ''),
   set(state`SharingDialog.username_text`, ''),
-	toggle(state`SharingDialog.open`),
-	unset(state`SharingDialog.add_user_error`),
+  toggle(state`SharingDialog.open`),
+  unset(state`SharingDialog.add_user_error`),
 ]
 
 export let showSharingDialog = [
@@ -30,24 +30,24 @@ export let setUrlText = [
 ]
 
 export let addUser = [
-	//try to get current user
-	createClientUser, {
-		success: [
-		  addPermissions, {
-				success: [
-					set(state`SharingDialog.shared_users.${props`user._id`}`, props`user`),
-				  set(state`SharingDialog.trellis_domain_text`, ''),
-					set(state`SharingDialog.username_text`, ''),
-	      ],
-				error: [
-					set(state`SharingDialog.add_user_error`, 'Unable to share with this user')
-				],
-			},
-		],
-		error: [
-			set(state`SharingDialog.add_user_error`, 'User not found with matching username and trellis domain')
-		],
-	}
+  //try to get current user
+  createClientUser, {
+    success: [
+      addPermissions, {
+        success: [
+          set(state`SharingDialog.shared_users.${props`user._id`}`, props`user`),
+          set(state`SharingDialog.trellis_domain_text`, ''),
+          set(state`SharingDialog.username_text`, ''),
+        ],
+        error: [
+          set(state`SharingDialog.add_user_error`, 'Unable to share with this user')
+        ],
+      },
+    ],
+    error: [
+      set(state`SharingDialog.add_user_error`, 'User not found with matching username and trellis domain')
+    ],
+  }
 ]
 
 
@@ -83,38 +83,38 @@ function loadSharingMeta({state, props, path}) {
 }
 
 function createClientUser({state, props, path}) {
-	let oidc = {
-		username: state.get(`SharingDialog.username_text`),
-		iss: state.get(`SharingDialog.trellis_domain_text`)
-	}
+  let oidc = {
+    username: state.get(`SharingDialog.username_text`),
+    iss: state.get(`SharingDialog.trellis_domain_text`)
+  }
   let data = {
     username: md5(JSON.stringify(oidc)),
     oidc
   };
   if (sharePassword) data.password = sharePassword;
-	return axios({
-		method: 'post',
-		url: oadaDomain+'/users',
-		headers: {
-			'Content-Type': 'application/vnd.oada.user.1+json',
-			'Authorization': 'Bearer '+state.get('UserProfile.user.token'),
-		},
-		data
+  return axios({
+    method: 'post',
+    url: oadaDomain+'/users',
+    headers: {
+      'Content-Type': 'application/vnd.oada.user.1+json',
+      'Authorization': 'Bearer '+state.get('UserProfile.user.token'),
+    },
+    data
   }).then((response) => {
-		return axios({
-			method: 'get',
-			url: oadaDomain+response.headers.location,
-			headers: {
-				'Authorization': 'Bearer '+state.get('UserProfile.user.token'),
-			},
-		}).then((res) => {
-			return path.success({user:res.data})
-		}).catch((err) => {
-			return path.error({err})
-		})
-	}).catch((err) => {
-		return path.error({err})
-	})
+    return axios({
+      method: 'get',
+      url: oadaDomain+response.headers.location,
+      headers: {
+        'Authorization': 'Bearer '+state.get('UserProfile.user.token'),
+      },
+    }).then((res) => {
+      return path.success({user:res.data})
+    }).catch((err) => {
+      return path.error({err})
+    })
+  }).catch((err) => {
+    return path.error({err})
+  })
 }
 
 function addPermissions({state, props, path}) {
@@ -132,7 +132,7 @@ function addPermissions({state, props, path}) {
         owner: false
       }
     }
-	}).then((response) => {
+  }).then((response) => {
     if (response.status >= 200 && response.status < 300) return path.success({});
     return path.error({response});
   }).catch((error) => {

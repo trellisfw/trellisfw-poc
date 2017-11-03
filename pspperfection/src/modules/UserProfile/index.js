@@ -4,7 +4,7 @@ import signOut from './actions/signOut.js';
 export default {
 	state: {
 		user: {
-			name: 'pete@gmail.com',
+			name: 'Packer Pete',
 			token: 'ppp',
 		}
   },
