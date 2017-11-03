@@ -16,29 +16,29 @@ function headFactory ({path: resPath, domain, token, funcMode}) {
   function head({state, resolve, path, websocket}) {
     return Promise.resolve().then(() => {
       //Remove the path if we are running in function mode, so paths in original action work
-      if (funcMode) path = null;
+      let _path = (funcMode) ? null : path;
       //Resolve path, domain, and token values if they are tags
-      resPath = resolve.value(resPath);
-      domain = resolve.value(domain) || oadaDomain;
-      token = resolve.value(token) || state.get('UserProfile.user.token')
+      let _resPath = resolve.value(resPath);
+      let _domain = resolve.value(domain) || oadaDomain;
+      let _token = resolve.value(token) || state.get('UserProfile.user.token')
       /*
         - Execute get -
         Use axios if our websocket isn't configured, or isn't configured for the
         correct domain
       */
-      let url = domain+resPath;
-      let request = (websocket === null || websocket.url() !== domain) ? axios : websocket.http;
+      let url = _domain+_resPath;
+      let request = (websocket === null || websocket.url() !== _domain) ? axios : websocket.http;
       return request({
-        method: 'GET',
+        method: 'HEAD',
         url: url,
         headers: {
-          Authorization: 'Bearer '+token
+          Authorization: 'Bearer '+_token
         }
       }).then((response) => {
-        if (path) return path.success({response});
+        if (_path) return _path.success({response});
         return {response};
       }).catch((error) => {
-        if (path) return path.error({error});
+        if (_path) return _path.error({error});
         throw error;
       });
     });

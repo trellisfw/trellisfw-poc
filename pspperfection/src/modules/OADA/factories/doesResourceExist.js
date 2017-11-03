@@ -26,14 +26,14 @@ function checkIfExists({domain, token, path, args}) {
 function doesResourceExistFactory ({path: resPath, domain, token, funcMode}) {
   function doesResourceExist({state, path, resolve}) {
     //Remove the path if we are running in function mode, so paths in original action work
-    if (funcMode) path = null;
+    let _path = (funcMode) ? null : path;
     //Check if exists
     return checkIfExists({domain, path: resPath, token, args: arguments}).then((exists) => {
-      if (!path) return {resourceExists: exists};
-      if (exists) return path.yes();
-      return path.no();
+      if (!_path) return {resourceExists: exists};
+      if (exists) return _path.yes();
+      return _path.no();
     }).catch((error) => {
-      if (path && path.error) return path.error({error});
+      if (_path && _path.error) return _path.error({error});
       throw error;
     });
   }

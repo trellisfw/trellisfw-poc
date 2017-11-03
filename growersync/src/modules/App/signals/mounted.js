@@ -7,10 +7,11 @@ function isLoggedIn ({state, path}) {
 }
 
 export default [
-    isLoggedIn, {
-      yes: [
-        initialize
-      ],
-      no: []
-    }
+  isLoggedIn, {
+    yes: [
+      initialize
+    ],
+    no: []
+  }
+
 ]
