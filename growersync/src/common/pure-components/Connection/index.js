@@ -11,6 +11,36 @@ import svgPSP from '../../svg/domains/pspPerfection.svg'
 import svgAuditorMining from '../../svg/domains/auditorMining.svg'
 import svgDistributing from '../../svg/domains/distributingExcellence.svg'
 
+class TimeStamp extends React.Component {
+  componentDidMount() {
+    let updateTimer = setInterval(()=> {
+      this.forceUpdate();
+    }, 5000);
+    this.setState({
+      timer: updateTimer
+    })
+  }
+  componentWillUnmount() {
+    if (this.state.timer) {
+      clearInterval(this.state.timer);
+    }
+  }
+  render() {
+    return (
+      <div className={styles.time}>
+        {
+          this.props.timestamp
+          ?
+          moment.min(moment(this.props.timestamp, 'X'), moment()).fromNow()
+          :
+          'Never'
+        }
+      </div>
+    );
+  }
+}
+
+
 class Connection extends React.Component {
   render() {
     let logo = svgABC;
@@ -62,13 +92,7 @@ class Connection extends React.Component {
                 {'Last Update: '}
               </div>
               <div className={styles.time}>
-                {
-                  this.props.connection.lastUpdate
-                  ?
-                  moment.min(moment(this.props.connection.lastUpdate, 'X'), moment()).max().fromNow()
-                  :
-                  'Never'
-                }
+                <TimeStamp timestamp={this.props.connection.lastUpdate} />
               </div>
             </div>
           </div>
