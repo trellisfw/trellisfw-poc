@@ -26,7 +26,7 @@ export default Controller({
   modules: {
     app: App,
 		client_panel: ClientPanel,
-		sharing_dialog: SharingDialog,
+		SharingDialog: SharingDialog,
 		user_profile: UserProfile,
   }
 })

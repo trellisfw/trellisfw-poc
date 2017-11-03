@@ -25,7 +25,7 @@ export default connect({
   initialize: signal`client_panel.initialize`,
   clientClicked: signal`client_panel.clientClicked`,
   addClientButtonClicked: signal`client_panel.addClientButtonClicked`,
-	shareClientButtonClicked: signal`sharing_dialog.shareClientButtonClicked`,
+	shareClientButtonClicked: signal`SharingDialog.shareClientButtonClicked`,
 },
 
 class ClientPanel extends React.Component {

@@ -1,9 +1,9 @@
 import React from 'react'
-import {connect} from '@cerebral/react'
+import {connect} from 'cerebral/react'
 import {state, signal} from 'cerebral/tags'
 import { Chip, IconButton, TextField, Dialog, FlatButton } from 'material-ui'
 // eslint-disable-next-line
-import styles from './styles.css'
+import styles from './index.module.css'
 
 export default connect({
   open: state`SharingDialog.open`,
@@ -11,6 +11,7 @@ export default connect({
 	urlText: state`SharingDialog.trellis_domain_text`,
 	client: state`client_panel.clients.${state`client_panel.selected_client`}`,
 	addUserError: state`SharingDialog.add_user_error`,
+	sharedUsers: state`SharingDialog.shared_users`,
 
   sharingDialogDone: signal`SharingDialog.sharingDialogDoneClicked`,
   urlTextChanged: signal`SharingDialog.urlTextChanged`,
@@ -19,9 +20,7 @@ export default connect({
 },
 
 class SharingDialog extends React.Component {
-
   render() {
-
     const actions = [
       <FlatButton
         label="Done"
@@ -29,17 +28,15 @@ class SharingDialog extends React.Component {
         onClick={() => {this.props.sharingDialogDone({})}}
       />,
     ];
-
-		return (
+    return (
       <Dialog
-        title={"Sharing for "+this.props.client.name}
         actions={actions}
         modal={false}
         open={this.props.open}
-        onRequestClose={()=> {this.props.sharingDialogCancelled({})}}
+        onRequestClose={()=> {this.props.sharingDialogDone({})}}
 			>
-				<p>{'Who should be able to view '+this.props.client.name+'\'s data?'}</p>
-				<div className='sharing-dialog-user-entry'>
+      <p>{'Who would you like to share these certifications with?'}</p>
+				<div className={styles.sharingDialogUserEntry}>
 	        <TextField
 		        hintText="gary@gmail.com..."
 			      value={this.props.usernameText}
@@ -53,27 +50,32 @@ class SharingDialog extends React.Component {
 						onChange={(evt, text)=>{this.props.urlTextChanged({text})}}
 					/>
 					<div
-						className='sharing-dialog-add-user'
+						className={styles.sharingDialogAddUser}
 						onTouchTap={() => this.props.addUserButtonClicked({})}>
-						<IconButton        
+						<IconButton
 							disabled={(this.props.urlText === '') || (this.props.usernameText === '')}
-							className='client-panel-share-button'
+							className={styles.clientPanelShareButton}
 							iconClassName="material-icons">add_circle
 						</IconButton>
-						<p>Add user</p>
+						<p>{'Add user'}</p>
 					</div>
 				</div>
-				{this.props.addUserError ? 
-					<p className='add-user-error'>{this.props.addUserError}</p> 
+				{this.props.addUserError ?
+					<p className={styles.addUserError}>{this.props.addUserError}</p>
 					: null
 				}
 				<div>
-					<p>Currently shared with: </p>
-					<div className='share-dialog-shared users'>
-						{Object.keys(this.props.client.certifications._meta._permissions || {}).map((u) => 
+          {
+            Object.keys(this.props.sharedUsers).length > 0 ?
+            <p>Currently shared with: </p>
+            :
+            null
+          }
+					<div>
+						{Object.keys(this.props.sharedUsers).map((u) =>
 							<Chip
 								key={'shared-users-'+u}>
-								{this.props.client.certifications._meta._permissions[u].name || this.props.client.certifications._meta._permissions[u].oidc.username}
+								{this.props.sharedUsers[u].name || this.props.sharedUsers[u].oidc.username}
 							</Chip>
 						)}
 					</div>

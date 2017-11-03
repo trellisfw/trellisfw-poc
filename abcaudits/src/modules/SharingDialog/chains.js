@@ -2,25 +2,31 @@ import { unset, set, toggle } from 'cerebral/operators'
 import {state, props } from 'cerebral/tags'
 import axios from 'axios';
 import md5 from 'md5';
+import {oadaDomain, sharePassword} from '../../config';
 import getOadaBaseURI from '../OADA/factories/getOadaBaseURI'
 
 export let doneSharing = [
-  set(state`sharing_dialog.trellis_domain_text`, ''),
-  set(state`sharing_dialog.username_text`, ''),
-  toggle(state`sharing_dialog.open`),
-  unset(state`sharing_dialog.add_user_error`),
+  set(state`SharingDialog.trellis_domain_text`, ''),
+  set(state`SharingDialog.username_text`, ''),
+  toggle(state`SharingDialog.open`),
+  unset(state`SharingDialog.add_user_error`),
 ]
 
 export let showSharingDialog = [
-  toggle(state`sharing_dialog.open`),
+  loadSharingMeta,
+  {
+    success: [],
+    error: []
+  },
+  toggle(state`SharingDialog.open`),
 ]
 
 export let setUsernameText = [
-  set(state`sharing_dialog.username_text`, props`text`),
+  set(state`SharingDialog.username_text`, props`text`),
 ]
 
 export let setUrlText = [
-  set(state`sharing_dialog.trellis_domain_text`, props`text`),
+  set(state`SharingDialog.trellis_domain_text`, props`text`),
 ]
 
 export let addUser = [
@@ -33,30 +39,62 @@ export let addUser = [
           set(state`client_panel.clients.${state`client_panel.selected_client`}._meta._permissions.${props`user._id`}`, props`user`),
           addPermissions, {
             success: [
-              set(state`sharing_dialog.trellis_domain_text`, ''),
-              set(state`sharing_dialog.username_text`, ''),
+    					set(state`SharingDialog.shared_users.${props`user._id`}`, props`user`),
+              set(state`SharingDialog.trellis_domain_text`, ''),
+              set(state`SharingDialog.username_text`, ''),
             ],
             error: [
-              set(state`sharing_dialog.add_user_error`, 'Unable to share with this user')
+              set(state`SharingDialog.add_user_error`, 'Unable to share with this user')
             ],
           },
         ],
         error: [
-          set(state`sharing_dialog.add_user_error`, 'User not found with matching username and trellis domain')
+          set(state`SharingDialog.add_user_error`, 'User not found with matching username and trellis domain')
         ],
       }
     ],
     error: [
-      set(state`sharing_dialog.add_user_error`, 'The domain you entered is not a valid trellis domain.')
+      set(state`SharingDialog.add_user_error`, 'The domain you entered is not a valid trellis domain.')
     ]
   }
 ]
 
+function loadSharingMeta({state, props, path}) {
+  return axios({
+    method: 'get',
+    url: oadaDomain+'/bookmarks/trellisfw/certifications/_meta',
+    headers: {
+      'Authorization': 'Bearer '+state.get('UserProfile.user.token'),
+    },
+  }).then((res) => {
+    //Now get names of users from their ids
+    let meta = res.data
+    // Get each permissioned user (we need their names)
+    state.set('SharingDialog.shared_users', {});
+    if (!meta._permissions) return;
+    return Promise.map(Object.keys(meta._permissions), (user) => {
+      return axios({
+        method:'GET',
+        url: oadaDomain+'/'+user,
+        headers: {
+          'Authorization': 'Bearer '+state.get('UserProfile.user.token'),
+        }
+      }).then((res) => {
+        state.set('SharingDialog.shared_users.'+user, res.data);
+      });
+    });
+  }).then(() => {
+    return path.success({});
+  }).catch((error) => {
+    return path.error({error});
+  });
+}
+
 function createClientUser({state, props, path}) {
   let domain = state.get('app.oada_domain')
   let oidc = {
-    username: state.get(`sharing_dialog.username_text`),
-    iss: state.get(`sharing_dialog.trellis_domain_text`)
+    username: state.get(`SharingDialog.username_text`),
+    iss: state.get(`SharingDialog.trellis_domain_text`)
   }
   return axios({
     method: 'post',
