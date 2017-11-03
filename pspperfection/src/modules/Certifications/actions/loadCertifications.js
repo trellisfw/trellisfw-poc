@@ -29,11 +29,11 @@ function loadCertifications({path, state}) {
 }
 
 export default [
-  loadCertifications, {
-    success: [
+	loadCertifications, {
+		success: [
       set(state`App.model.certifications`, props`certifications`),
     ],
-    error: [],
+		error: [],
     missing: []
-  },
+	},
 ]
