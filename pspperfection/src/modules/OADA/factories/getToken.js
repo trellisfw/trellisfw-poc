@@ -18,7 +18,7 @@ function getTokenFactory ({domain, funcMode}) {
     let _domain = resolve.value(domain);
     let options = {
       metadata: metadata,
-      scope: 'fpad:all',
+      scope: 'trellisfw:all',
       redirect: redirectDomain
     };
 
