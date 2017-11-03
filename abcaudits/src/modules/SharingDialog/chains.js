@@ -2,6 +2,7 @@ import { unset, set, toggle } from 'cerebral/operators'
 import {state, props } from 'cerebral/tags'
 import axios from 'axios';
 import md5 from 'md5';
+import getOadaBaseURI from '../OADA/factories/getOadaBaseURI'
 
 export let doneSharing = [
   set(state`sharing_dialog.trellis_domain_text`, ''),
@@ -24,23 +25,31 @@ export let setUrlText = [
 
 export let addUser = [
 	//try to get current user
-	createClientUser, {
-		success: [
-			set(state`client_panel.clients.${state`client_panel.selected_client`}._meta._permissions.${props`user._id`}`, props`user`),
-		  addPermissions, {
-				success: [
-				  set(state`sharing_dialog.trellis_domain_text`, ''),
-					set(state`sharing_dialog.username_text`, ''),
-	      ],
-				error: [
-					set(state`sharing_dialog.add_user_error`, 'Unable to share with this user')
-				],
-			},
-		],
-		error: [
-			set(state`sharing_dialog.add_user_error`, 'User not found with matching username and trellis domain')
-		],
-	}
+  getOadaBaseURI({domain: state`SharingDialog.trellis_domain_text`}),
+  {
+    success: [
+      createClientUser, {
+        success: [
+          set(state`client_panel.clients.${state`client_panel.selected_client`}._meta._permissions.${props`user._id`}`, props`user`),
+          addPermissions, {
+            success: [
+              set(state`sharing_dialog.trellis_domain_text`, ''),
+              set(state`sharing_dialog.username_text`, ''),
+            ],
+            error: [
+              set(state`sharing_dialog.add_user_error`, 'Unable to share with this user')
+            ],
+          },
+        ],
+        error: [
+          set(state`sharing_dialog.add_user_error`, 'User not found with matching username and trellis domain')
+        ],
+      }
+    ],
+    error: [
+      set(state`sharing_dialog.add_user_error`, 'The domain you entered is not a valid trellis domain.')
+    ]
+  }
 ]
 
 function createClientUser({state, props, path}) {
@@ -80,7 +89,7 @@ function createClientUser({state, props, path}) {
 function addPermissions({state, props, path}) {
   let domain = state.get('app.oada_domain')
   let clientId = state.get('client_panel.selected_client')
-	
+
   return axios({
     method: 'put',
     url: domain+'/bookmarks/fpad/clients/'+clientId+'/_meta/_permissions',
@@ -88,10 +97,10 @@ function addPermissions({state, props, path}) {
       'Content-Type': 'application/vnd.fpad.client.1+json',
       'Authorization': 'Bearer '+state.get('user_profile.user.token'),
     },
-    data: { 
+    data: {
       [props.user._id]: {
         read: true,
-        write: true, 
+        write: true,
         owner: false
       }
     }
