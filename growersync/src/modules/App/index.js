@@ -1,4 +1,5 @@
 import mounted from './signals/mounted';
+import snackBarClosed from './signals/snackBarClosed';
 
 export default {
 	state: {
@@ -8,12 +9,16 @@ export default {
       }
     },
     view: {
-
+			snackBar: {
+        message: '',
+        open: false
+      }
     }
   },
 
   signals: {
-    mounted
+    mounted,
+		snackBarClosed
   },
   modules: {
 
