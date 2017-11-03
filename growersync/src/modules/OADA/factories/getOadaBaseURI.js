@@ -15,6 +15,7 @@ function getOadaBaseURIFactory ({domain, funcMode}) {
       if (_path) return _path.success({baseURI: response.oada_base_uri});
       return {baseURI: response.oada_base_uri}
     }).catch((error) => {
+      console.log(error);
       if (_path) return _path.error({error});
       throw error;
     });

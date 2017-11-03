@@ -10,7 +10,6 @@ import getToken from '../../../OADA/factories/getToken'
 import getOadaBaseURI from '../../../OADA/factories/getOadaBaseURI'
 import post from '../../../OADA/factories/post'
 import createCertificationsWebhook from '../../actions/createCertificationsWebhook'
-import {redirectDomain, metadata} from '../../../../config';
 
 function completeConnection() {
   console.log('Connection complete!');

@@ -20,10 +20,7 @@ function getFactory ({path: resPath, domain, token, funcMode}) {
       //Resolve path, domain, and token values if they are tags
       let _resPath = resolve.value(resPath);
       let _domain = resolve.value(domain) || oadaDomain;
-      console.log('Token1:', token);
       let _token = resolve.value(token) || state.get('UserProfile.user.token')
-      console.log('Token2:', _token);
-      console.log('State Token:', state.get('UserProfile.user.token'));
       /*
         - Execute get -
         Use axios if our websocket isn't configured, or isn't configured for the
