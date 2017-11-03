@@ -4,7 +4,7 @@ var _ = require('lodash');
 
 var portals = ['distributingexcellence', 'pspperfection', 'retailfresh'];
 var ignore = ['node_modules', '.DS_Store', 'updateOtherPortals.js'];
-var dontOverwrite = ['config', 'public'];
+var dontOverwrite = ['config', 'public', '/src/modules/UserProfile/index.js'];
 
 function copyFileSync( sourceFile, targetFile ) {
     fs.writeFileSync(targetFile, fs.readFileSync(sourceFile));
@@ -34,6 +34,18 @@ function copyFolderRecursiveSync( sourceFolder, targetFolder ) {
                 return;
               }
             }
+            let skip = false;
+            _.forEach(dontOverwrite, (dfile) => {
+              if (dfile.startsWith('/')) {
+                let match = targetFile.split('/')
+                match.splice(0, 2);
+                if (dfile == '/'+match.join('/')) {
+                  skip = true;
+                  return false;
+                }
+              }
+            });
+            if (skip) return;
             if ( fs.lstatSync( sourceFile ).isDirectory() ) {
                 copyFolderRecursiveSync( sourceFile, targetFile );
             } else {
