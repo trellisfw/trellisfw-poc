@@ -10,19 +10,19 @@ import pubKey from '../../pubKey.js'
 var agent = require('superagent-promise')(require('superagent'), Promise);
 
 export let closeViewer = [
-	unset(state`app.view.certifications.${props`name`}.cert_viewer`)
+  unset(state`app.view.certifications.${props`name`}.cert_viewer`)
 ]
 
 export let showViewer = [
-	showDoc,
-	//set(state`app.view.certifications.${props`name`}`, {cert_viewer: {doc: props`doc_type`, expanded: ''}})
+  showDoc,
+  //set(state`app.view.certifications.${props`name`}`, {cert_viewer: {doc: props`doc_type`, expanded: ''}})
 ]
 
 function showDoc({state, props, path}) {
-	state.set(`app.view.certifications.${props.name}.cert_viewer`, {
-		doc: props.doc, 
-		expanded: ''
-	})
+  state.set(`app.view.certifications.${props.name}.cert_viewer`, {
+    doc: props.doc, 
+    expanded: ''
+  })
 }
 
 export let toggleCertSelect = [
@@ -46,11 +46,11 @@ export let addCertification = [
   addRandomCert, {
     success: [
       set(state`client_panel.clients.${props`clientId`}.certifications.${props`certid`}.audit`, props`audit`),
-			set(state`app.view.certifications.${props`certid`}`, {selected: false}),
-			when (state`client_panel.clients.${props`clientId`}.org_name`), {
-				true: [],
-				false: [set(state`client_panel.clients.${props`clientId`}.org_name`, props`audit.organization.name`)]
-			},
+      set(state`app.view.certifications.${props`certid`}`, {selected: false}),
+      when (state`client_panel.clients.${props`clientId`}.org_name`), {
+        true: [],
+        false: [set(state`client_panel.clients.${props`clientId`}.org_name`, props`audit.organization.name`)]
+      },
     ],
     error: [],
   },
@@ -59,27 +59,27 @@ export let addCertification = [
 export let deleteCertifications = [
   deleteSelectedCertifications, {
     success: [
-			unsetCerts,
+      unsetCerts,
     ],
     error: [],
   }
 ]
 
 export let updateCertifications = [
-	updateCerts, {
-		success: [
-			setCertifications,
-		],
-		error: [],
-	}
+  updateCerts, {
+    success: [
+      setCertifications,
+    ],
+    error: [],
+  }
 ]
 
 function setCertifications({state, props, path}) {
   let clientId = state.get('client_panel.selected_client')
-	Object.keys(props.newAudits).forEach(key => {
-		state.set(`client_panel.clients.${clientId}.certifications.${key}`, {audit: props.newAudits[key]});
-		state.set(`app.view.certifications.${key}`, {selected: false});
-	})
+  Object.keys(props.newAudits).forEach(key => {
+    state.set(`client_panel.clients.${clientId}.certifications.${key}`, {audit: props.newAudits[key]});
+    state.set(`app.view.certifications.${key}`, {selected: false});
+  })
 }
 
 function generateAuditSignature({state, props, path}) {
@@ -93,9 +93,9 @@ function generateAuditSignature({state, props, path}) {
   let clientId = state.get('client_panel.selected_client')
   let audit = _.clone(props.audit)
   return signatures.generate(audit, prvKey, headers).then((signatures) => {
-		return agent('PUT', domain+'/bookmarks/trellisfw/clients/'+clientId+'/certifications/'+props.name+'/audit/signatures')
+    return agent('PUT', domain+'/bookmarks/trellisfw/clients/'+clientId+'/certifications/'+props.name+'/audit/signatures')
     .set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
-    .set('Content-Type', 'application/vnd.oada.certifications.globalgap.1+json')
+    .set('Content-Type', 'application/vnd.trellisfw.certification.globalgap.1+json')
     .send(signatures)
     .end()
     .then((res) => {
@@ -106,76 +106,76 @@ function generateAuditSignature({state, props, path}) {
 
 function deleteSelectedCertifications({state, props, path}) {
   let domain = state.get('app.oada_domain')
-	let id = state.get('client_panel.selected_client')
-	let selectedCerts = []
-	let certs = state.get(`app.view.certifications`)
-	Object.keys(certs).forEach((key) => {
-		if (certs[key].selected) selectedCerts.push(key)
-	})
+  let id = state.get('client_panel.selected_client')
+  let selectedCerts = []
+  let certs = state.get(`app.view.certifications`)
+  Object.keys(certs).forEach((key) => {
+    if (certs[key].selected) selectedCerts.push(key)
+  })
   return Promise.map(selectedCerts, (key) => {
     return agent('DELETE', domain+'/bookmarks/trellisfw/clients/'+id+'/certifications/'+key)
     .set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
     .end()
   }).then(() => {
-		return path.success({deletedCerts:selectedCerts})
-	})
+    return path.success({deletedCerts:selectedCerts})
+  })
 }
 
 function unsetCerts({state, props}) {
-	let clientId = state.get('client_panel.selected_client')
-	props.deletedCerts.forEach(key => {
-		state.unset(`client_panel.clients.${clientId}.certifications.${key}`)
-		state.unset(`app.view.certifications.${key}`)
-	})
+  let clientId = state.get('client_panel.selected_client')
+  props.deletedCerts.forEach(key => {
+    state.unset(`client_panel.clients.${clientId}.certifications.${key}`)
+    state.unset(`app.view.certifications.${key}`)
+  })
 }
 
 function updateCerts({state, props, path}) {
-	let domain = state.get('app.oada_domain')
+  let domain = state.get('app.oada_domain')
   let a = state.get('app.view.certifications')
   let clientId = state.get(`client_panel.selected_client`)
-	let clientName = state.get(`client_panel.clients.${clientId}.name`)
-	let certifications = state.get(`client_panel.clients.${clientId}.certifications`);
-	let newAudits = {};
-	return Promise.map(Object.keys(certifications), (key) => {
-		if (!a[key].selected) return
-		let audit = randCert.generateAudit({
-			template: templateAudit, 
-			minimizeAuditData: true,
-			organization: {name: clientName},
-			year: (parseInt(certifications[key].audit.conditions_during_audit.operation_observed_date.slice(0,4), 10)+1).toString(),
-			scope: {
-				products_observed: certifications[key].audit.scope.products_observed,
-				operations: certifications[key].audit.scope.operations
-			}
-		})
-		return agent('POST', domain+'/resources')
-		.set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
-		.set('Content-Type', 'application/vnd.trellisfw.audit.globalgap.1+json')
-		.send(audit)
-		.end()
-		.then((response) => {
-			let id = response.headers.location.split('/')
-			id = id[id.length-1]
-			audit._id = 'resources/'+id
-			return agent('POST', domain+'/resources')
-			.set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
-			.set('Content-Type', 'application/vnd.trellisfw.certification.globalgap.1+json')
-			.send({audit: { _id: id, _rev: '0-0'}})
-			.end()
-			.then((res) => {
-				let certid = response.headers.location.split('/')
-				certid = certid[certid.length-1]
-				newAudits[certid] = audit
-				return agent('PUT', domain+'/bookmarks/trellisfw/clients/'+clientId+'/certifications/'+certid)
-				.set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
-				.set('Content-Type', 'application/vnd.trellisfw.certification.globalgap.1+json')
-				.send({_id:'resources/'+certid, _rev: '0-0'})
-				.end()
-			})
-		})
-	}).then(() => {
-		return path.success({newAudits, clientId})
-	})
+  let clientName = state.get(`client_panel.clients.${clientId}.name`)
+  let certifications = state.get(`client_panel.clients.${clientId}.certifications`);
+  let newAudits = {};
+  return Promise.map(Object.keys(certifications), (key) => {
+    if (!a[key].selected) return
+    let audit = randCert.generateAudit({
+      template: templateAudit, 
+      minimizeAuditData: true,
+      organization: {name: clientName},
+      year: (parseInt(certifications[key].audit.conditions_during_audit.operation_observed_date.slice(0,4), 10)+1).toString(),
+      scope: {
+        products_observed: certifications[key].audit.scope.products_observed,
+        operations: certifications[key].audit.scope.operations
+      }
+    })
+    return agent('POST', domain+'/resources')
+    .set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
+    .set('Content-Type', 'application/vnd.trellisfw.audit.globalgap.1+json')
+    .send(audit)
+    .end()
+    .then((response) => {
+      let id = response.headers.location.split('/')
+      id = id[id.length-1]
+      audit._id = 'resources/'+id
+      return agent('POST', domain+'/resources')
+      .set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
+      .set('Content-Type', 'application/vnd.trellisfw.certification.globalgap.1+json')
+      .send({audit: { _id: id, _rev: '0-0'}})
+      .end()
+      .then((res) => {
+        let certid = response.headers.location.split('/')
+        certid = certid[certid.length-1]
+        newAudits[certid] = audit
+        return agent('PUT', domain+'/bookmarks/trellisfw/clients/'+clientId+'/certifications/'+certid)
+        .set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
+        .set('Content-Type', 'application/vnd.trellisfw.certification.globalgap.1+json')
+        .send({_id:'resources/'+certid, _rev: '0-0'})
+        .end()
+      })
+    })
+  }).then(() => {
+    return path.success({newAudits, clientId})
+  })
 }
 
 function addRandomCert({state, props, path}) {
@@ -183,39 +183,39 @@ function addRandomCert({state, props, path}) {
   let clientId = state.get(`client_panel.selected_client`)
   let clientName = state.get(`client_panel.clients.${clientId}.name`)
   let orgName = state.get(`client_panel.clients.${clientId}.org_name`)
-	let audit = randCert.generateAudit({
-		template: templateAudit, 
-		minimizeAuditData: true,
-		organization: {contacts: [{ name: clientName}]},
-		certifying_body: { name: 'AbcAudits' }
-	})
-	if (orgName) audit.organization.name = orgName;
-	let auditid;
-	let certid;
+  let audit = randCert.generateAudit({
+    template: templateAudit, 
+    minimizeAuditData: true,
+    organization: {contacts: [{ name: clientName}]},
+    certifying_body: { name: 'AbcAudits' }
+  })
+  if (orgName) audit.organization.name = orgName;
+  let auditid;
+  let certid;
   return agent('POST', domain+'/resources')
   .set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
   .set('Content-Type', 'application/vnd.trellisfw.audit.globalgap.1+json')
   .send(audit)
   .end()
-	.then((response) => {
-		auditid = response.headers.location.split('/')
-		auditid = auditid[auditid.length-1]
-		audit._id = 'resources/'+auditid
-		return agent('POST', domain+'/resources')
-		.set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
-		.set('Content-Type', 'application/vnd.trellisfw.certification.globalgap.1+json')
-		.send({audit: {_id:'resources/'+auditid, _rev: '0-0'}})
-		.end()
-		.then((response) => {
-			certid = response.headers.location.split('/')
-			certid = certid[certid.length-1]
-			return agent('PUT', domain+'/bookmarks/trellisfw/clients/'+clientId+'/certifications/'+certid)
-			.set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
-			.set('Content-Type', 'application/vnd.trellisfw.certifications.globalgap.1+json')
-			.send({_id:'resources/'+certid, _rev: '0-0'})
-			.end()
-		}).then(() => {
-			return path.success({certid, audit, clientId})
-		})
+  .then((response) => {
+    auditid = response.headers.location.split('/')
+    auditid = auditid[auditid.length-1]
+    audit._id = 'resources/'+auditid
+    return agent('POST', domain+'/resources')
+    .set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
+    .set('Content-Type', 'application/vnd.trellisfw.certification.globalgap.1+json')
+    .send({audit: {_id:'resources/'+auditid, _rev: '0-0'}})
+    .end()
+    .then((response) => {
+      certid = response.headers.location.split('/')
+      certid = certid[certid.length-1]
+      return agent('PUT', domain+'/bookmarks/trellisfw/clients/'+clientId+'/certifications/'+certid)
+      .set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
+      .set('Content-Type', 'application/vnd.trellisfw.certification.globalgap.1+json')
+      .send({_id:'resources/'+certid, _rev: '0-0'})
+      .end()
+    }).then(() => {
+      return path.success({certid, audit, clientId})
+    })
   })
 }

@@ -6,7 +6,7 @@
     "axios": "^0.16.2",
     "bluebird": "^3.5.0",
     "cerebral": "^2.0.0-beta.3",
-    "fpad-rand-cert": "^2.0.7",
+    "fpad-rand-cert": "^2.0.9",
     "fpad-signatures": "^0.1.2",
     "material-ui": "^0.18.7",
     "md5": "^2.2.1",

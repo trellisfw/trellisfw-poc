@@ -19,7 +19,7 @@ export default sequence('watchConnections', [
     no: [
       createResource({
         path: '/bookmarks/trellisfw/connections',
-        contentType: 'application/vnd.trellisfw.certifications.globalgap.1+json'
+        contentType: 'application/vnd.trellisfw.connection.1+json'
       })
     ]
   },
