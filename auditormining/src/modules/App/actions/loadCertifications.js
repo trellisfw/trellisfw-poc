@@ -9,10 +9,10 @@ import watchCertifications from './watchCertifications';
 function loadCertifications({state, path}) {
   //Get the certifications list
   let certifications = {};
-  const fpadDomain = state.get('Login.fpadDomain');
+  const trellisDomain = state.get('Login.trellisDomain');
   return axios({
       method: 'GET',
-      url: fpadDomain+'/bookmarks/fpad/certifications',
+			url: trellisDomain+'/bookmarks/trellisfw/certifications',
       headers: {Authorization: 'Bearer '+ state.get('UserProfile.user.token')}
     }).then((res) => {
       //Extract only list of certification ids
@@ -21,7 +21,7 @@ function loadCertifications({state, path}) {
         //Load the certifications
         return axios({
             method: 'GET',
-            url: fpadDomain+'/bookmarks/fpad/certifications/'+key+'/audit',
+            url: trellisDomain+'/bookmarks/trellisfw/certifications/'+key+'/audit',
             headers: {Authorization: 'Bearer '+ state.get('UserProfile.user.token')}
           }).then((res) => {
             certifications[key] = res.data;

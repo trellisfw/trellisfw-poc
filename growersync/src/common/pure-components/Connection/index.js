@@ -1,5 +1,6 @@
 import React from 'react'
-
+import moment from 'moment'
+import PropTypes from 'prop-types'
 import styles from './index.module.css'
 import svgIncomingConnection from '../../svg/incoming.svg'
 
@@ -10,7 +11,37 @@ import svgPSP from '../../svg/domains/pspPerfection.svg'
 import svgAuditorMining from '../../svg/domains/auditorMining.svg'
 import svgDistributing from '../../svg/domains/distributingExcellence.svg'
 
-class NewConnection extends React.Component {
+class TimeStamp extends React.Component {
+  componentDidMount() {
+    let updateTimer = setInterval(()=> {
+      this.forceUpdate();
+    }, 5000);
+    this.setState({
+      timer: updateTimer
+    })
+  }
+  componentWillUnmount() {
+    if (this.state.timer) {
+      clearInterval(this.state.timer);
+    }
+  }
+  render() {
+    return (
+      <div className={styles.time}>
+        {
+          this.props.timestamp
+          ?
+          moment.min(moment(this.props.timestamp, 'X'), moment()).fromNow()
+          :
+          'Never'
+        }
+      </div>
+    );
+  }
+}
+
+
+class Connection extends React.Component {
   render() {
     let logo = svgABC;
     let name = 'ABC Audits';
@@ -54,14 +85,14 @@ class NewConnection extends React.Component {
                 <div>{name}</div>
             </div>
             <div className={styles.status}>
-              {'Received 0 Certifications'}
+              {'Received '+(this.props.connection.receivedCount || 0)+' Certifications'}
             </div>
             <div className={styles.updatedContainer}>
               <div className={styles.label}>
-                {'Last Update:'}
+                {'Last Update: '}
               </div>
               <div className={styles.time}>
-                {' 0 minutes ago'}
+                <TimeStamp timestamp={this.props.connection.lastUpdate} />
               </div>
             </div>
           </div>
@@ -71,8 +102,12 @@ class NewConnection extends React.Component {
   }
 }
 
-NewConnection.propTypes = {
-
+Connection.propTypes = {
+  connection: PropTypes.shape({
+    url: PropTypes.string,
+    receivedCount: PropTypes.number,
+    lastUpdate: PropTypes.number
+  })
 };
 
-export default NewConnection;
+export default Connection;

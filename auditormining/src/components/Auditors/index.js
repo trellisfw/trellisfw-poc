@@ -12,7 +12,7 @@ import computedAuditors from '../../common/computed/auditors.js';
 export default connect({
   certifications: state`App.model.certifications`,
   auditors: computedAuditors,
-  fpadDomain: state`Login.fpadDomain`
+  trellisDomain: state`Login.trellisDomain`
 },
 
 class Auditors extends React.Component {
@@ -23,7 +23,7 @@ class Auditors extends React.Component {
     })
   }
   render() {
-    let fpadDomain = _.find(oadaDomains, {url: this.props.fpadDomain}).displayText || '';
+    let trellisDomain = _.find(oadaDomains, {url: this.props.trellisDomain}).displayText || '';
     return (
       <div className={styles.root}>
         <div className={styles.top}>
@@ -40,7 +40,7 @@ class Auditors extends React.Component {
         <div className={styles.connectionInfo}>
           <SyncIcon color={'#009e0f'}/>
           <div className={styles.label}>
-            {'fPAD connection to '+fpadDomain.toLowerCase()}
+            {'Trellis connection to '+trellisDomain.toLowerCase()}
           </div>
         </div>
       </div>

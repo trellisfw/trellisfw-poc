@@ -1,7 +1,7 @@
 import globalgap from './globalgap';
 import _ from 'lodash';
 const parsers = {
-  'application/vnd.fpad.audit.globalgap.1+json': globalgap,
+  'application/vnd.trellisfw.audit.globalgap.1+json': globalgap,
   'default': globalgap
 }
 

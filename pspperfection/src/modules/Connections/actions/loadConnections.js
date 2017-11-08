@@ -10,7 +10,7 @@ function parseConnections({props, state}) {
 }
 
 function loadConnections({path}) {
-  return get.func(arguments)({path: '/bookmarks/fpad/connections'}).then(({response}) => {
+  return get.func(arguments)({path: '/bookmarks/trellisfw/connections'}).then(({response}) => {
     return path.success({response});
   }).catch((error) => {
     return path.error({error});

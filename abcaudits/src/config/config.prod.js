@@ -1,10 +1,11 @@
 //Production Values
 const devtoolsPort = 8585;
-const oadaDomain = process.env.REACT_APP_OADA_DOMAIN || 'https://api.abcaudits.fpad.io';
-const websiteDomain = 'https://abcaudits.fpad.io';
-const metadata = `
+const oadaDomain = process.env.REACT_APP_OADA_DOMAIN || 'https://api.abcaudits.trellisfw.io';
+const websiteDomain = 'https://abcaudits.trellisfw.io';
+const metadata = require('./prod_metadata');
+/*`
 eyJqa3UiOiJodHRwczovL2lkZW50aXR5Lm9hZGEtZGV2LmNvbS9jZXJ0cyIsImtpZCI6ImtqY1NjamMzMmR3SlhYTEpEczNyMTI0c2ExIiwidHlwIjoiSldUIiwiYWxnIjoiUlMyNTYifQ.eyJyZWRpcmVjdF91cmlzIjpbImh0dHBzOi8vYWJjYXVkaXRzLmZwYWQuaW8vb2F1dGgyL3JlZGlyZWN0Lmh0bWwiXSwidG9rZW5fZW5kcG9pbnRfYXV0aF9tZXRob2QiOiJ1cm46aWV0ZjpwYXJhbXM6b2F1dGg6Y2xpZW50LWFzc2VydGlvbi10eXBlOmp3dC1iZWFyZXIiLCJncmFudF90eXBlcyI6WyJpbXBsaWNpdCJdLCJyZXNwb25zZV90eXBlcyI6WyJ0b2tlbiIsImlkX3Rva2VuIiwiaWRfdG9rZW4gdG9rZW4iXSwiY2xpZW50X25hbWUiOiJBYmNBdWRpdHMiLCJjbGllbnRfdXJpIjoiaHR0cHM6Ly9mcGFkLmlvLyIsImNvbnRhY3RzIjpbIlNhbSBOb2VsIDxzYW5vZWxAcHVyZHVlLmVkdT4iXSwic29mdHdhcmVfaWQiOiIyOWIwNWZjZi01ZjBlLTQ2MDgtYjkxMC1jNWUxNzQxNDhhNmUiLCJyZWdpc3RyYXRpb25fcHJvdmlkZXIiOiJodHRwczovL2lkZW50aXR5Lm9hZGEtZGV2LmNvbSIsImlhdCI6MTUwNzgyNzc1OH0.i55Tut9mPbFyx3tnXrWMI61gnHRJwf-DA2YPEjDbF2NtkaFdFCbixdBWqV4eERPqfQ0pLr6xhe3FSavasFgFfMeEBMmyekjyyDEdSOLeSBjEigfvvjcnlUpAnhiaC-o2OrygYxMFsewETTmGi_tt21plNzi5nPMt5R7oIVJ4AZ0
-`.trim()
+`.trim()*/
 
 export default {
   oadaDomain,

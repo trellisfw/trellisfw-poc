@@ -14,6 +14,9 @@ export default {
     },
     authorizedApps: {
 
+    },
+    counters: {
+      certificationsRecieved: 0
     }
   },
   signals: {

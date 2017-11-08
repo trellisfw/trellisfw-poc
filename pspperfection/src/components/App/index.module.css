@@ -13,3 +13,10 @@
   flex-grow: 1;
   display: flex;
 }
+.snackBar > div {
+  border-top-left-radius: 10px !important;
+  border-top-right-radius: 10px !important;
+}
+.snackBar > div > div {
+  text-align: center;
+}

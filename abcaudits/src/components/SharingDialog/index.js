@@ -6,16 +6,16 @@ import { Chip, IconButton, TextField, Dialog, FlatButton } from 'material-ui'
 import styles from './styles.css'
 
 export default connect({
-  open: state`sharing_dialog.open`,
-	usernameText: state`sharing_dialog.username_text`,
-	urlText: state`sharing_dialog.trellis_domain_text`,
+  open: state`SharingDialog.open`,
+	usernameText: state`SharingDialog.username_text`,
+	urlText: state`SharingDialog.trellis_domain_text`,
 	client: state`client_panel.clients.${state`client_panel.selected_client`}`,
-	addUserError: state`sharing_dialog.add_user_error`,
+	addUserError: state`SharingDialog.add_user_error`,
 
-  sharingDialogDone: signal`sharing_dialog.sharingDialogDoneClicked`,
-  urlTextChanged: signal`sharing_dialog.urlTextChanged`,
-  usernameTextChanged: signal`sharing_dialog.usernameTextChanged`,
-	addUserButtonClicked: signal`sharing_dialog.addUserButtonClicked`
+  sharingDialogDone: signal`SharingDialog.sharingDialogDoneClicked`,
+  urlTextChanged: signal`SharingDialog.urlTextChanged`,
+  usernameTextChanged: signal`SharingDialog.usernameTextChanged`,
+	addUserButtonClicked: signal`SharingDialog.addUserButtonClicked`
 },
 
 class SharingDialog extends React.Component {

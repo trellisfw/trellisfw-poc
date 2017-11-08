@@ -9,15 +9,15 @@ import styles from './index.module.css'
 import {oadaDomains} from '../../config';
 
 export default connect({
-  fpadDomain: state`Login.fpadDomain`,
-  connectWithFpadClicked: signal`Login.connectWithFpadClicked`,
-  fpadDomainChanged: signal`Login.fpadDomainChanged`
+  domain: state`Login.trellisDomain`,
+  connectWithTrellisClicked: signal`Login.connectWithTrellisClicked`,
+  trellisDomainChanged: signal`Login.trellisDomainChanged`
 },
 
 class Login extends React.Component {
   onUrlChange = (evt, index, value) => {
     if (value === 'custom') return; //TODO popup
-    this.props.fpadDomainChanged({domain: value});
+    this.props.trellisDomainChanged({domain: value});
   }
   render() {
     return (
@@ -30,23 +30,23 @@ class Login extends React.Component {
             {'Upload Certifications Manually'}
           </div>
           <div>{'or'}</div>
-          <div className={styles.fpadContainer}>
+          <div className={styles.trellisContainer}>
             <div>
               <RaisedButton
                 backgroundColor="#fff"
                 labelStyle={{textTransform: 'none'}}
-                label={'Connect with fPAD'}
+                label={'Connect with Trellis'}
                 icon={<OADAIcon style={{paddingBottom: 1}}/>}
                 style={{margin: 12}}
-                onClick={() => this.props.connectWithFpadClicked()}/>
+                onClick={() => this.props.connectWithTrellisClicked()}/>
             </div>
             <div className={styles.urlContainer}>
               <div>
-                {'Your fPAD URL:'}
+                {'Your Trellis URL:'}
               </div>
               <div>
                 <SelectField
-                  value={this.props.fpadDomain}
+                  value={this.props.trellisDomain}
                   onChange={this.onUrlChange}>
                   {
                     _.map(oadaDomains, (domain) => {

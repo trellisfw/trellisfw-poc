@@ -1,6 +1,6 @@
 function watchCertifications({state, websocket}) {
   return websocket.watch({
-    url: '/bookmarks/fpad/certifications',
+    url: '/bookmarks/trellisfw/certifications',
     headers: {Authorization: 'Bearer '+ state.get('UserProfile.user.token')}
   }, 'App.certificationsChanged');
 }

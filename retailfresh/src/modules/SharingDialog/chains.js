@@ -4,12 +4,13 @@ import axios from 'axios';
 import Promise from 'bluebird';
 import md5 from 'md5';
 import {oadaDomain, sharePassword} from '../../config';
+import getOadaBaseURI from '../OADA/factories/getOadaBaseURI'
 
 export let doneSharing = [
   set(state`SharingDialog.trellis_domain_text`, ''),
   set(state`SharingDialog.username_text`, ''),
-	toggle(state`SharingDialog.open`),
-	unset(state`SharingDialog.add_user_error`),
+  toggle(state`SharingDialog.open`),
+  unset(state`SharingDialog.add_user_error`),
 ]
 
 export let showSharingDialog = [
@@ -31,30 +32,38 @@ export let setUrlText = [
 
 export let addUser = [
 	//try to get current user
-	createClientUser, {
-		success: [
-		  addPermissions, {
-				success: [
-					set(state`SharingDialog.shared_users.${props`user._id`}`, props`user`),
-				  set(state`SharingDialog.trellis_domain_text`, ''),
-					set(state`SharingDialog.username_text`, ''),
-	      ],
-				error: [
-					set(state`SharingDialog.add_user_error`, 'Unable to share with this user')
-				],
-			},
-		],
-		error: [
-			set(state`SharingDialog.add_user_error`, 'User not found with matching username and trellis domain')
-		],
-	}
+  getOadaBaseURI({domain: state`SharingDialog.trellis_domain_text`}),
+  {
+    success: [
+      createClientUser, {
+    		success: [
+    		  addPermissions, {
+    				success: [
+    					set(state`SharingDialog.shared_users.${props`user._id`}`, props`user`),
+    				  set(state`SharingDialog.trellis_domain_text`, ''),
+    					set(state`SharingDialog.username_text`, ''),
+    	      ],
+    				error: [
+    					set(state`SharingDialog.add_user_error`, 'Unable to share with this user')
+    				],
+    			},
+    		],
+    		error: [
+    			set(state`SharingDialog.add_user_error`, 'User not found with matching username and trellis domain')
+    		],
+    	}
+    ],
+    error: [
+      set(state`SharingDialog.add_user_error`, 'The domain you entered is not a valid trellis domain.')
+    ]
+  }
 ]
 
 
 function loadSharingMeta({state, props, path}) {
   return axios({
     method: 'get',
-    url: oadaDomain+'/bookmarks/fpad/certifications/_meta',
+    url: oadaDomain+'/bookmarks/trellisfw/certifications/_meta',
     headers: {
       'Authorization': 'Bearer '+state.get('UserProfile.user.token'),
     },
@@ -85,44 +94,44 @@ function loadSharingMeta({state, props, path}) {
 function createClientUser({state, props, path}) {
 	let oidc = {
 		username: state.get(`SharingDialog.username_text`),
-		iss: state.get(`SharingDialog.trellis_domain_text`)
+		iss: props.baseURI
 	}
   let data = {
     username: md5(JSON.stringify(oidc)),
     oidc
   };
   if (sharePassword) data.password = sharePassword;
-	return axios({
-		method: 'post',
-		url: oadaDomain+'/users',
-		headers: {
-			'Content-Type': 'application/vnd.oada.user.1+json',
-			'Authorization': 'Bearer '+state.get('UserProfile.user.token'),
-		},
-		data
+  return axios({
+    method: 'post',
+    url: oadaDomain+'/users',
+    headers: {
+      'Content-Type': 'application/vnd.oada.user.1+json',
+      'Authorization': 'Bearer '+state.get('UserProfile.user.token'),
+    },
+    data
   }).then((response) => {
-		return axios({
-			method: 'get',
-			url: oadaDomain+response.headers.location,
-			headers: {
-				'Authorization': 'Bearer '+state.get('UserProfile.user.token'),
-			},
-		}).then((res) => {
-			return path.success({user:res.data})
-		}).catch((err) => {
-			return path.error({err})
-		})
-	}).catch((err) => {
-		return path.error({err})
-	})
+    return axios({
+      method: 'get',
+      url: oadaDomain+response.headers.location,
+      headers: {
+        'Authorization': 'Bearer '+state.get('UserProfile.user.token'),
+      },
+    }).then((res) => {
+      return path.success({user:res.data})
+    }).catch((err) => {
+      return path.error({err})
+    })
+  }).catch((err) => {
+    return path.error({err})
+  })
 }
 
 function addPermissions({state, props, path}) {
   return axios({
     method: 'put',
-    url: oadaDomain+'/bookmarks/fpad/certifications/_meta/_permissions',
+    url: oadaDomain+'/bookmarks/trellisfw/certifications/_meta/_permissions',
     headers: {
-      'Content-Type': 'application/vnd.fpad.certifications.1+json',
+      'Content-Type': 'application/vnd.trellisfw.certifications.1+json',
       'Authorization': 'Bearer '+state.get('UserProfile.user.token'),
     },
     data: {
@@ -132,7 +141,7 @@ function addPermissions({state, props, path}) {
         owner: false
       }
     }
-	}).then((response) => {
+  }).then((response) => {
     if (response.status >= 200 && response.status < 300) return path.success({});
     return path.error({response});
   }).catch((error) => {

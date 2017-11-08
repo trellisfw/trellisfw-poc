@@ -25,7 +25,7 @@ export default connect({
   initialize: signal`client_panel.initialize`,
   clientClicked: signal`client_panel.clientClicked`,
   addClientButtonClicked: signal`client_panel.addClientButtonClicked`,
-	shareClientButtonClicked: signal`sharing_dialog.shareClientButtonClicked`,
+	shareClientButtonClicked: signal`SharingDialog.shareClientButtonClicked`,
 },
 
 class ClientPanel extends React.Component {
@@ -38,16 +38,17 @@ class ClientPanel extends React.Component {
 
 		return (
 			this.props.noClientsError ? <p className='no-clients-error'>User has no clients</p>
-				:
+			:
       <Table
         fixedFooter={true}
         selectable={true}
         displayRowCheckbox={false}>
         <TableHeader
           displaySelectAll={false}>
-          <TableRow>
-            <TableHeaderColumn>Clients</TableHeaderColumn>
-            <TableHeaderColumn>
+          <TableRow className='clients-panel-header'>
+						<TableHeaderColumn 
+							className='client-panel-clients-header'>
+							<p className='category-title'>Clients</p>
 						  <IconButton
 						    disabled={!this.props.client}
 						    className='client-panel-share-button'

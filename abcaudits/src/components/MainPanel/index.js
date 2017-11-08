@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from '@cerebral/react'
 import {state, signal} from 'cerebral/tags'
 import CertCard from '../CertCard'
-import SharingDialog from '../SharingDialog'
+import SharingDialog from '../../common/components/SharingDialog'
 import {
 	IconButton,
 } from 'material-ui'
@@ -14,7 +14,7 @@ export default connect({
   client: state`client_panel.selected_client`,
   clients: state`client_panel.clients`,
 	certifications: state`app.view.certifications`,
-	sharingDialog: state`sharing_dialog.open`,
+	sharingDialogOpen: state`SharingDialog.open`,
 	user: state`user_profile.user`,
 	noClientsError: state`client_panel.no_clients_error`,
 
@@ -22,7 +22,7 @@ export default connect({
   addCertButtonClicked: signal`app.addCertButtonClicked`,
   updateCertButtonClicked: signal`app.updateCertButtonClicked`,
 	deleteAuditsButtonClicked: signal`app.deleteAuditsButtonClicked`,
-	shareAuditsButtonClicked: signal`sharing_dialog.shareAuditsButtonClicked`,
+	shareAuditsButtonClicked: signal`SharingDialog.shareAuditsButtonClicked`,
 	signInClicked: signal`user_profile.signInClicked`,
 },
 
@@ -32,7 +32,7 @@ class MainPanel extends React.Component {
 
     return (
 			<div className='main-panel'>
-				{this.props.sharingDialog ? <SharingDialog /> : null}
+				{this.props.sharingDialogOpen ? <SharingDialog /> : null}
         <div className='main-panel-header'>
           <p className={'main-panel-header-text'}>Current Certifications</p>
           <IconButton

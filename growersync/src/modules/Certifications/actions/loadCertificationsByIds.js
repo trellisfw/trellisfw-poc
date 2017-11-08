@@ -7,7 +7,7 @@ function loadCertificationsByIds({state, props, path, websocket}) {
   return Promise.map(props.ids, (key) => {
     //Load the connections
     return get.func(arguments)({
-      path: '/bookmarks/fpad/certifications/'+key+'/audit'
+      path: '/bookmarks/trellisfw/certifications/'+key+'/audit'
     }).then(({response}) => {
       state.set('App.model.certifications.'+key, response.data);
     }).catch((err) => {
