@@ -10,12 +10,12 @@ export let init = [
 ]
 
 export let signIn = [
-	getOadaToken, {
-		success: [
-		  set(state`UserProfile.user`, props`user`),
-		],
-		error: [],
-	},
+  getOadaToken, {
+    success: [
+      set(state`UserProfile.user`, props`user`),
+    ],
+    error: [],
+  },
 ]
 
 // TODO: fix this, run some actions, maybe init. Call signal??
@@ -27,22 +27,22 @@ export let signOut = [
 ]
 
 function oadaLogOut({state, props, path}) {
-	let domain = state.get('App.oada_domain')
-	// Make dummy image to go to /oadaauth/logout without using a window
-	// eslint-disable-next-line
-	let img = (new Image()).src = domain+"/oadaauth/logout";
+  let domain = state.get('App.oada_domain')
+  // Make dummy image to go to /oadaauth/logout without using a window
+  // eslint-disable-next-line
+  let img = (new Image()).src = domain+"/oadaauth/logout";
 }
 
 function getOadaToken({state, props, path}) {
-	let domain = state.get('App.oada_domain')
-	let host = domain.replace(/^https?:\/\//, '')
-	let options = {
-		metadata,
+  let domain = state.get('App.oada_domain')
+  let host = domain.replace(/^https?:\/\//, '')
+  let options = {
+    metadata,
     scope: 'trellisfw:all',
     redirect: redirectDomain,
-	}
-	return getAccessToken(host, options).then((accessToken) => {
-		console.log(domain)
+  }
+  return getAccessToken(host, options).then((accessToken) => {
+    console.log(domain)
     return axios({
        method: 'GET',
        url: domain+'/users/me',
