@@ -45,7 +45,7 @@ export let signAudit = [
 export let addCertification = [
   addRandomCert, {
     success: [
-      set(state`ClientPanel.clients.${props`clientId`}.certifications.${props`certid`}.audit`, props`audit`),
+      set(state`App.model.certifications.${props`certid`}.audit`, props`audit`),
       set(state`App.view.certifications.${props`certid`}`, {selected: false}),
       when (state`ClientPanel.clients.${props`clientId`}.org_name`), {
         true: [],
