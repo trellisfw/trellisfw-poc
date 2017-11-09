@@ -30,7 +30,7 @@ export let setUrlText = [
 ]
 
 export let addUser = [
-	//try to get current user
+  //try to get current user
   getOadaBaseURI({domain: state`SharingDialog.trellis_domain_text`}),
   {
     success: [
@@ -39,7 +39,7 @@ export let addUser = [
           set(state`client_panel.clients.${state`client_panel.selected_client`}._meta._permissions.${props`user._id`}`, props`user`),
           addPermissions, {
             success: [
-    					set(state`SharingDialog.shared_users.${props`user._id`}`, props`user`),
+              set(state`SharingDialog.shared_users.${props`user._id`}`, props`user`),
               set(state`SharingDialog.trellis_domain_text`, ''),
               set(state`SharingDialog.username_text`, ''),
             ],
@@ -91,7 +91,7 @@ function loadSharingMeta({state, props, path}) {
 }
 
 function createClientUser({state, props, path}) {
-  let domain = state.get('app.oada_domain')
+  let domain = state.get('App.oada_domain')
   let oidc = {
     username: state.get(`SharingDialog.username_text`),
     iss: state.get(`SharingDialog.trellis_domain_text`)
@@ -125,7 +125,7 @@ function createClientUser({state, props, path}) {
 }
 
 function addPermissions({state, props, path}) {
-  let domain = state.get('app.oada_domain')
+  let domain = state.get('App.oada_domain')
   let clientId = state.get('client_panel.selected_client')
   return axios({
     method: 'put',

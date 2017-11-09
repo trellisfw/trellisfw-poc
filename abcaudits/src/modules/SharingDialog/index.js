@@ -3,15 +3,15 @@ import {
   doneSharing,
   setUsernameText,
   setUrlText,
-	addUser,
+  addUser,
 } from './chains.js'
 
 export default {
   state: {
     open: false,
     trellis_domain_text: '',
-		username_text: '',
-		shared_users: {},
+    username_text: '',
+    shared_users: {},
   },
 
   signals: {
@@ -19,7 +19,7 @@ export default {
     sharingDialogDoneClicked: doneSharing, 
     usernameTextChanged: setUsernameText,
     urlTextChanged: setUrlText,
-		addUserButtonClicked: addUser,
+    addUserButtonClicked: addUser,
   },
 
   modules: {
