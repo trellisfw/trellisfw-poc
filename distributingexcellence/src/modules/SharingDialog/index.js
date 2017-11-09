@@ -16,7 +16,8 @@ export default {
   },
 
   signals: {
-    shareClientButtonClicked: showSharingDialog, 
+		shareClientButtonClicked: showSharingDialog, 
+    shareButtonClicked: showSharingDialog,
     sharingDialogDoneClicked: doneSharing, 
     usernameTextChanged: setUsernameText,
     urlTextChanged: setUrlText,
