@@ -12,8 +12,12 @@ export const auditorRatings = [
   'Amazing!'
 ];
 export const auditorRatingColorScale = ['#0f9246', '#7dbb42', '#fecc09', '#f68e1f', '#ef4723', '#bc2026'];
+export const sharingUsername = 'gary@gmail.com';
+export const sharingDomain = 'https://api.growersync.trellisfw.io';
 const defaults = {
-  auditorRatings,
+	auditorRatings,
+	sharingUsername,
+	sharingDomain,
   auditorRatingColorScale
 };
 
@@ -33,7 +37,7 @@ export const websiteDomain = toExport.websiteDomain;
 export const redirectDomain = toExport.websiteDomain + '/oauth2/redirect.html';
 export const metadata = toExport.metadata;
 export const devtoolsPort = toExport.devtoolsPort;
-export const title = 'Auditor Mining'
+export const title = 'AuditorMining'
 export const description = 'Improving Food Safety through Analytics'
 export const background = '#ffe599'
 

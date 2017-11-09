@@ -5,7 +5,7 @@ import {state, signal} from 'cerebral/tags'
 
 import TopBar from '../../pure-components/TopBar'
 import styles from './index.module.css';
-import svgLogo from '../../svg/domains/growerSync.svg'
+import { title } from '../../../config'
 
 export default connect({
   mode: state`TopBar.mode`,
@@ -16,8 +16,8 @@ export default connect({
 },
 
 class TopBarContainer extends React.Component {
-  render() {
-    let logo = <img src={svgLogo} className={styles.logo} alt="logo" />;
+	render() {
+		let logo = <img src={title+'.svg'} className={styles.logo} alt="logo" />;
     return (
      <TopBar {...this.props} logo={logo} />
     )

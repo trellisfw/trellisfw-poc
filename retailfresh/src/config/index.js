@@ -7,7 +7,6 @@ export const title = 'RetailFresh';
 export const description = 'We sell retail stuff...fresh!';
 export const background = '#ea9999';
 export const tabColor = '#cf2a27';
-
 const defaults = {
   sharePassword,
   title,

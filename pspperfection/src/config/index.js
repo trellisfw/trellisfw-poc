@@ -3,17 +3,21 @@ var overrides = require('./config.dev.js').default;
 //----------- Define default configs here ----------
 
 export const sharePassword = '$2a$10$l64QftVz6.7KR5BXNc29IORcuhcay48jl9f5jb4dOneuGMPcrkCLC';
-export const title = 'PSP Perfection';
+export const title = 'PspPerfection';
 export const description = 'Our own internal system here at PSP Perfection';
 export const background = '#b4a7d6';
 export const tabColor = '#9900ff';
+export const sharingUsername = 'diane@gmail.com';
+export const sharingDomain = 'https://api.distributingexcellence.trellisfw.io/';
 
 const defaults = {
   sharePassword,
   title,
   description,
   background,
-  tabColor
+	tabColor,
+	sharingUsername,
+	sharingDomain
 };
 
 //--------------------------------------------------

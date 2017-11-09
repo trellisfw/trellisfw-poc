@@ -3,12 +3,12 @@ import _ from 'lodash';
 import styles from './index.module.css'
 import svgAuthorizedApp from '../../svg/authorizedApp.svg'
 
-import svgABC from '../../svg/domains/abcAudits.svg'
-import svgGrowerSync from '../../svg/domains/growerSync.svg'
-import svgRetailFresh from '../../svg/domains/retailFresh.svg'
-import svgPSP from '../../svg/domains/pspPerfection.svg'
-import svgAuditorMining from '../../svg/domains/auditorMining.svg'
-import svgDistributing from '../../svg/domains/distributingExcellence.svg'
+import svgABC from '../../svg/domains/AbcAudits.svg'
+import svgGrowerSync from '../../svg/domains/GrowerSync.svg'
+import svgRetailFresh from '../../svg/domains/RetailFresh.svg'
+import svgPSP from '../../svg/domains/PspPerfection.svg'
+import svgAuditorMining from '../../svg/domains/AuditorMining.svg'
+import svgDistributing from '../../svg/domains/DistributingExcellence.svg'
 
 class NewConnection extends React.Component {
   render() {

@@ -7,12 +7,16 @@ export const tabColor = '#0000aa';
 export const title = 'AbcAudits';
 export const description = 'Audits done right!'
 export const background = '#a0c5f9'
+export const sharingUsername = 'gary@gmail.com';
+export const sharingDomain = 'https://api.growersync.trellisfw.io';
 const defaults = {
   sharePassword,
   title,
   description,
   background,
-  tabColor
+	tabColor,
+	sharingUsername,
+	sharingDomain
 };
 
 //--------------------------------------------------
