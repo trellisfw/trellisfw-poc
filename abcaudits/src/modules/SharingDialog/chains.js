@@ -35,8 +35,8 @@ export let addUser = [
   {
     success: [
       createClientUser, {
-        success: [
-          set(state`ClientPanel.clients.${state`client_panel.selected_client`}._meta._permissions.${props`user._id`}`, props`user`),
+				success: [
+					//					set(state`ClientPanel.clients.${state`ClientPanel.selected_client`}._meta._permissions.${props`user._id`}`, props`user`),
           addPermissions, {
             success: [
               set(state`SharingDialog.shared_users.${props`user._id`}`, props`user`),
@@ -108,6 +108,7 @@ function createClientUser({state, props, path}) {
       oidc
     },
   }).then((response) => {
+    console.log(response)
     return axios({
       method: 'get',
       url: domain+response.headers.location,
@@ -142,6 +143,7 @@ function addPermissions({state, props, path}) {
       }
     }
   }).then((res) => {
-    return path.success({clientId, user:res.body })
+    console.log(clientId, res.body)
+    return path.success({clientId})
   })
 }
