@@ -1,0 +1,85 @@
+.certCard {
+  margin: 10px;
+  padding: 10px;
+}
+.content {
+  display: flex;
+}
+.jsonViewer {
+  display: flex;
+}
+.leftContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+	order: 0;
+}
+.middleContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+	min-width: 0;
+	order: 1;
+	overflow: hidden;
+}
+.productOrganization {
+  font-size: 24px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	line-height: 1em;
+	max-height: 3em;
+}
+.scoreContainer {
+  display: flex;
+  align-items: center;
+}
+  .score {
+
+  }
+  .certLinks {
+    margin-left: 7px;
+  	display: flex;
+		flex: 1;
+		justify-content: space-around;
+  }
+    .certLink {
+    	cursor: pointer;
+    }
+
+
+
+.rightContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+	text-align: center;
+  padding-right: 7px;
+	order: 2;
+}
+.expiration {
+  margin-top: 6px;
+  min-width: 145px;
+  text-align: center;
+}
+.signature {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 8px;
+  margin-bottom: 6px;
+}
+  .signature > .label {
+    padding-top: 5px;
+  }
+.syncInfo {
+  align-items: center;
+  display: flex;
+}
+  .syncIcon {
+    padding: 0px;
+  }
+  .from {
+    margin-left: 7px;
+  }

@@ -1,6 +1,6 @@
 import React from 'react'
 import {render} from 'react-dom'
-import {Container} from '@cerebral/react'
+import {Container} from 'cerebral/react'
 import controller from './controller'
 import App from './components/App'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';

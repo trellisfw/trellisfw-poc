@@ -1,11 +1,14 @@
 .header {
   display: flex;
   background-color: #99eaa4;
-  padding: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-top: 5px;
 }
 .headerLeft {
   flex: 1;
   display: flex;
+  padding-bottom: 5px;
 }
 .headerRight {
   display: flex;
@@ -14,15 +17,13 @@
 }
 .profileContainer {
   display: flex;
-  align-items: center;
   justify-content: flex-end;
-  cursor: pointer;
   margin-right: 7px;
 }
-.signIn {
-  padding: 7px;
-  border: 1px solid #000;
-  border-radius: 3px; 
+.profileContainer > .signIn {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 }
 .modes {
   display: flex;
@@ -31,11 +32,10 @@
 .mode {
   cursor: pointer;
   padding: 7px;
+  font-size: 16px;
 }
-.highlightedMode {
-  cursor: pointer;
-  background-color: #F00;
-  color: #000;
+.mode.highlighted {
+  color: #fff;
 }
 .descContainer {
   display: flex;

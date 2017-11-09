@@ -1,5 +1,5 @@
 import React from 'react'
-import {connect} from '@cerebral/react'
+import {connect} from 'cerebral/react'
 import {state, signal} from 'cerebral/tags'
 import { 
 	Divider, 
@@ -8,7 +8,7 @@ import {
 	IconMenu,
 	MenuItem,
 } from 'material-ui'
-import styles from './styles.css'
+import styles from './index.module.css'
 import _ from 'lodash'
 
 export default connect({
@@ -25,7 +25,7 @@ class UserProfile extends React.Component {
 
   render() {
 		return (
-			<div className='profile-container'>
+			<div className={styles['profile-container']}>
 				<p>{this.props.user ? this.props.user.name : null}</p>
 				<IconButton iconClassName="material-icons">account_circle</IconButton>
 				<IconMenu

@@ -12,7 +12,7 @@ export let init = [
 export let signIn = [
 	getOadaToken, {
 		success: [
-		  set(state`user_profile.user`, props`user`),
+		  set(state`UserProfile.user`, props`user`),
 		],
 		error: [],
 	},
@@ -20,21 +20,21 @@ export let signIn = [
 
 // TODO: fix this, run some actions, maybe init. Call signal??
 export let signOut = [
-  unset(state`user_profile.user`),
-  set(state`client_panel.clients`, {}),
-  set(state`app.view.certifications`, {}),
+  unset(state`UserProfile.user`),
+  set(state`ClientPanel.clients`, {}),
+  set(state`App.model.certifications`, {}),
   oadaLogOut,
 ]
 
 function oadaLogOut({state, props, path}) {
-	let domain = state.get('app.oada_domain')
+	let domain = state.get('App.oada_domain')
 	// Make dummy image to go to /oadaauth/logout without using a window
 	// eslint-disable-next-line
 	let img = (new Image()).src = domain+"/oadaauth/logout";
 }
 
 function getOadaToken({state, props, path}) {
-	let domain = state.get('app.oada_domain')
+	let domain = state.get('App.oada_domain')
 	let host = domain.replace(/^https?:\/\//, '')
 	let options = {
 		metadata,

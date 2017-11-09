@@ -5,12 +5,13 @@ import Promise from 'bluebird'
 import axios from 'axios'
 
 export let setClient = [
-  set(state`app.view.certifications`, {}),
-  set(state`client_panel.selected_client`, props`id`),
-  set(props`token`, state`user_profile.user.token`),
+  set(state`App.model.certifications`, {}),
+  set(state`App.view.certifications`, {}),
+  set(state`ClientPanel.selected_client`, props`id`),
+  set(props`token`, state`UserProfile.user.token`),
   getCertifications, {
     success: [
-      set(state`client_panel.clients.${props`id`}.certifications`, props`certifications`),
+      set(state`App.model.certifications`, props`certifications`),
       setVisibleCertifications,
     ],
     error: [
@@ -19,44 +20,44 @@ export let setClient = [
 ]
 
 export let submitClient = [
-  toggle(state`client_panel.client_dialog.open`),
-  set(props`token`, state`user_profile.user.token`),
+  toggle(state`ClientPanel.client_dialog.open`),
+  set(props`token`, state`UserProfile.user.token`),
   putClient, {
     success: [
-      set(state`client_panel.clients.${props`id`}`, props`client`),
-      set(state`client_panel.client_dialog.text`, ''),
+      set(state`ClientPanel.clients.${props`id`}`, props`client`),
+      set(state`ClientPanel.client_dialog.text`, ''),
       setClient,
     ],
     error: [
-      set(state`client_panel.no_clients_error`, 'User does not have certifications')
+      set(state`ClientPanel.no_clients_error`, 'User does not have certifications')
     ],
   },
 ]
 
 export let cancelClient = [
-  set(state`client_panel.client_dialog.text`, ''),
-  toggle(state`client_panel.client_dialog.open`),
+  set(state`ClientPanel.client_dialog.text`, ''),
+  toggle(state`ClientPanel.client_dialog.open`),
 ]
 
 export let showClientDialog = [
-  toggle(state`client_panel.client_dialog.open`),
+  toggle(state`ClientPanel.client_dialog.open`),
 ]
 
 export let setClientText = [
-  set(state`client_panel.client_dialog.text`, props`text`),
+  set(state`ClientPanel.client_dialog.text`, props`text`),
 ]
 
 export let init = [
-  when(state`user_profile.user`), {
+  when(state`UserProfile.user`), {
     true: [
-    set(props`token`, state`user_profile.user.token`),
+    set(props`token`, state`UserProfile.user.token`),
       getClients, {
         success: [
-          unset(state`client_panel.no_clients_error`),
-          set(state`client_panel.clients`, props`clients`),
+          unset(state`ClientPanel.no_clients_error`),
+          set(state`ClientPanel.clients`, props`clients`),
         ],
         error: [
-          set(state`client_panel.no_clients_error`, 'User does not have clients')
+          set(state`ClientPanel.no_clients_error`, 'User does not have clients')
         ],
       },
     ],
@@ -65,29 +66,31 @@ export let init = [
 ]
 
 function setVisibleCertifications({state, props, path}) {
-  let clientId = state.get(`client_panel.selected_client`)
-  let audits = state.get(`client_panel.clients.${clientId}.certifications`)
+  let clientId = state.get(`ClientPanel.selected_client`)
+  let audits = state.get(`ClientPanel.clients.${clientId}.certifications`)
   let certs = {}
   Object.keys(audits).forEach((key) => {
     certs[key] = {selected: false}
   })
-  state.set(`app.view.certifications`, certs)
+  state.set(`App.view.certifications`, certs)
 }
 
 function getCertifications({state, props, path}) {
-  let domain = state.get('app.oada_domain')
-  let clientId = state.get(`client_panel.selected_client`)
-  let certs = state.get(`client_panel.clients.${clientId}.certifications`)
-  let certifications = _.cloneDeep(certs)
+  let domain = state.get('App.oada_domain')
+  let clientId = state.get(`ClientPanel.selected_client`)
+  let certs = state.get(`ClientPanel.clients.${clientId}.certifications`)
+	let certifications = _.cloneDeep(certs)
   return Promise.map(Object.keys(certs), (key) => {
-    if (key.charAt(0) === '_') return false
+		if (key.charAt(0) === '_') return false
+		let resId = certs[key]._id.replace(/^\/?resources\//, '')
     return axios({
       method: 'get', 
-      url: domain+'/bookmarks/trellisfw/clients/'+clientId+'/certifications/'+key,
+      url: domain+'/bookmarks/trellisfw/clients/'+clientId+'/certifications/'+resId,
       headers: {
-        Authorization: 'Bearer '+ state.get('user_profile.user.token'),
+        Authorization: 'Bearer '+ state.get('UserProfile.user.token'),
       }
-    }).then((res) => {
+		}).then((res) => {
+//Loop through and GET the audit, corrective actions, and certificates
       certifications[key] = {}
       return Promise.map(Object.keys(res.data), (doc) => {
         if (doc.charAt(0) === '_') return false
@@ -95,7 +98,7 @@ function getCertifications({state, props, path}) {
           method: 'get', 
           url: domain+'/bookmarks/trellisfw/clients/'+clientId+'/certifications/'+key+'/'+doc,
           headers: {
-            Authorization: 'Bearer '+ state.get('user_profile.user.token'),
+            Authorization: 'Bearer '+ state.get('UserProfile.user.token'),
           }
         }).then((response) => {
           return certifications[key][doc] = response.data
@@ -108,9 +111,9 @@ function getCertifications({state, props, path}) {
 }
 
 function putClient({state, props, path}) {
-  let domain = state.get('app.oada_domain');
-  let token = state.get('user_profile.user.token');
-  let text = state.get('client_panel.client_dialog.text')
+  let domain = state.get('App.oada_domain');
+  let token = state.get('UserProfile.user.token');
+  let text = state.get('ClientPanel.client_dialog.text')
   // POST certifications resource
   return axios({
     method: 'POST',
@@ -213,8 +216,8 @@ function getClient(clientId, domain, token) {
 }
 
 function getClients({state, props, path}) {
-  let domain = state.get('app.oada_domain');
-  let token = state.get('user_profile.user.token');
+  let domain = state.get('App.oada_domain');
+  let token = state.get('UserProfile.user.token');
   let clients = {}
   // Get clients list
   return axios({

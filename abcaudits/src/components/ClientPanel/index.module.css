@@ -1,0 +1,42 @@
+.header-row-content {
+  display: flex;
+	align-items: center;
+	height: 46px;
+}
+.row-content {
+  display: flex;
+	align-items: center;
+}
+.header-column {
+	display: flex;
+	justify-content: center;
+}
+.share-button {
+  color: #ffffff;
+	background-color: #fff;
+}
+.row-title {
+  flex: 1;
+  text-overflow: ellipsis;
+}
+.row {
+  cursor: pointer;
+}
+.add-client {
+  cursor: pointer;
+  display:flex;
+  align-items: center;
+}
+.no-clients-error {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: #ff0000;
+	flex:1;
+}
+.clients-panel-header {
+}
+.client-panel-clients-header {
+	display: flex;
+	align-items: center;
+}

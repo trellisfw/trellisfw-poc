@@ -1,49 +1,34 @@
 import React from 'react'
-import { FlatButton, Card, Divider, IconButton, Checkbox } from 'material-ui'
-import styles from './styles.css'
-import moment from 'moment'
+import PropTypes from 'prop-types';
 
-export default class CertCard extends React.Component {
+import Card from './Card';
+import Parsers from './Parsers';
+
+class CertCard extends React.Component {
   render() {
-    let date = moment(this.props.audit.conditions_during_audit.operation_observed_date).format('MMMM D, YYYY')
+    let parser = Parsers(this.props.audit);
     return (
-     <Card className={'cert-card'} containerStyle={{display:'flex', flex:'1'}}>
-       <div className='left-container'>
-         <Checkbox
-           label=''
-            checked={this.props.selected}
-            className={'checkbox'}
-            onCheck={(evt, checked) => {this.props.checked({name: this.props.name, checked})}}
-          />
-        </div>
-        <div className='middle-container'>
-          <p className={'score'}>{'Score: '+(100*parseFloat(this.props.audit.score.globalgap_levels.minor_musts.value)).toFixed(1) + ' %'}</p>
-          <p className={'product-organization'}>{this.props.audit.scope.products_observed[0].name +' - '+this.props.audit.organization.name}</p>
-          {false ? <div className={'sync-info'}>
-            <IconButton
-              className={'sync-icon'}
-              iconClassName="material-icons">cached
-            </IconButton>
-            <p className={'from'}>{'from '}</p>
-          </div> : null }
-        </div>
-        <div className='right-container'>
-          <p className={'expiration'}>{date}</p>
-            {this.props.audit.signatures ? <div className={'signature'}>
-              <IconButton
-                className={'valid-icon'}
-                iconClassName="material-icons">check_circle
-              </IconButton>
-              <p className={'valid'}>Signed</p>
-            </div>
-            :
-            <FlatButton
-              className={'sign-button'}
-              onTouchTap={()=>{this.props.signAuditButtonClicked({audit:this.props.audit})}}
-              label="Finish and sign">
-            </FlatButton>}
-        </div>
-      </Card>
+     <Card
+			 audit={this.props.audit}
+			 id={this.props.id}
+       score={parser.score()}
+       product={parser.product()}
+       organization={parser.organization()}
+			 date={parser.date()}
+			 signAuditButtonClicked={this.props.signAuditButtonClicked}
+       validSignature={parser.validSignature()} />
     )
   }
 }
+
+CertCard.propTypes = {
+  audit: PropTypes.object.isRequired,
+  correctiveActions: PropTypes.object,
+  certificate: PropTypes.object,
+
+  onChecked: PropTypes.func,
+  signAuditButtonClicked: PropTypes.func,
+  checked: PropTypes.bool
+};
+
+export default CertCard;

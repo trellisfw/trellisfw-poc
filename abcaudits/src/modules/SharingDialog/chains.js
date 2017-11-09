@@ -2,7 +2,7 @@ import { unset, set, toggle } from 'cerebral/operators'
 import {state, props } from 'cerebral/tags'
 import axios from 'axios';
 import md5 from 'md5';
-import {oadaDomain, sharePassword} from '../../config';
+import {oadaDomain} from '../../config';
 import getOadaBaseURI from '../OADA/factories/getOadaBaseURI'
 
 export let doneSharing = [

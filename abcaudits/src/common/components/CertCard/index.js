@@ -1,19 +1,18 @@
 import React from 'react'
 
-import {connect} from '@cerebral/react'
+import {connect} from 'cerebral/react'
 import {state, signal, props} from 'cerebral/tags'
 
-import CertCard from '../pure-components/CertCard'
+import CertCard from '../../pure-components/CertCard'
 
 export default connect({
-  audit: state`client_panel.clients.${state`client_panel.selected_client`}.certifications.${props`name`}`,
-  selected: state`app.view.certifications.${props`name`}.selected`,
-  checked: signal`app.certChecked`,
-  signAuditButtonClicked: signal`app.signAuditButtonClicked`,
+  audit: state`App.model.certifications.${props`id`}.audit`,
+  checked: state`App.view.certifications.${props`name`}.selected`,
+  onChecked: signal`Certifications.certChecked`
 },
 
 class CertCardContainer extends React.Component {
-  render() {
+	render() {
     return (
      <CertCard {...this.props} />
     )
