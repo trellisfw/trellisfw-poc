@@ -15,8 +15,7 @@
   }
   .top > .certCount {
     font-size: 16px;
-    text-decoration: underline;
-    color: blue;
+    color: #009e0f;
     cursor: pointer;
     margin: 5px;
   }
