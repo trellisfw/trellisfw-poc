@@ -4,7 +4,8 @@ import _ from 'lodash';
 
 function parseConnections({props, state}) {
   //Add connections to state
-  _.map(props.response.data, (connection, key) => {
+	_.map(props.response.data, (connection, key) => {
+		console.log(connection)
     if (_.startsWith(key, '_') === false) state.set(`Connections.connections.${key}`, connection);
   });
 }

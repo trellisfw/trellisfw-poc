@@ -4,7 +4,7 @@ import axios from 'axios';
 import Promise from 'bluebird';
 import md5 from 'md5';
 import {oadaDomain, sharePassword} from '../../config';
-import getOadaBaseURI from '../OADA/factories/getOadaBaseURI'
+import getOpenidIssuer from '../OADA/factories/getOpenidIssuer'
 
 export let doneSharing = [
   set(state`SharingDialog.trellis_domain_text`, ''),
@@ -32,7 +32,8 @@ export let setUrlText = [
 
 export let addUser = [
 	//try to get current user
-  getOadaBaseURI({domain: state`SharingDialog.trellis_domain_text`}),
+	//  getOadaBaseURI({domain: state`SharingDialog.trellis_domain_text`}),
+	  getOpenidIssuer({domain: state`SharingDialog.trellis_domain_text`}),
   {
     success: [
       createClientUser, {
@@ -94,7 +95,7 @@ function loadSharingMeta({state, props, path}) {
 function createClientUser({state, props, path}) {
 	let oidc = {
 		username: state.get(`SharingDialog.username_text`),
-		iss: props.baseURI
+		iss: props.issuer
 	}
   let data = {
     username: md5(JSON.stringify(oidc)),
