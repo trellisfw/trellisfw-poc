@@ -9,7 +9,6 @@ function certificationsChanged ({props, path, state}) {
     if (_.get(props.response.merge, '_meta._permissions') != null) {
       //TODO reload the meta
     }
-    console.log('response', props.response);
     //Get all the ids of the certifications that have updated revs
     let certIds = _.filter(Object.keys(props.response.merge), key=>(_.startsWith(key, '_')===false));
 
