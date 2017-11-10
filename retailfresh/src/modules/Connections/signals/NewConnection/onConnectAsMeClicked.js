@@ -24,7 +24,7 @@ export default [
       //Save the connection to oada
       post({
         path: '/bookmarks/trellisfw/connections',
-        data: {url: props`remoteOadaDomain`, remoteWebhookId: props`remoteWebhookId`}
+        data: {url: props`baseURI`, remoteWebhookId: props`remoteWebhookId`}
       }),
       unset(state`Connections.newConnections.${props`newConnectionId`}`),
       completeConnection

@@ -12,8 +12,8 @@ function getOpenidIssuerFactory ({domain, funcMode}) {
     let _path = path;
     return getOpenidConfiguration.func(arguments)({domain}).then(({response}) => {
       if (!response.issuer) throw new Error('No issuer found in response.');
-      if (_path) return _path.success({baseURI: response.issuer});
-      return {baseURI: response.issuer}
+      if (_path) return _path.success({issuer: response.issuer});
+      return {issuer: response.issuer}
     }).catch((error) => {
       console.log(error);
       if (_path) return _path.error({error});

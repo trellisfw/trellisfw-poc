@@ -5,6 +5,7 @@ import Promise from 'bluebird';
 import md5 from 'md5';
 import {oadaDomain, sharePassword} from '../../config';
 import getOpenidIssuer from '../OADA/factories/getOpenidIssuer'
+//import getOadaBaseURI from '../OADA/factories/getOadaBaseURI'
 
 export let doneSharing = [
   set(state`SharingDialog.trellis_domain_text`, ''),
@@ -31,28 +32,28 @@ export let setUrlText = [
 ]
 
 export let addUser = [
-	//try to get current user
+  //try to get current user
 	//  getOadaBaseURI({domain: state`SharingDialog.trellis_domain_text`}),
-	  getOpenidIssuer({domain: state`SharingDialog.trellis_domain_text`}),
+  getOpenidIssuer({domain: state`SharingDialog.trellis_domain_text`}),
   {
     success: [
       createClientUser, {
-    		success: [
-    		  addPermissions, {
-    				success: [
-    					set(state`SharingDialog.shared_users.${props`user._id`}`, props`user`),
-    				  set(state`SharingDialog.trellis_domain_text`, ''),
-    					set(state`SharingDialog.username_text`, ''),
-    	      ],
-    				error: [
-    					set(state`SharingDialog.add_user_error`, 'Unable to share with this user')
-    				],
-    			},
-    		],
-    		error: [
-    			set(state`SharingDialog.add_user_error`, 'User not found with matching username and trellis domain')
-    		],
-    	}
+        success: [
+          addPermissions, {
+            success: [
+              set(state`SharingDialog.shared_users.${props`user._id`}`, props`user`),
+              set(state`SharingDialog.trellis_domain_text`, ''),
+              set(state`SharingDialog.username_text`, ''),
+            ],
+            error: [
+              set(state`SharingDialog.add_user_error`, 'Unable to share with this user')
+            ],
+          },
+        ],
+        error: [
+          set(state`SharingDialog.add_user_error`, 'User not found with matching username and trellis domain')
+        ],
+      }
     ],
     error: [
       set(state`SharingDialog.add_user_error`, 'The domain you entered is not a valid trellis domain.')
@@ -93,10 +94,10 @@ function loadSharingMeta({state, props, path}) {
 }
 
 function createClientUser({state, props, path}) {
-	let oidc = {
-		username: state.get(`SharingDialog.username_text`),
-		iss: props.issuer
-	}
+  let oidc = {
+    username: state.get(`SharingDialog.username_text`),
+		iss: props.issuer //props.baseURI
+  }
   let data = {
     username: md5(JSON.stringify(oidc)),
     oidc
