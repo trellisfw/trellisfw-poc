@@ -24,9 +24,9 @@ export default Controller({
   signals: {
   },
   modules: {
-    app: App,
-		client_panel: ClientPanel,
+    App: App,
+		ClientPanel: ClientPanel,
 		SharingDialog: SharingDialog,
-		user_profile: UserProfile,
+		UserProfile: UserProfile,
   }
 })

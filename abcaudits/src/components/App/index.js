@@ -1,17 +1,16 @@
 import React from 'react'
-import {connect} from '@cerebral/react'
+import {connect} from 'cerebral/react'
 import {state, signal} from 'cerebral/tags'
 
-import ClientPanel from '../ClientPanel'
-import MainPanel from '../MainPanel'
+import Certifications from '../Certifications'
 import TopBar from '../../common/components/TopBar'
 // eslint-disable-next-line
-import styles from './styles.css'
+import styles from './index.module.css'
 import { title, description, background } from '../../config'
 
 export default connect({
-	user: state`user_profile.user`,
-  initialize: signal`app.initialize`,
+	user: state`UserProfile.user`,
+  initialize: signal`App.initialize`,
 },
 
 class App extends React.Component {
@@ -22,16 +21,13 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className='app'>
+      <div className={styles['app']}>
 				<TopBar
-          style={{backgroundColor: background}}
+          style={{minHeight: 100, backgroundColor: background}}
           title={title}
           description={description} />
-        <div className='lower'>
-          <div className='left-panel'>
-						{this.props.user ? <ClientPanel /> : null }
-					</div>
-					{this.props.user ? <MainPanel /> : null}
+				<div className={styles.page}>
+					<Certifications />
         </div>
       </div>
     )

@@ -7,12 +7,17 @@ export const title = 'GrowerSync';
 export const description = 'Automatic Data Connections for Growers';
 export const background = '#b6d7a8';
 export const tabColor = '#039100';
+export const sharingUsername = 'pete@gmail.com';
+export const sharingDomain = 'https://api.pspperfection.trellisfw.io/';
+
 const defaults = {
   sharePassword,
   title,
   description,
   background,
-  tabColor
+	tabColor,
+	sharingUsername,
+	sharingDomain,
 };
 
 //--------------------------------------------------

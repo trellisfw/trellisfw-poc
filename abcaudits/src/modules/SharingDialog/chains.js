@@ -2,7 +2,7 @@ import { unset, set, toggle } from 'cerebral/operators'
 import {state, props } from 'cerebral/tags'
 import axios from 'axios';
 import md5 from 'md5';
-import {oadaDomain, sharePassword} from '../../config';
+import {oadaDomain} from '../../config';
 import getOadaBaseURI from '../OADA/factories/getOadaBaseURI'
 
 export let doneSharing = [
@@ -30,16 +30,16 @@ export let setUrlText = [
 ]
 
 export let addUser = [
-	//try to get current user
+  //try to get current user
   getOadaBaseURI({domain: state`SharingDialog.trellis_domain_text`}),
   {
     success: [
       createClientUser, {
-        success: [
-          set(state`client_panel.clients.${state`client_panel.selected_client`}._meta._permissions.${props`user._id`}`, props`user`),
+				success: [
+					//					set(state`ClientPanel.clients.${state`ClientPanel.selected_client`}._meta._permissions.${props`user._id`}`, props`user`),
           addPermissions, {
             success: [
-    					set(state`SharingDialog.shared_users.${props`user._id`}`, props`user`),
+              set(state`SharingDialog.shared_users.${props`user._id`}`, props`user`),
               set(state`SharingDialog.trellis_domain_text`, ''),
               set(state`SharingDialog.username_text`, ''),
             ],
@@ -91,7 +91,7 @@ function loadSharingMeta({state, props, path}) {
 }
 
 function createClientUser({state, props, path}) {
-  let domain = state.get('app.oada_domain')
+  let domain = state.get('App.oada_domain')
   let oidc = {
     username: state.get(`SharingDialog.username_text`),
     iss: state.get(`SharingDialog.trellis_domain_text`)
@@ -100,19 +100,20 @@ function createClientUser({state, props, path}) {
     method: 'post',
     url: domain+'/users',
     headers: {
-      'Content-Type': 'application/vnd.oada.client.1+json',
-      'Authorization': 'Bearer '+state.get('user_profile.user.token'),
+      'Content-Type': 'application/vnd.trellisfw.client.1+json',
+      'Authorization': 'Bearer '+state.get('UserProfile.user.token'),
     },
     data: {
       username: md5(JSON.stringify(oidc)),
       oidc
     },
   }).then((response) => {
+    console.log(response)
     return axios({
       method: 'get',
       url: domain+response.headers.location,
       headers: {
-        'Authorization': 'Bearer '+state.get('user_profile.user.token'),
+        'Authorization': 'Bearer '+state.get('UserProfile.user.token'),
       },
     }).then((res) => {
       return path.success({user:res.data})
@@ -125,14 +126,14 @@ function createClientUser({state, props, path}) {
 }
 
 function addPermissions({state, props, path}) {
-  let domain = state.get('app.oada_domain')
-  let clientId = state.get('client_panel.selected_client')
+  let domain = state.get('App.oada_domain')
+  let clientId = state.get('ClientPanel.selected_client')
   return axios({
     method: 'put',
     url: domain+'/bookmarks/trellisfw/clients/'+clientId+'/certifications/_meta/_permissions',
     headers: {
       'Content-Type': 'application/vnd.trellisfw.certifications.1+json',
-      'Authorization': 'Bearer '+state.get('user_profile.user.token'),
+      'Authorization': 'Bearer '+state.get('UserProfile.user.token'),
     },
     data: {
       [props.user._id]: {
@@ -142,6 +143,7 @@ function addPermissions({state, props, path}) {
       }
     }
   }).then((res) => {
-    return path.success({clientId, user:res.body })
+    console.log(clientId, res.body)
+    return path.success({clientId})
   })
 }

@@ -3,6 +3,7 @@ import styles from './index.module.css'
 import { IconButton, MenuItem, Menu } from 'material-ui'
 import Popover from 'material-ui/Popover';
 import PropTypes from 'prop-types';
+import {tabColor} from '../../../config'
 
 class TopBar extends React.Component {
   constructor(props) {
@@ -38,38 +39,40 @@ class TopBar extends React.Component {
               anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
               targetOrigin={{horizontal: 'right', vertical: 'top'}}
               onRequestClose={this.closePopup}>
-							<Menu onTouchTap={this.closePopup}>
-								<MenuItem primaryText="Sign out" onTouchTap={()=>{this.props.signOut({})}} />
+                  <Menu onTouchTap={this.closePopup}>
+                  		<MenuItem primaryText="Sign out" onTouchTap={()=>{this.props.signOut({})}} />
                   </Menu>
           </Popover>
           {
 						this.props.user ?
-              <div ref='profileContainer' className={styles.profileContainer} onClick={()=>this.openPopup()}>
-                <IconButton iconClassName="material-icons">
-                  account_circle
-                </IconButton>
-                <div>{this.props.user.name}</div>
+              <div ref='profileContainer' className={styles.profileContainer}>
+                <div className={styles.signIn} onTouchTap={()=>{this.openPopup()}}>
+                  <IconButton iconClassName="material-icons">
+                    account_circle
+                  </IconButton>
+                  <div>{this.props.user.name}</div>
+                </div>
               </div>
 						:
               <div className={styles.profileContainer}>
-  							<div className={styles.signIn} onTouchTap={()=>{this.props.signInClicked({})}}>
-  								Sign in
+  							<div className={styles.signIn} style={{marginTop: 7}} onTouchTap={()=>{this.props.signIn({})}}>
+  								{'Sign in'}
   							</div>
               </div>
 					}
           {
             this.props.mode ?
               <div className={styles.modes}>
-                <p
-                  className={this.props.mode === 'connections' ? styles.highlightedMode : styles.mode }
-                  onClick={()=>{this.props.modeClicked({mode: 'connections'})}}>
-                  <u>{'Connections'}</u>
-                </p>
-                <p
-                  className={this.props.mode === 'certifications' ? styles.highlightedMode : styles.mode}
+                <div style={(this.props.mode === 'certifications') ? {backgroundColor: tabColor, color: '#fff'} : null}
+                  className={styles.mode}
                   onClick={()=>{this.props.modeClicked({mode: 'certifications'})}}>
                   <u>{'Certifications'}</u>
-                </p>
+                </div>
+                <div style={(this.props.mode === 'connections') ? {backgroundColor: tabColor, color: '#fff'} : null}
+                  className={styles.mode}
+                  onClick={()=>{this.props.modeClicked({mode: 'connections'})}}>
+                  <u>{'Connections'}</u>
+                </div>
               </div>
             :
             null

@@ -7,13 +7,17 @@ export const title = 'DistributingExcellence';
 export const description = 'We deliver excellence!';
 export const background = '#d5a6bd';
 export const tabColor = '#ff00ff';
+export const sharingUsername = 'rick@gmail.com';
+export const sharingDomain = 'https://api.retailfresh.trellisfw.io/';
 
 const defaults = {
   sharePassword,
   title,
   description,
   background,
-  tabColor
+	tabColor,
+	sharingUsername,
+	sharingDomain
 };
 
 //--------------------------------------------------

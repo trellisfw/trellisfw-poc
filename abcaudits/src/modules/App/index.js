@@ -20,7 +20,10 @@ export default {
 			loading: false,
       mode: 'certifications',
       certifications: {},
-    },
+		},
+		model: {
+			certifications: {},
+	  },
   },
 
   signals: {
