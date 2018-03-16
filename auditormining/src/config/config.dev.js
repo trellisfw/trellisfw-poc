@@ -2,10 +2,10 @@
 const devtoolsPort = 8585;
 const oadaDomain = process.env.REACT_APP_OADA_DOMAIN || 'https://localhost'
 const oadaDomains = [
-	//  {
-	//    displayText: 'localhost',
-	//   url: 'https://localhost'
-	//  },
+  {
+    displayText: 'localhost',
+   url: 'https://localhost'
+  },
   {
     displayText: 'AbcAudits',
     url: 'https://api.abcaudits.trellisfw.io'
@@ -26,10 +26,10 @@ const oadaDomains = [
     displayText: 'RetailFresh',
     url: 'https://api.retailfresh.trellisfw.io'
   },
-	//  {
-	//   displayText: 'vip3',
-	//  url: 'https://vip3.ecn.purdue.edu'
-	//  },
+  {
+   displayText: 'vip3',
+  url: 'https://vip3.ecn.purdue.edu'
+  },
 ];
 const websiteDomain = 'http://localhost:'+parseInt(window.location.port, 10);
 const metadata = require('./dev_metadata.js')

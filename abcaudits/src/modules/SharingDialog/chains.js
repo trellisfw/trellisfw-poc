@@ -128,9 +128,10 @@ function createClientUser({state, props, path}) {
 }
 
 function addPermissions({state, props, path}) {
+  let clientId = state.get('ClientPanel.selected_client')
   return axios({
     method: 'put',
-    url: oadaDomain+'/bookmarks/trellisfw/certifications/_meta/_permissions',
+    url: oadaDomain+'/bookmarks/trellisfw/clients/'+clientId+'/certifications/_meta/_permissions',
     headers: {
       'Content-Type': 'application/vnd.trellisfw.certifications.1+json',
       'Authorization': 'Bearer '+state.get('UserProfile.user.token'),

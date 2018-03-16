@@ -3,16 +3,28 @@ const devtoolsPort = 8585;
 const oadaDomain = process.env.REACT_APP_OADA_DOMAIN || 'https://api.abcaudits.trellisfw.io';
 const oadaDomains = [
   {
-    displayText: 'localhost',
-    url: 'http://localhost'
-  },
-  {
     displayText: 'AbcAudits',
     url: 'https://api.abcaudits.trellisfw.io'
   },
   {
     displayText: 'GrowerSync',
     url: 'https://api.growersync.trellisfw.io'
+  },
+  {
+    displayText: 'PspPerfection',
+    url: 'https://api.pspperfection.trellisfw.io'
+  },
+  {
+    displayText: 'DistributingExcellence',
+    url: 'https://api.distributingexcellence.trellisfw.io'
+  },
+  {
+    displayText: 'RetailFresh',
+    url: 'https://api.retailfresh.trellisfw.io'
+  },
+  {
+    displayText: 'localhost',
+    url: 'http://localhost'
   },
   {
     displayText: 'vip3',

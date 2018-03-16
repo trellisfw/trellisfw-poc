@@ -10,6 +10,18 @@ const oadaDomains = [
     displayText: 'GrowerSync',
     url: 'https://api.growersync.trellisfw.io'
   },
+  {
+    displayText: 'PspPerfection',
+    url: 'https://api.pspperfection.trellisfw.io'
+  },
+  {
+    displayText: 'DistributingExcellence',
+    url: 'https://api.distributingexcellence.trellisfw.io'
+  },
+  {
+    displayText: 'RetailFresh',
+    url: 'https://api.retailfresh.trellisfw.io'
+  },
 ];
 const websiteDomain = 'https://auditormining.trellisfw.io';
 const metadata = require('./prod_metadata.js');
