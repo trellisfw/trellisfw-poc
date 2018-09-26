@@ -84,7 +84,7 @@ function generateAuditSignature({state, props, path}) {
   var alg = 'RS256'
   var kty = 'RSA'
   var typ = 'JWT'
-  var jku = 'https://raw.githubusercontent.com/fpad/trusted-list/master/jku-test/jku-test.json' 
+  var jku = 'https://raw.githubusercontent.com/trellisfw/trusted-list/master/jku-test/jku-test.json' 
   var headers = { kid, alg, kty, typ, jwk:pubKey, jku }
   let clientId = state.get('client_panel.selected_client')
   let audit = _.clone(props.audit)
