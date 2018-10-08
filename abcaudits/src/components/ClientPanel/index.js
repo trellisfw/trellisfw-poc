@@ -20,7 +20,6 @@ export default connect({
   open: state`client_panel.client_dialog.open`,
   client: state`client_panel.selected_client`,
 	clients: state`client_panel.clients`,
-	noClientsError: state`client_panel.no_clients_error`,
 
   initialize: signal`client_panel.initialize`,
   clientClicked: signal`client_panel.clientClicked`,
@@ -37,8 +36,6 @@ class ClientPanel extends React.Component {
 	render() {
 
 		return (
-			this.props.noClientsError ? <p className='no-clients-error'>User has no clients</p>
-				:
       <Table
         fixedFooter={true}
         selectable={true}

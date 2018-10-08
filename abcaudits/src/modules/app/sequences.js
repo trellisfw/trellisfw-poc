@@ -26,7 +26,7 @@ function showDoc({state, props}) {
 	})
 }
 
-export const CertChecked = sequence('certChecked', [
+export const certChecked = sequence('certChecked', [
   set(state`view.certifications.${props`name`}.selected`, props`checked`)
 ])
 

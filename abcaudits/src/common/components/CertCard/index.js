@@ -7,9 +7,9 @@ import CertCard from '../pure-components/CertCard'
 
 export default connect({
   audit: state`client_panel.clients.${state`client_panel.selected_client`}.certifications.${props`name`}`,
-  selected: state`app.view.certifications.${props`name`}.selected`,
-  checked: signal`app.certChecked`,
-  signAuditButtonClicked: signal`app.signAuditButtonClicked`,
+  selected: state`view.certifications.${props`name`}.selected`,
+  checked: signal`certChecked`,
+  signAuditButtonClicked: signal`signAuditButtonClicked`,
 },
 
 class CertCardContainer extends React.Component {
