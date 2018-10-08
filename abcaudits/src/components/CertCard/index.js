@@ -9,13 +9,13 @@ import JSONTree from 'react-json-tree'
 
 export default connect({
   certification: state`client_panel.clients.${state`client_panel.selected_client`}.certifications.${props`name`}`,
-	selected: state`app.view.certifications.${props`name`}.selected`,
-	certViewer: state`app.view.certifications.${props`name`}.cert_viewer`,
+	selected: state`view.certifications.${props`name`}.selected`,
+	certViewer: state`view.certifications.${props`name`}.cert_viewer`,
 
-  checked: signal`app.certChecked`,
-	signAuditButtonClicked: signal`app.signAuditButtonClicked`,
-	certViewerClicked: signal`app.certViewerClicked`,
-	closeViewer: signal`app.closeViewerClicked`,
+  checked: signal`certChecked`,
+	signAuditButtonClicked: signal`signAuditButtonClicked`,
+	certViewerClicked: signal`certViewerClicked`,
+	closeViewer: signal`closeViewerClicked`,
 },
 
 class CertCard extends React.Component {

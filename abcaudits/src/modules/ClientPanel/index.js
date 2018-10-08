@@ -1,13 +1,7 @@
-import {
-  showClientDialog,
-  cancelClient,
-  submitClient,
-  setClientText,
-  setClient,
-  init,
-} from './chains.js'
+import * as signals from './sequences'
+import { Module } from 'cerebral'
 
-export default {
+export default Module({
   state: {
     clients: {},
     client_dialog: {
@@ -16,16 +10,6 @@ export default {
     },
   },
 
-  signals: {
-    initialize: init,
-    addClientButtonClicked: showClientDialog, 
-    clientDialogCancelled: cancelClient, 
-    clientDialogSubmitted: submitClient, 
-    textChanged: setClientText,
-    clientClicked: setClient,
-  },
+  signals,
 
-  modules: {
-
-  },
-}
+})

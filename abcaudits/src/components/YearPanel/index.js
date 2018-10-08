@@ -13,8 +13,8 @@ import {
 import styles from './styles.css'
 
 export default connect({
-  audits: state`app.model.audits`,
-  yearClicked: signal`app.yearClicked`,
+  audits: state`model.audits`,
+  yearClicked: signal`yearClicked`,
 },
 
 class YearPanel extends React.Component {

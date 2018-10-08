@@ -1,9 +1,7 @@
-import {
-	signIn,
-	signOut,
-} from './chains.js'
+import * as signals from './sequences'
+import { Module } from 'cerebral'
 
-export default {
+export default Module({
 	state: {
 		user: {
 			name: 'Auditor Audrey',
@@ -11,12 +9,5 @@ export default {
 		}
   },
 
-  signals: {
-		signOutClicked: signOut,
-		signInClicked: signIn,
-  },
-
-  modules: {
-
-  },
-}
+  signals,
+})

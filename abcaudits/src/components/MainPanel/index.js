@@ -10,18 +10,18 @@ import {
 import styles from './styles.css'
 
 export default connect({
-  mode: state`app.view.main_panel.mode`,
+  mode: state`view.main_panel.mode`,
   client: state`client_panel.selected_client`,
   clients: state`client_panel.clients`,
-	certifications: state`app.view.certifications`,
+	certifications: state`view.certifications`,
 	sharingDialog: state`sharing_dialog.open`,
 	user: state`user_profile.user`,
 	noClientsError: state`client_panel.no_clients_error`,
 
-  initialize: signal`app.initialize`,
-  addCertButtonClicked: signal`app.addCertButtonClicked`,
-  updateCertButtonClicked: signal`app.updateCertButtonClicked`,
-	deleteAuditsButtonClicked: signal`app.deleteAuditsButtonClicked`,
+  initialize: signal`initialize`,
+  addCertButtonClicked: signal`addCertButtonClicked`,
+  updateCertButtonClicked: signal`updateCertButtonClicked`,
+	deleteAuditsButtonClicked: signal`deleteAuditsButtonClicked`,
 	shareAuditsButtonClicked: signal`sharing_dialog.shareAuditsButtonClicked`,
 	signInClicked: signal`user_profile.signInClicked`,
 },

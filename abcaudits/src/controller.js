@@ -1,8 +1,5 @@
 import {Controller} from 'cerebral'
-import App from './modules/App'
-import ClientPanel from './modules/ClientPanel'
-import SharingDialog from './modules/SharingDialog'
-import UserProfile from './modules/UserProfile'
+import app from './modules/app'
 import {devtoolsPort} from './config';
 
 const Devtools = (
@@ -15,18 +12,6 @@ if (process.env.NODE_ENV !== 'production') {
   console.log('Cerebral DevTools running on port:', devPort)
 }
 
-export default Controller({
-  devtools: Devtools && Devtools({
-    host: 'localhost:'+devPort
-  }),
-  state: {
-  },
-  signals: {
-  },
-  modules: {
-    app: App,
-		client_panel: ClientPanel,
-		sharing_dialog: SharingDialog,
-		user_profile: UserProfile,
-  }
+export default Controller(app, {
+  devtools: Devtools && Devtools({host: 'localhost:'+devPort})
 })

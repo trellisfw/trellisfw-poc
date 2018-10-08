@@ -11,7 +11,7 @@ import { title, description, background } from '../../config'
 
 export default connect({
 	user: state`user_profile.user`,
-  initialize: signal`app.initialize`,
+  initialize: signal`initialize`,
 },
 
 class App extends React.Component {

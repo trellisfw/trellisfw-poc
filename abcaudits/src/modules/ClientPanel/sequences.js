@@ -1,80 +1,59 @@
 import { set, unset, when, toggle } from 'cerebral/operators'
 import {state, props } from 'cerebral/tags'
+import { sequence } from 'cerebral'
 import Promise from 'bluebird'
 import axios from 'axios'
 
-export let setClient = [
-  set(state`app.view.certifications`, {}),
+export const clientClicked = sequence('client_panel.clientClicked', [
+  set(state`view.certifications`, {}),
   set(state`client_panel.selected_client`, props`id`),
   set(props`token`, state`user_profile.user.token`),
-  getCertifications, {
-    success: [
-      set(state`client_panel.clients.${props`id`}.certifications`, props`certifications`),
-      setVisibleCertifications,
-    ],
-		error: [
-		],
-  },
-]
+  getCertifications,
+  setVisibleCertifications,
+])
 
-export let submitClient = [
+export const clientDialogSubmitted = sequence('client_panel.clientDialogSubmitted', [
 	toggle(state`client_panel.client_dialog.open`),
 	set(props`token`, state`user_profile.user.token`),
-  putClient, {
-    success: [
-      set(state`client_panel.clients.${props`id`}`, props`client`),
-      set(state`client_panel.client_dialog.text`, ''),
-      setClient,
-    ],
-		error: [
-			set(state`client_panel.no_clients_error`, 'User does not have certifications')
-		],
-	},
-]
+  putClient,
+  clientClicked,
+])
 
-export let cancelClient = [
+export const clientDialogCancelled = sequence('client_panel.clientDialogCancelled', [
   set(state`client_panel.client_dialog.text`, ''),
   toggle(state`client_panel.client_dialog.open`),
-]
+])
 
-export let showClientDialog = [
+export const addClientButtonClicked = sequence('client_panel.addClientButtonClicked', [
   toggle(state`client_panel.client_dialog.open`),
-]
+])
 
-export let setClientText = [
+export const textChanged = sequence('client_panel.textChanged', [
   set(state`client_panel.client_dialog.text`, props`text`),
-]
+])
 
-export let init = [
+export const initialize = sequence('client_panel.initialize', [
 	when(state`user_profile.user`), {
 		true: [
-  	set(props`token`, state`user_profile.user.token`),
-      getClients, {
-        success: [
-					unset(state`client_panel.no_clients_error`),
-          set(state`client_panel.clients`, props`clients`),
-        ],
-				error: [
-					set(state`client_panel.no_clients_error`, 'User does not have clients')
-				],
-			},
-		],
+      set(props`token`, state`user_profile.user.token`),
+      getClients,
+    ],
 		false: [],
 	}
-]
+])
 
-function setVisibleCertifications({state, props, path}) {
+function setVisibleCertifications({state, props}) {
   let clientId = state.get(`client_panel.selected_client`)
   let audits = state.get(`client_panel.clients.${clientId}.certifications`)
   let certs = {}
   Object.keys(audits).forEach((key) => {
     certs[key] = {selected: false}
   })
-  state.set(`app.view.certifications`, certs)
+  state.set(`view.certifications`, certs)
 }
 
-function getCertifications({state, props, path}) {
-  let domain = state.get('app.oada_domain')
+function getCertifications({state, props}) {
+  let domain = state.get('oada_domain')
 	let clientId = state.get(`client_panel.selected_client`)
   let certs = state.get(`client_panel.clients.${clientId}.certifications`)
   let certifications = {}
@@ -82,7 +61,7 @@ function getCertifications({state, props, path}) {
     if (key.charAt(0) === '_') return false
 		return axios({
 			method: 'get', 
-			url: domain+'/bookmarks/fpad/clients/'+clientId+'/certifications/'+key,
+			url: domain+'/bookmarks/trellis/clients/'+clientId+'/certifications/'+key,
 			headers: {
 				Authorization: 'Bearer '+ state.get('user_profile.user.token'),
 			}
@@ -92,7 +71,7 @@ function getCertifications({state, props, path}) {
 				if (doc.charAt(0) === '_') return false
 				return axios({
 					method: 'get', 
-					url: domain+'/bookmarks/fpad/clients/'+clientId+'/certifications/'+key+'/'+doc,
+					url: domain+'/bookmarks/trellis/clients/'+clientId+'/certifications/'+key+'/'+doc,
 					headers: {
 						Authorization: 'Bearer '+ state.get('user_profile.user.token'),
 					}
@@ -102,12 +81,13 @@ function getCertifications({state, props, path}) {
 			})
     })
   }, {concurrency:5}).then(() => {
-    return path.success({certifications})
+    state.set(`client_panel.clients.${props.id}.certifications`, certifications)
+    return {certifications}
   })
 }
 
-function putClient({state, props, path}) {
-  let domain = state.get('app.oada_domain')
+function putClient({state, props}) {
+  let domain = state.get('oada_domain')
   let text = state.get('client_panel.client_dialog.text')
 	// POST certifications resource
 	return axios({
@@ -115,19 +95,19 @@ function putClient({state, props, path}) {
 		url: domain+'/resources',
 		headers: {
 			'Authorization': 'Bearer '+state.get('user_profile.user.token'),
-			'Content-Type': 'application/vnd.fpad.certifications.globalgap.1+json',
+			'Content-Type': 'application/vnd.trellis.certifications.globalgap.1+json',
 		},
-		data: {_type: 'application/vnd.fpad.certifications.globalgap.1+json'},
+		data: {_type: 'application/vnd.trellis.certifications.globalgap.1+json'},
 	}).then((response) => {
 		return axios({
 			method: 'POST',
 			url: domain+'/resources',
 			headers: {
 				'Authorization': 'Bearer '+state.get('user_profile.user.token'),
-				'Content-Type': 'application/vnd.fpad.client.1+json',
+				'Content-Type': 'application/vnd.trellis.client.1+json',
 			},
 			data: {
-				_type: 'application/vnd.fpad.client.1+json',
+				_type: 'application/vnd.trellis.client.1+json',
 				name: text,
 				certifications: {
 					_id: response.headers.location.replace(/^\//, ''),
@@ -139,10 +119,10 @@ function putClient({state, props, path}) {
 			// Link to bookmarks
 			return axios({
 				method: 'PUT', 
-				url: domain+'/bookmarks/fpad/clients/'+id,
+				url: domain+'/bookmarks/trellis/clients/'+id,
 				headers: {
 					'Authorization': 'Bearer '+state.get('user_profile.user.token'),
-					'Content-Type': 'application/vnd.fpad.client.1+json',
+					'Content-Type': 'application/vnd.trellis.client.1+json',
 				},
 				data: {
 					_id: 'resources/'+id, 
@@ -152,25 +132,30 @@ function putClient({state, props, path}) {
 				//GET it to confirm
 				return axios({
 					method: 'GET', 
-					url: domain+'/bookmarks/fpad/clients/'+id,
+					url: domain+'/bookmarks/trellis/clients/'+id,
 					headers: {
 						'Authorization': 'Bearer '+state.get('user_profile.user.token'),
 					}
-				}).then((res) => {
-					return path.success({id, client: res.data})
+        }).then((res) => {
+          state.set(`client_panel.clients.${props.id}`, res.data)
+          state.set(`client_panel.client_dialog.text`, '')
+					return {id, client: res.data}
 				})
 			})
     })
+  }).catch(() => {
+    state.set(`client_panel.no_clients_error`, 'User does not have certifications')
+    return
   })
 }
 
-function getClients({state, props, path}) {
-  let domain = state.get('app.oada_domain')
+function getClients({state, props}) {
+  let domain = state.get('oada_domain')
   let clients = {}
 	// Get clients list
 	return axios({
 		method: 'GET', 
-		url: domain+'/bookmarks/fpad/clients',
+		url: domain+'/bookmarks/trellis/clients',
 		headers: {
 			'Authorization': 'Bearer '+state.get('user_profile.user.token'),
 		}
@@ -180,7 +165,7 @@ function getClients({state, props, path}) {
 			if (key.charAt(0) === '_') return
 			return axios({
 				method: 'GET', 
-				url: domain+'/bookmarks/fpad/clients/'+key,
+				url: domain+'/bookmarks/trellis/clients/'+key,
 				headers: {
 					'Authorization': 'Bearer '+ state.get('user_profile.user.token'),
 				}
@@ -189,7 +174,7 @@ function getClients({state, props, path}) {
 				//Get certifications list
 				return axios({
 					method: 'GET', 
-					url: domain+'/bookmarks/fpad/clients/'+key+'/certifications',
+					url: domain+'/bookmarks/trellis/clients/'+key+'/certifications',
 					headers: {
 						'Authorization': 'Bearer '+ state.get('user_profile.user.token'),
 					}
@@ -198,7 +183,7 @@ function getClients({state, props, path}) {
 					// Get _meta document
 					return axios({
 						method:'GET', 
-						url: domain+'/bookmarks/fpad/clients/'+key+'/_meta',
+						url: domain+'/bookmarks/trellis/clients/'+key+'/_meta',
 						headers: {
 							'Authorization': 'Bearer '+ state.get('user_profile.user.token'),
 						}
@@ -223,8 +208,11 @@ function getClients({state, props, path}) {
 			})
     }, {concurrency:5})
   }).then(() => {
-    return path.success({clients})
+    state.unset(`client_panel.no_clients_error`),
+    state.set(`client_panel.clients`, clients)
+    return {clients}
 	}).catch(() => {
-		return path.error({})
+	  state.set(`client_panel.no_clients_error`, 'User does not have clients')
+		return
 	})
 }

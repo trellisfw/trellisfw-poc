@@ -1,27 +1,11 @@
-import {
-  showSharingDialog,
-  doneSharing,
-  setUsernameText,
-  setUrlText,
-	addUser,
-} from './chains.js'
-
-export default {
+import * as signals from './sequences'
+import { Module } from 'cerebral'
+export default Module({
   state: {
     open: false,
     trellis_domain_text: '',
 		username_text: '',
   },
 
-  signals: {
-    shareClientButtonClicked: showSharingDialog, 
-    sharingDialogDoneClicked: doneSharing, 
-    usernameTextChanged: setUsernameText,
-    urlTextChanged: setUrlText,
-		addUserButtonClicked: addUser,
-  },
-
-  modules: {
-
-  },
-}
+  signals
+})

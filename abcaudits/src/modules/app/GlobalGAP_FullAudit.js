@@ -1,5 +1,5 @@
 module.exports = {
-  _type: 'application/vnd.fpad.audit.globalgap.1+json',
+  _type: 'application/vnd.trellis.audit.globalgap.1+json',
 
   // certificationid identifies a particular chain of documents that culinates
   // in a certification if successful.  All documents in the chain (audit, corrective
