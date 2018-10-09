@@ -1,8 +1,8 @@
 import * as signals from './sequences'
 import { Module } from 'cerebral';
-import ClientPanel from '../ClientPanel'
-import SharingDialog from '../SharingDialog'
-import UserProfile from '../UserProfile'
+import client_panel from '../client_panel'
+import sharing_dialog from '../../common/modules/sharing_dialog'
+import user_profile from '../../common/modules/user_profile'
 
 import {oadaDomain} from '../../config'
 
@@ -19,9 +19,9 @@ export default Module({
   signals,
 
   modules: {
-		client_panel: ClientPanel,
-		sharing_dialog: SharingDialog,
-		user_profile: UserProfile,
+		client_panel,
+		sharing_dialog,
+		user_profile,
   }
 
 })

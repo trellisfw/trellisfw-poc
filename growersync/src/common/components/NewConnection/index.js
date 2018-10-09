@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {connect} from 'cerebral/react'
+import {connect} from '@cerebral/react'
 import {signal, state, props} from 'cerebral/tags'
 
 import NewConnection from '../../pure-components/NewConnection'

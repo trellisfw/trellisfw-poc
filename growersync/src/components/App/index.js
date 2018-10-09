@@ -1,5 +1,5 @@
 import React from 'react'
-import {connect} from 'cerebral/react'
+import {connect} from '@cerebral/react'
 import {state, signal} from 'cerebral/tags'
 
 import styles from './index.module.css'
@@ -12,7 +12,7 @@ import {title, description, background} from '../../config'
 
 export default connect({
   mode: state`TopBar.mode`,
-  mounted: signal`App.mounted`
+  mounted: signal`mounted`
 },
 
 class App extends React.Component {

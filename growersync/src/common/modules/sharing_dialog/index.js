@@ -1,18 +1,12 @@
 import * as signals from './sequences'
 import { Module } from 'cerebral'
-
 export default Module({
   state: {
-    connections: {
-
-    },
-    newConnections: {
-
-    },
-    authorizedApps: {
-
-    }
+    open: false,
+    trellis_domain_text: '',
+    username_text: '',
+    shared_users: {},
   },
 
-  signals,
+  signals
 })

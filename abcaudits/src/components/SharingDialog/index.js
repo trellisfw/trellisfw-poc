@@ -10,7 +10,8 @@ export default connect({
 	usernameText: state`sharing_dialog.username_text`,
 	urlText: state`sharing_dialog.trellis_domain_text`,
 	client: state`client_panel.clients.${state`client_panel.selected_client`}`,
-	addUserError: state`sharing_dialog.add_user_error`,
+  addUserError: state`sharing_dialog.add_user_error`,
+  sharedUsers: state`sharing_dialog.shared_users`,
 
   sharingDialogDone: signal`sharing_dialog.sharingDialogDoneClicked`,
   urlTextChanged: signal`sharing_dialog.urlTextChanged`,
@@ -36,7 +37,7 @@ class SharingDialog extends React.Component {
         actions={actions}
         modal={false}
         open={this.props.open}
-        onRequestClose={()=> {this.props.sharingDialogCancelled({})}}
+        onRequestClose={()=> {this.props.sharingDialogDone({})}}
 			>
 				<p>{'Who should be able to view '+this.props.client.name+'\'s data?'}</p>
 				<div className='sharing-dialog-user-entry'>
@@ -70,12 +71,12 @@ class SharingDialog extends React.Component {
 				<div>
 					<p>Currently shared with: </p>
 					<div className='share-dialog-shared users'>
-						{this.props.client._meta._permissions ? Object.keys(this.props.client._meta._permissions).map((u) => 
+            {Object.keys(this.props.sharedUsers).map((u) => 
 							<Chip
 								key={'shared-users-'+u}>
 								{this.props.client._meta._permissions[u].name || this.props.client._meta._permissions[u].oidc.username}
 							</Chip>
-						) : null}
+						)}
 					</div>
 				</div>
       </Dialog>

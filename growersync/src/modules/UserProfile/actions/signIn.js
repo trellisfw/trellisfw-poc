@@ -9,7 +9,7 @@ let getAccessToken = Promise.promisify(require('oada-id-client').getAccessToken)
 function getOadaToken({state, props, path}) {
   let options = {
     metadata: metadata,
-    scope: 'fpad:all',
+    scope: 'trellis:all',
     redirect: redirectDomain
   }
   return getAccessToken(oadaDomain.substr(oadaDomain.indexOf('://')+3), options).then((accessToken) => {

@@ -1,7 +1,7 @@
-import signIn from './actions/signIn.js';
-import signOut from './actions/signOut.js';
+import * as signals from './sequences'
+import { Module } from 'cerebral'
 
-export default {
+export default Module({
 	state: {
 		user: {
 			name: 'Gary Grower',
@@ -9,12 +9,6 @@ export default {
 		}
   },
 
-  signals: {
-		signOutClicked: signOut,
-		signInClicked: signIn,
-  },
+  signals,
 
-  modules: {
-
-  },
 }

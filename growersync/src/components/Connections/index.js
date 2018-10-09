@@ -1,5 +1,5 @@
 import React from 'react'
-import {connect} from 'cerebral/react'
+import {connect} from '@cerebral/react'
 import {state, signal} from 'cerebral/tags'
 import { Divider, IconButton } from 'material-ui'
 import _ from 'lodash'

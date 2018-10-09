@@ -1,5 +1,5 @@
 import React from 'react'
-import {connect} from 'cerebral/react'
+import {connect} from '@cerebral/react'
 import {state, signal} from 'cerebral/tags'
 import { Divider, IconButton } from 'material-ui'
 import {tabColor} from '../../config'
@@ -21,12 +21,12 @@ import CertCard from '../../common/components/CertCard'
 import SharingDialog from '../../common/components/SharingDialog'
 
 export default connect({
-  certifications: state`App.model.certifications`,
+  certifications: state`model.certifications`,
   selectedYear: state`Certifications.view.selectedYear`,
   yearClicked: signal`Certifications.yearClicked`,
 
-  sharingDialogOpen: state`SharingDialog.open`,
-	shareButtonClicked: signal`SharingDialog.shareButtonClicked`,
+  sharingDialogOpen: state`sharing_dialog.open`,
+	shareButtonClicked: signal`sharing_dialog.shareButtonClicked`,
 },
 
 class Certifications extends React.Component {

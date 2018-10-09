@@ -33,7 +33,7 @@ class ClientPanel extends React.Component {
     this.props.initialize({});
   }
 
-	render() {
+  render() {
 
 		return (
       <Table
@@ -55,6 +55,7 @@ class ClientPanel extends React.Component {
           </TableRow>
         </TableHeader>
         <TableBody
+          deselectOnClickaway={false}
           displayRowCheckbox={false}>
 					{_.sortBy(_.map(_.keys(this.props.clients), id => {
 							const c = this.props.clients[id];

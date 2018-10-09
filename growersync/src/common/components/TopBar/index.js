@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {connect} from 'cerebral/react'
+import {connect} from '@cerebral/react'
 import {state, signal} from 'cerebral/tags'
 
 import TopBar from '../../pure-components/TopBar'
@@ -10,9 +10,9 @@ import svgLogo from '../../svg/domains/growerSync.svg'
 export default connect({
   mode: state`TopBar.mode`,
   modeClicked: signal`TopBar.modeClicked`,
-  signOut: signal`TopBar.signOutClicked`,
-  signIn: signal`TopBar.signInClicked`,
-  user: state`UserProfile.user`,
+  signOut: signal`user_profile.signOutClicked`,
+  signIn: signal`user_profile.signInClicked`,
+  user: state`user_profile.user`,
 },
 
 class TopBarContainer extends React.Component {

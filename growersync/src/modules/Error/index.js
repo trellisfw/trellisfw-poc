@@ -1,13 +1,13 @@
-import onClosePressed from './signals/onClosePressed';
+import * as signals from './sequences'
+import { Module } from 'cerebral'
 
-export default {
+export default Module({
   state: {
     title: '',
     desc: '',
     open: false,
     error: null
   },
-  signals: {
-    onClosePressed
-  }
-}
+
+  signals,
+})

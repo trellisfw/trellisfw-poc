@@ -1,14 +1,10 @@
-import modeClicked from './signals/modeClicked'
-import signInClicked from './signals/signInClicked'
-import signOutClicked from './signals/signOutClicked'
+import * as signals from './sequences'
+import { Module } from 'cerebral'
 
-export default {
+export default Module({
   state: {
     mode: 'certifications'
   },
-  signals: {
-    modeClicked,
-    signInClicked,
-    signOutClicked
-  }
-}
+
+  signals,
+})

@@ -2,7 +2,8 @@ import React from 'react'
 import {connect} from '@cerebral/react'
 import {state, signal} from 'cerebral/tags'
 import CertCard from '../CertCard'
-import SharingDialog from '../SharingDialog'
+import SharingDialog from '../../common/components/SharingDialog'
+//import SharingDialog from '../SharingDialog'
 import {
 	IconButton,
 } from 'material-ui'

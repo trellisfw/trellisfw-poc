@@ -1,8 +1,7 @@
-import certChecked from './signals/certChecked';
-import certificationsChanged from './signals/certificationsChanged';
-import yearClicked from './signals/yearClicked';
+import * as signals from './sequences';
+import { Module } from 'cerebral'
 
-export default {
+export default Module({
   state: {
     pendingChanges: {},
     model: {
@@ -13,12 +12,5 @@ export default {
     }
   },
 
-  signals: {
-    certChecked,
-    certificationsChanged,
-    yearClicked
-  },
-  modules: {
-
-  },
-}
+  signals,
+})

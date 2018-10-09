@@ -1,7 +1,7 @@
 import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-import {connect} from 'cerebral/react'
+import {connect} from '@cerebral/react'
 import {state, signal} from 'cerebral/tags'
 
 export default connect({

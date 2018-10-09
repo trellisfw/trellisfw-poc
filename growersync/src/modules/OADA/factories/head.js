@@ -27,7 +27,10 @@ function headFactory ({path: resPath, domain, token, funcMode}) {
         correct domain
       */
       let url = domain+resPath;
+
+      console.log(websocket, websocket.url(), domain)
       let request = (websocket === null || websocket.url() !== domain) ? axios : websocket.http;
+      console.log(websocket.http)
       return request({
         method: 'GET',
         url: url,
