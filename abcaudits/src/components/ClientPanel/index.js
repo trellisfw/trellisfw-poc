@@ -21,17 +21,12 @@ export default connect({
   client: state`client_panel.selected_client`,
 	clients: state`client_panel.clients`,
 
-  initialize: signal`client_panel.initialize`,
   clientClicked: signal`client_panel.clientClicked`,
   addClientButtonClicked: signal`client_panel.addClientButtonClicked`,
 	shareClientButtonClicked: signal`sharing_dialog.shareClientButtonClicked`,
 },
 
 class ClientPanel extends React.Component {
-
-  componentWillMount() {
-    this.props.initialize({});
-  }
 
   render() {
 
@@ -57,7 +52,7 @@ class ClientPanel extends React.Component {
         <TableBody
           deselectOnClickaway={false}
           displayRowCheckbox={false}>
-					{_.sortBy(_.map(_.keys(this.props.clients), id => {
+          {_.sortBy(_.map(_.filter(_.keys(this.props.clients), key => key.charAt(0) !== '_'), id => {
 							const c = this.props.clients[id];
 							c.id = id;
 							return c;
@@ -70,7 +65,7 @@ class ClientPanel extends React.Component {
 								<TableRowColumn>
 									<div className={'rowtext'}>
 										<p className={'category-title'}>{c.name}</p>
-										<p>{`(${Object.keys(c.certifications).filter((k) => {return k.charAt(0) !== '_'}).length})`}</p>
+										<p>{`(${Object.keys(c.certifications || {}).filter((k) => {return k.charAt(0) !== '_'}).length})`}</p>
 									</div>
 								</TableRowColumn>
 							</TableRow>

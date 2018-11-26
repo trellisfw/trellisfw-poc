@@ -12,19 +12,16 @@ import styles from './styles.css'
 
 export default connect({
   mode: state`view.main_panel.mode`,
-  client: state`client_panel.selected_client`,
-  clients: state`client_panel.clients`,
-	certifications: state`view.certifications`,
+  client: state`client_panel.clients.${state`client_panel.selected_client`}`,
+  selected_client: state`client_panel.selected_client`,
+	certifications: state`client_panel.clients.${state`client_panel.selected_client`}.certifications`,
 	sharingDialog: state`sharing_dialog.open`,
-	user: state`user_profile.user`,
 	noClientsError: state`client_panel.no_clients_error`,
 
   initialize: signal`initialize`,
-  addCertButtonClicked: signal`addCertButtonClicked`,
-  updateCertButtonClicked: signal`updateCertButtonClicked`,
-	deleteAuditsButtonClicked: signal`deleteAuditsButtonClicked`,
-	shareAuditsButtonClicked: signal`sharing_dialog.shareAuditsButtonClicked`,
-	signInClicked: signal`user_profile.signInClicked`,
+  addCertButtonClicked: signal`certifications.addCertButtonClicked`,
+  updateCertButtonClicked: signal`certifications.updateCertButtonClicked`,
+	deleteAuditsButtonClicked: signal`certifications.deleteAuditsButtonClicked`,
 },
 
 class MainPanel extends React.Component {
@@ -37,7 +34,7 @@ class MainPanel extends React.Component {
         <div className='main-panel-header'>
           <p className={'main-panel-header-text'}>Current Certifications</p>
           <IconButton
-            disabled={!Object.keys(this.props.certifications).some((key) => {return this.props.certifications[key].selected})}
+            disabled={!Object.keys(this.props.certifications || {}).some((key) => {return this.props.certifications[key].selected})}
             className='main-panel-delete-button'
             onTouchTap={() => {this.props.deleteAuditsButtonClicked({})}}
             iconClassName="material-icons">delete
@@ -48,13 +45,13 @@ class MainPanel extends React.Component {
 					<p className='no-clients-error'>User has no clients or certifications</p>
 					:
 					this.props.client ? 
-						Object.keys(this.props.certifications).map((key, i) => 
+						Object.keys(this.props.certifications || {}).map((key, i) => 
 							<CertCard name={key} key={'cert-'+i}/>
 						)
 					: null
 				}
 				{!this.props.noClientsError && this.props.client ? 
-					Object.keys(this.props.certifications).some((key) => this.props.certifications[key].selected) ? 
+					Object.keys(this.props.certifications || {}).some((key) => this.props.certifications[key].selected) ? 
 					<div
 						onClick={()=> this.props.updateCertButtonClicked({})}
 						className='main-panel-update-cert'>

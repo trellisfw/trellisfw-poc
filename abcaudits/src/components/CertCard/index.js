@@ -12,8 +12,8 @@ export default connect({
 	selected: state`view.certifications.${props`name`}.selected`,
 	certViewer: state`view.certifications.${props`name`}.cert_viewer`,
 
-  checked: signal`certChecked`,
-	signAuditButtonClicked: signal`signAuditButtonClicked`,
+  checked: signal`certifications.certChecked`,
+	signAuditButtonClicked: signal`certifications.signAuditButtonClicked`,
 	certViewerClicked: signal`certViewerClicked`,
 	closeViewer: signal`closeViewerClicked`,
 },

@@ -9,7 +9,7 @@ export default connect({
   audit: state`client_panel.clients.${state`client_panel.selected_client`}.certifications.${props`name`}`,
   selected: state`view.certifications.${props`name`}.selected`,
   checked: signal`certChecked`,
-  signAuditButtonClicked: signal`signAuditButtonClicked`,
+  signAuditButtonClicked: signal`certifications.signAuditButtonClicked`,
 },
 
 class CertCardContainer extends React.Component {

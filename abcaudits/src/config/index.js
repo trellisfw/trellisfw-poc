@@ -19,11 +19,10 @@ var toExport =  {...defaults, ...overrides};
 
 export const oadaDomain = toExport.oadaDomain;
 export const websiteDomain = toExport.websiteDomain;
-export const redirectDomain = toExport.websiteDomain + '/oauth2/redirect.html';
+export const redirect = toExport.websiteDomain + '/oauth2/redirect.html';
 export const metadata = toExport.metadata;
 export const devtoolsPort = toExport.devtoolsPort;
 export const title = 'ABC Audits';
 export const description = 'Audits done right!'
 export const background = '#a0c5f9'
-
 export default toExport;

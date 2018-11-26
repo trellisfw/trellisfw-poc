@@ -1,22 +1,100 @@
-import { set, unset, when, toggle } from 'cerebral/operators'
-import {state, props } from 'cerebral/tags'
-import { sequence } from 'cerebral'
-import Promise from 'bluebird'
-import axios from 'axios'
-import uuid from 'uuid'
+import { set, unset, when, toggle } from 'cerebral/operators';
+import {state, props } from 'cerebral/tags';
+import { sequence } from 'cerebral';
+import Promise from 'bluebird';
+import uuid from 'uuid';
+import * as oada from '@oada/cerebral-module/sequences';
+
+var tree = {
+  bookmarks: {
+    _type: 'application/vnd.oada.bookmarks.1+json',
+    _rev: '0-0',
+    trellis: {
+      _type: 'application/vnd.trellis.1+json',
+      _rev: '0-0',
+      clients: {
+        _type: 'application/vnd.trellis.clients.1+json',
+        _rev: '0-0',
+        '*': {
+          _type: 'application/vnd.trellis.client.1+json',
+          _rev: '0-0',
+          certifications: {
+            _type: 'application/vnd.trellis.certifications.1+json',
+            _rev: '0-0',
+            '*': {
+              _type: 'application/vnd.trellis.certification.globalgap.1+json',
+              _rev: '0-0',
+              audit: {
+                _type: 'application/vnd.trellis.audit.globalgap.1+json',
+                _rev: '0-0',
+              },
+              certificate: {
+                _type: 'application/vnd.trellis.certificate.1+json',
+                _rev: '0-0',
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+export const mapTrellisToRecords = sequence('client_panel.mapTrellisToRecords', [
+  ({state, props}) => {
+    var connection_id = state.get(`client_panel.connection_id`);
+    var clients = state.get(`oada.${connection_id}.bookmarks.trellis.clients`);
+    return Promise.map(Object.keys(clients || {}), (key) => {
+      state.set(`client_panel.clients.${key}`, clients[key]);
+    }).then(() => {
+      return
+    })
+  }
+])
+
+export const fetch = sequence('client_panel.fetch', [
+  ({state, props}) => ({
+    path: '/bookmarks/trellis/clients',
+    tree,
+    watch: {
+      signals: ['client_panel.mapTrellisToRecords'],
+    },
+    connection_id: state.get(`client_panel.connection_id`),
+  }),
+  oada.get,
+  mapTrellisToRecords,
+])
+
+export const initialize = sequence('client_panel.initialize', [
+  oada.connect,
+  set(state`client_panel.connection_id`, props`connection_id`),
+	when(state`user_profile.user`), {
+		true: [
+      set(props`token`, state`user_profile.user.token`),
+      fetch
+    ],
+		false: [],
+	},
+])
 
 export const clientClicked = sequence('client_panel.clientClicked', [
-  set(state`view.certifications`, {}),
   set(state`client_panel.selected_client`, props`id`),
-  set(props`token`, state`user_profile.user.token`),
-  getCertifications,
-  setVisibleCertifications,
 ])
 
 export const clientDialogSubmitted = sequence('client_panel.clientDialogSubmitted', [
 	toggle(state`client_panel.client_dialog.open`),
-	set(props`token`, state`user_profile.user.token`),
-  putClient,
+  set(props`text`, state`client_panel.client_dialog.text`),
+  set(props`id`, uuid()),
+  ({}) => {console.log(tree)},
+  ({state, props}) => ({
+    connection_id: state.get(`client_panel.connection_id`),
+		path: '/bookmarks/trellis/clients/'+props.id,
+    data: {
+			name: props.text,
+    },
+    tree,
+  }),
+  oada.put,
   clientClicked,
 ])
 
@@ -32,220 +110,3 @@ export const addClientButtonClicked = sequence('client_panel.addClientButtonClic
 export const textChanged = sequence('client_panel.textChanged', [
   set(state`client_panel.client_dialog.text`, props`text`),
 ])
-
-export const initialize = sequence('client_panel.initialize', [
-	when(state`user_profile.user`), {
-		true: [
-      set(props`token`, state`user_profile.user.token`),
-      getClients,
-    ],
-		false: [],
-	}
-])
-
-function setVisibleCertifications({state, props}) {
-  let clientId = state.get(`client_panel.selected_client`)
-  let audits = state.get(`client_panel.clients.${clientId}.certifications`)
-  let certs = {}
-  Object.keys(audits).forEach((key) => {
-    certs[key] = {selected: false}
-  })
-  state.set(`view.certifications`, certs)
-}
-
-function getCertifications({state, props}) {
-  let domain = state.get('oada_domain')
-	let clientId = state.get(`client_panel.selected_client`)
-  let certs = state.get(`client_panel.clients.${clientId}.certifications`)
-  let certifications = {}
-  return Promise.map(Object.keys(certs), (key) => {
-    if (key.charAt(0) === '_') return false
-		return axios({
-			method: 'get', 
-			url: domain+'/bookmarks/trellis/clients/'+clientId+'/certifications/'+key,
-			headers: {
-				Authorization: 'Bearer '+ state.get('user_profile.user.token'),
-			}
-		}).then((res) => {
-			certifications[key] = {}
-		  return Promise.map(Object.keys(res.data), (doc) => {
-				if (doc.charAt(0) === '_') return false
-				return axios({
-					method: 'get', 
-					url: domain+'/bookmarks/trellis/clients/'+clientId+'/certifications/'+key+'/'+doc,
-					headers: {
-						Authorization: 'Bearer '+ state.get('user_profile.user.token'),
-					}
-				}).then((response) => {
-					return certifications[key][doc] = response.data
-				})
-			})
-    })
-  }, {concurrency:5}).then(() => {
-    state.set(`client_panel.clients.${props.id}.certifications`, certifications)
-    return {certifications}
-  })
-}
-
-function putClient({state, props}) {
-  let domain = state.get('oada_domain')
-  let text = state.get('client_panel.client_dialog.text')
-	// POST certifications resource
-	return axios({
-		method: 'POST',
-		url: domain+'/resources',
-		headers: {
-			'Authorization': 'Bearer '+state.get('user_profile.user.token'),
-			'Content-Type': 'application/vnd.trellis.certifications.globalgap.1+json',
-		},
-		data: {_type: 'application/vnd.trellis.certifications.globalgap.1+json'},
-	}).then((response) => {
-		return axios({
-			method: 'POST',
-			url: domain+'/resources',
-			headers: {
-				'Authorization': 'Bearer '+state.get('user_profile.user.token'),
-				'Content-Type': 'application/vnd.trellis.client.1+json',
-			},
-			data: {
-				_type: 'application/vnd.trellis.client.1+json',
-				name: text,
-				certifications: {
-					_id: response.headers.location.replace(/^\//, ''),
-					_rev: '0-0',
-				}
-			}
-		}).then((res) => {
-			let id = res.headers.location.replace(/^\/resources\//, '')
-			// Link to bookmarks
-			return axios({
-				method: 'PUT', 
-				url: domain+'/bookmarks/trellis/clients/'+id,
-				headers: {
-					'Authorization': 'Bearer '+state.get('user_profile.user.token'),
-					'Content-Type': 'application/vnd.trellis.client.1+json',
-				},
-				data: {
-					_id: 'resources/'+id, 
-					_rev: '0-0'
-				}
-			}).then(() => {
-				//GET it to confirm
-				return axios({
-					method: 'GET', 
-					url: domain+'/bookmarks/trellis/clients/'+id,
-					headers: {
-						'Authorization': 'Bearer '+state.get('user_profile.user.token'),
-					}
-        }).then((res) => {
-          state.set(`client_panel.clients.${id}`, res.data)
-          state.set(`client_panel.client_dialog.text`, '')
-					return {id, client: res.data}
-				})
-			})
-    })
-  }).catch(() => {
-    state.set(`client_panel.no_clients_error`, 'User does not have certifications')
-    return
-  })
-}
-
-async function makeResource(domain, path, headers, data) {
-  var resource = await axios({
-    method: 'PUT', 
-    url: domain+'/resources/'+uuid(),
-    headers,
-    data
-  })
-  var link = await axios({
-    method: 'PUT', 
-    url: domain+path,
-    headers,
-    data: {
-      _rev: '0-0', 
-      _id:resource.headers.location.replace(/^\//, '')
-    }
-  })
-  return
-}
-
-async function getClients({state, props}) {
-  let domain = state.get('oada_domain')
-  let clients = {};
-  var token = state.get('user_profile.user.token')
-  // Get clients list
-  var response;
-  try {
-    response = await axios({
-      method: 'GET', 
-      url: domain+'/bookmarks/trellis/clients',
-      headers: {
-        'Authorization': 'Bearer '+token,
-      }
-    })
-  } catch(err) {
-    response = {data: {}};
-    if (err.response.status === 404) {
-      await makeResource(domain, '/bookmarks/trellis', {
-        'Authorization': 'Bearer '+state.get('user_profile.user.token'),
-        'Content-Type': 'application/vnd.trellis.1+json',
-      }, {})
-
-      await makeResource(domain, '/bookmarks/trellis/clients', {
-        'Authorization': 'Bearer '+state.get('user_profile.user.token'),
-        'Content-Type': 'application/vnd.trellis.clients.1+json',
-      }, {})
-    }
-  }
-	// Get each client
-	return Promise.map(Object.keys(response.data), (key) => {
-    if (key.charAt(0) === '_') return
-    return axios({
-      method: 'GET', 
-      url: domain+'/bookmarks/trellis/clients/'+key,
-      headers: {
-        'Authorization': 'Bearer '+ state.get('user_profile.user.token'),
-      }
-    }).then((res) => {
-      clients[key] = res.data
-      //Get certifications list
-      return axios({
-        method: 'GET', 
-        url: domain+'/bookmarks/trellis/clients/'+key+'/certifications',
-        headers: {
-          'Authorization': 'Bearer '+ state.get('user_profile.user.token'),
-        }
-      }).then((result) => {
-        clients[key].certifications = result.data
-        // Get _meta document
-        return axios({
-          method:'GET', 
-          url: domain+'/bookmarks/trellis/clients/'+key+'/_meta',
-          headers: {
-            'Authorization': 'Bearer '+ state.get('user_profile.user.token'),
-          }
-        }).then((r) => {
-          clients[key]._meta = r.data
-          // Get each permissioned user (we need their names)
-          if (!r.data._permissions) return
-          return Promise.map(Object.keys(r.data._permissions), (user) => {
-            return axios({
-              method:'GET', 
-              url: domain+'/'+user,
-              headers: {
-                'Authorization': 'Bearer '+ state.get('user_profile.user.token'),
-              }
-            }).then((resp) => {
-              clients[key]._meta._permissions[user] = resp.data
-              return
-            })
-          })
-        })
-      })
-    })
-  }, {concurrency:10}).then(() => {
-    state.unset(`client_panel.no_clients_error`),
-    state.set(`client_panel.clients`, clients)
-    return {clients}
-	})
-}

@@ -2,6 +2,7 @@ import { unset, set, toggle } from 'cerebral/operators'
 import {state, props } from 'cerebral/tags'
 import { sequence } from 'cerebral'
 import axios from 'axios';
+import * as oada from '@oada/cerebral-module/sequences';
 import md5 from 'md5';
 import config from '../../../config';
 
