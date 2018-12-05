@@ -8,6 +8,7 @@ import oada from '@oada/cerebral-module/sequences';
 import * as certifications from '../../common/modules/certifications/sequences';
 import * as sharing_dialog from '../../common/modules/sharing_dialog/sequences';
 import * as user_profile from '../../common/modules/user_profile/sequences';
+Promise.config({warnings: false})                                                
 
 var tree = {
   bookmarks: {

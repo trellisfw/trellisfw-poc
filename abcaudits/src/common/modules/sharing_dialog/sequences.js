@@ -57,6 +57,8 @@ export const urlTextChanged = sequence('sharing_dialog.urlTextChanged', [
 ])
 
 export const addUserButtonClicked = sequence('sharing_dialog.addUserButtonClicked', [
+  // connection_id passed in by the common component
+  set(props`token`, state`oada.connections.${props`connection_id`}.token`),
   createClientUser,
   ({state, props}) => ({
     type: 'application/vnd.trellis.client.1+json',
@@ -93,8 +95,8 @@ function createClientUser({state, props}) {
 		method: 'post',
 		url: config.oadaDomain+'/users',
 		headers: {
-			'Content-Type': 'application/vnd.oada.client.1+json',
-			'Authorization': 'Bearer '+state.get('user_profile.user.token'),
+			'Content-Type': 'application/vnd.trellis.client.1+json',
+			'Authorization': 'Bearer '+props.token,
 		},
 		data
   }).then((response) => {

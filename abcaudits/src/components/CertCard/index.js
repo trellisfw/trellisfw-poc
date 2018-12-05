@@ -15,8 +15,8 @@ export default connect({
 
   checked: signal`clients.certChecked`,
 	signAuditButtonClicked: signal`clients.signAuditButtonClicked`,
-	certViewerClicked: signal`certViewerClicked`,
-	closeViewer: signal`closeViewerClicked`,
+	certViewerClicked: signal`certifications.certViewerClicked`,
+	closeViewer: signal`certifications.closeViewerClicked`,
 },
 
 class CertCard extends React.Component {

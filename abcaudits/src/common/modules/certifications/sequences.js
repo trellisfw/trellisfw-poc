@@ -2,7 +2,7 @@ import randCert from '@trellisfw/random-certs';
 import uuid from 'uuid';
 import oada from '@oada/cerebral-module/sequences';
 import { sequence } from 'cerebral';
-import { set } from 'cerebral/operators';
+import { unset, set } from 'cerebral/operators';
 import {state, props } from 'cerebral/tags';
 import templateAudit from './GlobalGAP_FullAudit.js';
 import _ from 'lodash';
@@ -10,6 +10,7 @@ import Promise from 'bluebird';
 import signatures from '@trellisfw/signatures';
 import prvKey from '../../../prvKey.js';
 import pubKey from '../../../pubKey.js';
+Promise.config({warnings: false})                                                
 
 var tree = {
   bookmarks: {
@@ -107,6 +108,21 @@ export const deleteCertifications = sequence('certifications.deleteCertification
   },
   oada.delete,
 ])
+
+export const closeViewerClicked = sequence('certifications.closeViewerClicked', [
+	unset(state`view.certifications.${props`certId`}.cert_viewer`)
+])
+
+export const certViewerClicked = sequence('certifications.certViewerClicked', [
+	showDoc,
+])
+
+function showDoc({state, props}) {
+	state.set(`view.certifications.${props.certId}.cert_viewer`, {
+		doc: props.doc, 
+		expanded: ''
+	})
+}
 
 export function generateAuditSignature({state, props}) {
   var kid = 'ABCAudits'

@@ -7,21 +7,6 @@ import * as user_profile from '../../common/modules/user_profile/sequences';
 import * as clients from '../../modules/clients/sequences';
 import oada from '@oada/cerebral-module/sequences'
 
-export const closeViewerClicked = sequence('closeViewerClicked', [
-	unset(state`view.certifications.${props`name`}.cert_viewer`)
-])
-
-export const certViewerClicked = sequence('certViewerClicked', [
-	showDoc,
-])
-
-function showDoc({state, props}) {
-	state.set(`view.certifications.${props.name}.cert_viewer`, {
-		doc: props.doc, 
-		expanded: ''
-	})
-}
-
 export const initialize = sequence('initialize', [
   ({state, props}) => ({
     domain: oadaDomain,

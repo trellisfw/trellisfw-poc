@@ -5,7 +5,8 @@ import { metadata, redirect, oadaDomain } from '../../../config';
 import oada from '@oada/cerebral-module/sequences';
 import * as app from '../../../modules/app/sequences';
 
-export const initialize = sequence('user_profile.initialize', [
+
+export const fetch = sequence('user_profile.fetch', [
   ({state, props}) => ({
     path: '/users/me',
     tree: undefined,
@@ -13,6 +14,12 @@ export const initialize = sequence('user_profile.initialize', [
   }),
   oada.get,
   set(state`user_profile.user`, props`responses.0.data`),
+])
+
+export const initialize = sequence('user_profile.initialize', [
+  oada.connect,
+  set(state`user_profile.connection_id`, props`connection_id`),
+  fetch
 ])
 
 export const signInClicked = sequence('user_profile.signInClicked', [
