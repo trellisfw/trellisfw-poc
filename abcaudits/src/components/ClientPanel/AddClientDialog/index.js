@@ -4,12 +4,12 @@ import {state, signal} from 'cerebral/tags'
 import { TextField, Dialog, FlatButton } from 'material-ui'
 
 export default connect({
-  open: state`client_panel.client_dialog.open`,
-  text: state`client_panel.client_dialog.text`,
+  open: state`clients.client_dialog.open`,
+  text: state`clients.client_dialog.text`,
 
-  clientDialogSubmitted: signal`client_panel.clientDialogSubmitted`,
-  clientDialogCancelled: signal`client_panel.clientDialogCancelled`,
-  textChanged: signal`client_panel.textChanged`,
+  clientDialogSubmitted: signal`clients.clientDialogSubmitted`,
+  clientDialogCancelled: signal`clients.clientDialogCancelled`,
+  textChanged: signal`clients.textChanged`,
 },
 
 class AddClient extends React.Component {

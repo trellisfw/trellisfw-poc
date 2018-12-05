@@ -1,8 +1,10 @@
-import { unset, set, toggle } from 'cerebral/operators'
-import {state, props } from 'cerebral/tags'
-import { sequence } from 'cerebral'
+import { unset, set, toggle } from 'cerebral/operators';
+import Promise from 'bluebird';
+import uuid from 'uuid';
+import {state, props } from 'cerebral/tags';
+import { sequence } from 'cerebral';
 import axios from 'axios';
-import * as oada from '@oada/cerebral-module/sequences';
+import oada from '@oada/cerebral-module/sequences';
 import md5 from 'md5';
 import config from '../../../config';
 
@@ -13,23 +15,68 @@ export const sharingDialogDoneClicked = sequence('sharing_dialog.sharingDialogDo
 	unset(state`sharing_dialog.add_user_error`),
 ])
 
-export const shareClientButtonClicked = sequence('shareClientButtonClicked', [
-  loadSharingMeta,
-  toggle(state`sharing_dialog.open`),
+export const metaToSharedUsers = sequence('sharing_dialog.metaToSharedUsers', [
+  // Get each permissioned user (we need their names)
+  ({state, props}) => {
+    var userIds = [];
+    return Promise.map(Object.keys(props.responses[0].data || {}), (userId) => {
+      userIds.push(userId);
+      return {path: '/'+userId}
+    }).then((requests) => {
+      return {userIds, requests};
+    })
+  },
+  oada.get,
+  ({state, props}) => {
+    state.set('sharing_dialog.shared_users', {});
+    return Promise.map(props.responses, (item, i) => {
+      state.set('sharing_dialog.shared_users.'+props.userIds[i], item.data);
+      return
+    }).then(() => {
+      return
+    })
+  },
 ])
 
-export const usernameTextChanged = sequence('usernameTextChanged', [
+export const shareClientButtonClicked = sequence('sharing_dialog.shareClientButtonClicked', [
+  toggle(state`sharing_dialog.open`),
+  ({state, props}) => ({
+    connection_id: props.connection_id,
+    path: props.metaPath,
+  }),
+  oada.get,
+  metaToSharedUsers,
+])
+
+export const usernameTextChanged = sequence('sharing_dialog.usernameTextChanged', [
   set(state`sharing_dialog.username_text`, props`text`),
 ])
 
-export const urlTextChanged = sequence('urlTextChanged', [
+export const urlTextChanged = sequence('sharing_dialog.urlTextChanged', [
   set(state`sharing_dialog.trellis_domain_text`, props`text`),
 ])
 
-export const addUserButtonClicked = sequence('addUserButtonClicked', [
-	//try to get current user
-	createClientUser,
-  addPermissions,
+export const addUserButtonClicked = sequence('sharing_dialog.addUserButtonClicked', [
+  createClientUser,
+  ({state, props}) => ({
+    type: 'application/vnd.trellis.client.1+json',
+    path: props.path+'/'+props.user_id,
+    data: {
+      read: true,
+      write: true, 
+      owner: false
+    }
+  }),
+  oada.put,
+  ({state, props}) => ({
+    path: '/'+props.user_id,
+  }),
+  oada.get,
+  set(props`user`, props`responses.0.data`),
+  set(state`sharing_dialog.trellis_domain_text`, ''),
+	set(state`sharing_dialog.username_text`, ''),
+	set(state`sharing_dialog.shared_users.${props`user_id`}`, props`user`),
+  //set(state`sharing_dialog.add_user_error`, 'Unable to share with this user')
 ])
 
 function createClientUser({state, props}) {
@@ -51,76 +98,8 @@ function createClientUser({state, props}) {
 		},
 		data
   }).then((response) => {
-		return axios({
-			method: 'get',
-			url: config.oadaDomain+response.headers.location,
-			headers: {
-				'Authorization': 'Bearer '+state.get('user_profile.user.token'),
-			},
-		}).then((res) => {
-			return {user:res.data}
-		})
-	}).catch((err) => {
-		state.set(`sharing_dialog.add_user_error`, 'User not found with matching username and trellis domain')
-		return
-	})
-}
-
-function addPermissions({state, props}) {
-  let clientId = state.get('client_panel.selected_client')
-	
-  return axios({
-    method: 'put',
-    url: config.oadaDomain+'/bookmarks/trellis/clients/'+clientId+'/_meta/_permissions',
-    headers: {
-      'Content-Type': 'application/vnd.trellis.client.1+json',
-      'Authorization': 'Bearer '+state.get('user_profile.user.token'),
-    },
-    data: { 
-      [props.user._id]: {
-        read: true,
-        write: true, 
-        owner: false
-      }
-    }
-  }).then((res) => {
-		state.set(`sharing_dialog.trellis_domain_text`, '')
-		state.set(`sharing_dialog.username_text`, '')
-		state.set(`sharing_dialog.shared_users.${props.user._id}`, props.user)
-	  return {clientId }
-  }).catch((err) => {
-	  state.set(`sharing_dialog.add_user_error`, 'Unable to share with this user')
-    return
+    return {user_id: response.headers.location.slice(1)}
   })
 }
 
-function loadSharingMeta({state, props, path}) {
-  return axios({
-    method: 'get',
-    url: config.oadaDomain+'/bookmarks/trellis/certifications/_meta',
-    headers: {
-      'Authorization': 'Bearer '+state.get('user_profile.user.token'),
-    },
-  }).then((res) => {
-    //Now get names of users from their ids
-    let meta = res.data
-    // Get each permissioned user (we need their names)
-    state.set('sharing_dialog.shared_users', {});
-    if (!meta._permissions) return;
-    return Promise.map(Object.keys(meta._permissions), (user) => {
-      return axios({
-        method:'GET',
-        url: config.oadaDomain+'/'+user,
-        headers: {
-          'Authorization': 'Bearer '+state.get('user_profile.user.token'),
-        }
-      }).then((res) => {
-        state.set('sharing_dialog.shared_users.'+user, res.data);
-      });
-    });
-  }).then(() => {
-    return
-  }).catch((error) => {
-    return
-  });
-}
+

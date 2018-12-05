@@ -6,7 +6,7 @@ import {state, signal, props} from 'cerebral/tags'
 import CertCard from '../pure-components/CertCard'
 
 export default connect({
-  audit: state`client_panel.clients.${state`client_panel.selected_client`}.certifications.${props`name`}`,
+  audit: state`clients.records.${state`clients.selected_client`}.certifications.${props`name`}`,
   selected: state`view.certifications.${props`name`}.selected`,
   checked: signal`certChecked`,
   signAuditButtonClicked: signal`certifications.signAuditButtonClicked`,

@@ -8,9 +8,8 @@ import styles from './index.module.css';
 import svgSprout from '../../svg/abc_audits.svg'
 
 export default connect({
-  signOut: signal`user_profile.signOutClicked`,
-	signIn: signal`user_profile.signInClicked`,
-  signInClicked: signal`user_profile.signInClicked`,
+  signOut: signal`clients.signOutClicked`,
+  signInClicked: signal`initialize`,
   user: state`user_profile.user`,
 },
 

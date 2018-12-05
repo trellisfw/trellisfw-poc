@@ -1,6 +1,6 @@
 import * as signals from './sequences'
 import { Module } from 'cerebral';
-import client_panel from '../client_panel'
+import clients from '../clients'
 import sharing_dialog from '../../common/modules/sharing_dialog'
 import user_profile from '../../common/modules/user_profile'
 import certifications from '../../common/modules/certifications'
@@ -18,7 +18,7 @@ export default Module({
   modules: {
     oada,
     certifications,
-    client_panel,
+    clients,
     sharing_dialog,
     user_profile,
   },

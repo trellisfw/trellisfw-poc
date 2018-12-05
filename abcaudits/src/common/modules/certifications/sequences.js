@@ -1,6 +1,6 @@
 import randCert from '@trellisfw/random-certs';
 import uuid from 'uuid';
-import * as oada from '@oada/cerebral-module/sequences';
+import oada from '@oada/cerebral-module/sequences';
 import { sequence } from 'cerebral';
 import { set } from 'cerebral/operators';
 import {state, props } from 'cerebral/tags';
@@ -38,30 +38,32 @@ var tree = {
   }
 }
 
-export const certChecked = sequence('certifications.certChecked', [
-  set(state`certifications.${props`name`}.selected`, props`checked`)
-])
 
-export const fetch = sequence('certifications.fetch', [
-  ({props, state}) => ({
-    path: '/bookmarks/trellis/certifications',
-    tree,
-    connection_id: state.get('certifications.connection_id'),
-    watch: {
-      signals: ['certifications.mapTrellisToRecords']
-    }
-  }),
-  oada.get,
-])
 
 export const mapTrellisToRecords = sequence('certifications.mapTrellisToRecords', [
   ({state, props}) => {
     var connection_id = state.get('certifications.connection_id');
     var certs = state.get(`oada.${connection_id}.bookmarks.trellis.certifications`);
-    return Promise.map(Object.keys(certs || {}), (certId) => {
-      state.set(`certifications.${certId}`, certs[certId]);
-    })
+    state.set(`certifications.records`, {});
+    Object.keys(certs || {}).map((certId) => 
+      state.set(`certifications.records.${certId}`, certs[certId])
+    )
   },
+])
+
+export const fetch = sequence('certifications.fetch', [
+  ({props, state}) => {
+    var signals = (props.signals ? props.signals : []);
+    var watch = {signals: [...signals, 'certifications.mapTrellisToRecords']};
+    return {
+      path: '/bookmarks/trellis/certifications',
+      tree,
+      connection_id: state.get('certifications.connection_id'),
+      watch,
+    }
+  },
+  oada.get,
+  mapTrellisToRecords
 ])
 
 export const initialize = sequence('certifications.initialize', [
@@ -70,136 +72,88 @@ export const initialize = sequence('certifications.initialize', [
   fetch
 ])
 
-export const signAuditButtonClicked = sequence('certifications.signAuditButtonClicked', [
-  generateAuditSignature,
+export const createCertification = sequence('certifications.createCertification', [
+  //optimistic update
+  set(state`certifications.records.${props`certId`}.audit`, props`audit`),
+  set(props`connection_id`, state`certifications.connection_id`),
   ({state, props}) => ({
     connection_id: state.get(`certifications.connection_id`),
-    path: `/bookmarks/trellis/clients/${props.clientId}/certifications/${props.name}/audit/signatures`,
-    data: props.signature,
-    tree,
-    type: 'application/vnd.trellis.audit.globalgap.1+json',
+    path: `/bookmarks/trellis/certifications/${props.certId}`,
+    data: {_id: 'resources/'+props.certId},
+    tree
   }),
   oada.put,
-  set(state`client_panel.clients.${state`client_panel.selected_client`}.certifications.${(props`name`)}.audit.signatures`, props`signature`),
-])
-
-export const addCertButtonClicked = sequence('certifications.addCertButtonClicked', [
-  addRandomCert,
   ({state, props}) => ({
     connection_id: state.get(`certifications.connection_id`),
-    path: `/bookmarks/trellis/clients/${props.clientId}/certifications/${props.certId}/audit`,
+    path: `/bookmarks/trellis/certifications/${props.certId}/audit`,
     data: props.audit,
+    tree
   }),
   oada.put,
-  set(state`client_panel.clients.${props`clientId`}.certifications.${props`certId`}.audit`, props`audit`),
-  set(state`certifications.${props`certId`}`, {selected: false}),
 ])
 
-export const deleteCertsButtonClicked = sequence('certifications.deleteCertsButtonClicked', [
-  deleteSelectedCertifications,
+export const deleteCertifications = sequence('certifications.deleteCertifications', [
   ({state, props}) => {
-    return Promise.map(props.certifications, (cert) => {
+    return Promise.map(Object.keys(props.certifications), (key) => {
+      // Optimistic update
+      state.unset(`certifications.records.${key}`);
       return {
-        path: `/bookmarks/trellis/clients/${props.clientId}/certifications/${cert.id}`,
-        tree
+        path: `/bookmarks/trellis/certifications/${key}`,
+        type: `application/vnd.trellis.certification.globalgap.1+json`,
       }
     }).then((requests) => {
       return {requests}
     })
   },
   oada.delete,
-	unsetCerts,
 ])
 
-export const updateCertButtonClicked = sequence('certifications.updateCertButtonClicked', [
-  updateCerts,
-  set(props`clientId`, state`client_panel.selected_client`),
-  set(props`connection_id`, state`certifications.connection_id`),
-  ({state, props}) => {
-    return Promise.map(Object.keys(props.audits || {}), (certId) => ({
-      path: `/bookmarks/trellis/clients/${props.clientId}/certifications/${certId}/audit`,
-      data: props.audit,
-      tree,
-    })).then((requests) => {
-      return {requests};
-    })
-  },
-  oada.put,
-	setCertifications,
-])
-
-function setCertifications({state, props}) {
-  let clientId = state.get('client_panel.selected_client')
-	Object.keys(props.newAudits).forEach(key => {
-		state.set(`client_panel.clients.${clientId}.certifications.${key}`, {audit: props.newAudits[key]});
-		state.set(`certifications.${key}`, {selected: false});
-	})
-}
-
-function generateAuditSignature({state, props}) {
+export function generateAuditSignature({state, props}) {
   var kid = 'ABCAudits'
   var alg = 'RS256'
   var kty = 'RSA'
   var typ = 'JWT'
   var jku = 'https://raw.githubusercontent.com/trellisfw/trellisfw-trusted-list/master/jku-test/jku-test.json' 
   var headers = { kid, alg, kty, typ, jwk:pubKey, jku }
-  let clientId = state.get('client_panel.selected_client')
-  let audit = _.clone(props.audit)
+  var audit = _.clone(props.audit)
+  delete audit._id
+  delete audit._rev
+  delete audit._meta
   return signatures.generate(audit, prvKey, headers).then((signature) => {
-	  return {signature, audit, clientId}
+    //optimistic update
+    state.set(`certifications.records.${props.certId}.audit.signatures`, signature);
+	  return {signature, audit}
   })
 }
 
-function deleteSelectedCertifications({state, props}) {
-	let clientId = state.get('client_panel.selected_client')
-	let certifications = []
-	let certs = state.get(`certifications`)
-	Object.keys(certs).forEach((key) => {
-		if (certs[key].selected) certifications.push(key)
-  })
-  return {certifications, clientId};
-}
-
-function unsetCerts({state, props}) {
-	let clientId = state.get('client_panel.selected_client')
-	props.deletedCerts.forEach(key => {
-		state.unset(`client_panel.clients.${clientId}.certifications.${key}`)
-		state.unset(`certifications.${key}`)
-	})
-}
-
-function updateCerts({state, props}) {
-  let a = state.get('certifications')
-  let clientId = state.get(`client_panel.selected_client`)
-	let clientName = state.get(`client_panel.clients.${clientId}.name`)
-	let certifications = state.get(`client_panel.clients.${clientId}.certifications`);
-	let audits = {};
-	return Promise.map(Object.keys(certifications), (key) => {
-		if (!a[key].selected) return
+export function updateCerts({state, props}) {
+  var certifications = {};
+	return Promise.map(Object.keys(props.certifications), (key) => {
 		let audit = randCert.generateAudit({
 			template: templateAudit, 
 			minimizeAuditData: true,
-			organization: {name: clientName},
-			year: (parseInt(certifications[key].audit.conditions_during_audit.operation_observed_date.slice(0,4), 10)+1).toString(),
+			organization: {name: props.clientName},
+			year: (parseInt(props.certifications[key].audit.conditions_during_audit.operation_observed_date.slice(0,4), 10)+1).toString(),
 			scope: {
-				products_observed: certifications[key].audit.scope.products_observed,
-				operations: certifications[key].audit.scope.operations
+				products_observed: props.certifications[key].audit.scope.products_observed,
+				operations: props.certifications[key].audit.scope.operations
 			}
     })
-    audits[uuid()] = audit;
+    certifications[key] = {audit};
+    // Optimistic update
+    state.set(`certifications.records.${key}.audit`, audit);
     return;
 	}).then(() => {
-		return {audits, clientId}
+		return {certifications}
 	})
 }
 
-function addRandomCert({state, props}) {
-  let clientId = state.get(`client_panel.selected_client`)
-  let clientName = state.get(`client_panel.clients.${clientId}.name`)
+export function generateRandomCertification({state, props}) {
 	let audit = randCert.generateAudit({
 		template: templateAudit, 
 		minimizeAuditData: true,
-		organization: {name: clientName},
+		organization: {name: props.clientName},
   })
-  return {audit, clientId, certId: uuid()};
+  var certId = uuid();
+  return {audit, certId, certification:{audit}};
 }

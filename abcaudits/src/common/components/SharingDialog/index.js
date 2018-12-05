@@ -9,9 +9,8 @@ export default connect({
   open: state`sharing_dialog.open`,
 	usernameText: state`sharing_dialog.username_text`,
 	urlText: state`sharing_dialog.trellis_domain_text`,
-	client: state`client_panel.clients.${state`client_panel.selected_client`}`,
 	addUserError: state`sharing_dialog.add_user_error`,
-	sharedUsers: state`sharing_dialog.shared_users`,
+  sharedUsers: state`sharing_dialog.shared_users`,
 
   sharingDialogDone: signal`sharing_dialog.sharingDialogDoneClicked`,
   urlTextChanged: signal`sharing_dialog.urlTextChanged`,
@@ -30,7 +29,7 @@ class SharingDialog extends React.Component {
     ];
     return (
       <Dialog
-        title={'Sharing for '+this.props.client.name}
+        title={this.props.title}
         actions={actions}
         modal={false}
         open={this.props.open}
@@ -52,7 +51,7 @@ class SharingDialog extends React.Component {
 					/>
 					<div
 						className={styles.sharingDialogAddUser}
-						onTouchTap={() => this.props.addUserButtonClicked({})}>
+						onTouchTap={() => this.props.addUserButtonClicked({connection_id: this.props.connection_id, path:this.props.permissionsPath})}>
 						<IconButton
 							disabled={(this.props.urlText === '') || (this.props.usernameText === '')}
 							className={styles.clientPanelShareButton}
@@ -67,13 +66,13 @@ class SharingDialog extends React.Component {
 				}
 				<div>
           {
-            Object.keys(this.props.sharedUsers).length > 0 ?
+            Object.keys(this.props.sharedUsers || {}).length > 0 ?
             <p>Currently shared with: </p>
             :
             null
           }
 					<div>
-						{Object.keys(this.props.sharedUsers).map((u) =>
+						{Object.keys(this.props.sharedUsers || {}).map((u) =>
 							<Chip
 								key={'shared-users-'+u}>
 								{this.props.sharedUsers[u].name || this.props.sharedUsers[u].oidc.username}

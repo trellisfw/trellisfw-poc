@@ -11,26 +11,31 @@ import {
 import styles from './styles.css'
 
 export default connect({
-  mode: state`view.main_panel.mode`,
-  client: state`client_panel.clients.${state`client_panel.selected_client`}`,
-  selected_client: state`client_panel.selected_client`,
-	certifications: state`client_panel.clients.${state`client_panel.selected_client`}.certifications`,
+  certifications: state`view.certifications`,
+  client: state`clients.selected_client`,
+  person: state`clients.records.${state`clients.selected_client`}.name`,
 	sharingDialog: state`sharing_dialog.open`,
-	noClientsError: state`client_panel.no_clients_error`,
+  noClientsError: state`clients.no_clients_error`,
+  connection_id: state`clients.connection_id`,
 
   initialize: signal`initialize`,
-  addCertButtonClicked: signal`certifications.addCertButtonClicked`,
-  updateCertButtonClicked: signal`certifications.updateCertButtonClicked`,
-	deleteAuditsButtonClicked: signal`certifications.deleteAuditsButtonClicked`,
+  addCertButtonClicked: signal`clients.addCertButtonClicked`,
+  updateCertButtonClicked: signal`clients.updateCertButtonClicked`,
+	deleteAuditsButtonClicked: signal`clients.deleteCertsButtonClicked`,
 },
 
 class MainPanel extends React.Component {
 
   render() {
-
     return (
 			<div className='main-panel'>
-				{this.props.sharingDialog ? <SharingDialog /> : null}
+        {this.props.sharingDialog ? 
+          <SharingDialog 
+            connection_id={this.props.connection_id}
+            permissionsPath={`/bookmarks/trellis/clients/${this.props.client}/certifications/_meta/_permissions`}
+            title={'Sharing for '+this.props.person}
+          /> : null
+        }
         <div className='main-panel-header'>
           <p className={'main-panel-header-text'}>Current Certifications</p>
           <IconButton
@@ -45,8 +50,8 @@ class MainPanel extends React.Component {
 					<p className='no-clients-error'>User has no clients or certifications</p>
 					:
 					this.props.client ? 
-						Object.keys(this.props.certifications || {}).map((key, i) => 
-							<CertCard name={key} key={'cert-'+i}/>
+            Object.keys(this.props.certifications || {}).filter((k) => k.charAt(0) !== '_' && this.props.certifications[k].audit).map((key, i) => 
+							<CertCard certId={key} key={'cert-'+i}/>
 						)
 					: null
 				}

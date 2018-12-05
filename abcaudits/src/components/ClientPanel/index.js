@@ -17,12 +17,13 @@ import {
 import styles from './styles.css'
 
 export default connect({
-  open: state`client_panel.client_dialog.open`,
-  client: state`client_panel.selected_client`,
-	clients: state`client_panel.clients`,
+  open: state`clients.client_dialog.open`,
+  client: state`clients.selected_client`,
+	clients: state`clients.records.**`,
+  connection_id: state`clients.connection_id`,
 
-  clientClicked: signal`client_panel.clientClicked`,
-  addClientButtonClicked: signal`client_panel.addClientButtonClicked`,
+  clientClicked: signal`clients.clientClicked`,
+  addClientButtonClicked: signal`clients.addClientButtonClicked`,
 	shareClientButtonClicked: signal`sharing_dialog.shareClientButtonClicked`,
 },
 
@@ -43,7 +44,10 @@ class ClientPanel extends React.Component {
 						  <IconButton
 						    disabled={!this.props.client}
 						    className='client-panel-share-button'
-						    onTouchTap={() => this.props.shareClientButtonClicked({})}
+                onTouchTap={() => this.props.shareClientButtonClicked({
+                  metaPath:`/bookmarks/trellis/clients/${this.props.client}/certifications/_meta/_permissions`,
+                  connection_id: this.props.connection_id,
+                })}
 						    iconClassName="material-icons">group
 						  </IconButton>
 						</TableHeaderColumn>
@@ -58,7 +62,7 @@ class ClientPanel extends React.Component {
 							return c;
 						}), 'name').map(c =>
 							<TableRow 
-								onTouchTap={() => {this.props.clientClicked({id:c.id})}}
+								onTouchTap={() => {this.props.clientClicked({clientId:c.id})}}
 								className={'row'}
 								selected={c.id === this.props.client}
 								key={'client-category-'+c.id}>

@@ -8,12 +8,13 @@ import styles from './styles.css'
 import JSONTree from 'react-json-tree'
 
 export default connect({
-  certification: state`client_panel.clients.${state`client_panel.selected_client`}.certifications.${props`name`}`,
-	selected: state`view.certifications.${props`name`}.selected`,
-	certViewer: state`view.certifications.${props`name`}.cert_viewer`,
+  certification: state`view.certifications.${props`certId`}`,
+  audit: state`view.certifications.${props`certId`}.audit`,
+	selected: state`view.certifications.${props`certId`}.selected`,
+	certViewer: state`view.certifications.${props`certId`}.cert_viewer`,
 
-  checked: signal`certifications.certChecked`,
-	signAuditButtonClicked: signal`certifications.signAuditButtonClicked`,
+  checked: signal`clients.certChecked`,
+	signAuditButtonClicked: signal`clients.signAuditButtonClicked`,
 	certViewerClicked: signal`certViewerClicked`,
 	closeViewer: signal`closeViewerClicked`,
 },
@@ -21,40 +22,40 @@ export default connect({
 class CertCard extends React.Component {
 
   render() {
-		let date = new moment(this.props.certification.audit.conditions_during_audit.operation_observed_date).format('MMMM D, YYYY')
+		let date = new moment(this.props.audit.conditions_during_audit.operation_observed_date).format('MMMM D, YYYY')
     return (
      <Card className='cert-card'>
        <div className='main-content'>
        <div className='left-container'>
          <Checkbox
            label=''
-            checked={this.props.selected}
+            checked={this.props.selected ? true : false}
             className={'checkbox'}
-            onCheck={(evt, checked) => {this.props.checked({name: this.props.name, checked})}}
+            onCheck={(evt, checked) => {this.props.checked({certId: this.props.certId, checked})}}
           />
         </div>
         <div className='middle-container'>
-          <p className={'product-organization'}>{this.props.certification.audit.scope.products_observed[0].name +' - '+this.props.certification.audit.organization.name}</p>
+          <p className={'product-organization'}>{this.props.audit.scope.products_observed[0].name +' - '+this.props.audit.organization.name}</p>
 					<div className='score-certlinks'>
-						<p className={'score'}>{'Score: '+(100*parseFloat(this.props.certification.audit.score.globalgap_levels.minor_musts.value)).toFixed(1) + ' %'}</p>
+						<p className={'score'}>{'Score: '+(100*parseFloat(this.props.audit.score.globalgap_levels.minor_musts.value)).toFixed(1) + ' %'}</p>
 						<div className='certlinks'>
 							<FlatButton 
-								disabled={!this.props.certification.audit}
+								disabled={!this.props.audit}
 								label="Audit" 
 								className='certlink'
-								onTouchTap={() => {this.props.certViewerClicked({name:this.props.name, doc:'audit'})}}
+								onTouchTap={() => {this.props.certViewerClicked({certId:this.props.certId, doc:'audit'})}}
 							/>
 							<FlatButton 
 								disabled={!this.props.certification.corrective_actions}
 								label="Corrective Actions" 
 								className='certlink'
-								onTouchTap={() => {this.props.certViewerClicked({name:this.props.name, doc:'corrective_actions'})}}
+								onTouchTap={() => {this.props.certViewerClicked({certId:this.props.certId, doc:'corrective_actions'})}}
 							/>
 							<FlatButton 
 								disabled={!this.props.certification.certificate}
 								label="Certificate" 
 								className='certlink'
-								onTouchTap={() => {this.props.certViewerClicked({name:this.props.name, doc:'certificate'})}}
+								onTouchTap={() => {this.props.certViewerClicked({certId:this.props.certId, doc:'certificate'})}}
 							/>
 						</div>
 					</div>
@@ -68,7 +69,7 @@ class CertCard extends React.Component {
         </div>
         <div className='right-container'>
           <p className={'expiration'}>{date}</p>
-            {this.props.certification.audit.signatures ? <div className={'signature'}>
+            {this.props.audit.signatures ? <div className={'signature'}>
               <IconButton
                 className={'valid-icon'}
                 style={{color:'#0f0'}}
@@ -80,17 +81,17 @@ class CertCard extends React.Component {
             <FlatButton
 							className={'sign-button'}
 							primary={true}
-              onTouchTap={()=>{this.props.signAuditButtonClicked({audit:this.props.certification.audit, name: this.props.name})}}
+              onTouchTap={()=>{this.props.signAuditButtonClicked({audit:this.props.audit, certId: this.props.certId})}}
               label="Finish and sign">
             </FlatButton>}
         </div>
         </div>
 				{this.props.certViewer ? <div className='expandable-doc-viewer'>
           <FlatButton
-            onTouchTap={()=>{this.props.closeViewer({name:this.props.name})}}
+            onTouchTap={()=>{this.props.closeViewer({certId:this.props.certId})}}
             label="Close Viewer">
             </FlatButton>
-				 <JSONTree data={this.props.certification.audit} theme={"summerfruit:inverted"} />
+				 <JSONTree data={this.props.audit} theme={"summerfruit:inverted"} />
 			 </div> : null }
       </Card>
     )

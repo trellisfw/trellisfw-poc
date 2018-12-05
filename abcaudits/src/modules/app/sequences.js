@@ -3,8 +3,9 @@ import { metadata, oadaDomain, redirect } from '../../config';
 import { unset } from 'cerebral/operators'
 import {state, props } from 'cerebral/tags'
 import * as certifications from '../../common/modules/certifications/sequences';
-import * as client_panel from '../../modules/client_panel/sequences';
-import * as oada from '@oada/cerebral-module/sequences'
+import * as user_profile from '../../common/modules/user_profile/sequences';
+import * as clients from '../../modules/clients/sequences';
+import oada from '@oada/cerebral-module/sequences'
 
 export const closeViewerClicked = sequence('closeViewerClicked', [
 	unset(state`view.certifications.${props`name`}.cert_viewer`)
@@ -30,6 +31,7 @@ export const initialize = sequence('initialize', [
       scope: 'trellis:all'
     }
   }),
+  clients.initialize,
   certifications.initialize,
-  client_panel.initialize,
+  user_profile.initialize,
 ])

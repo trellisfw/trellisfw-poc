@@ -3,7 +3,7 @@ import { Module } from 'cerebral'
 
 export default Module({
   state: {
-    clients: {},
+    records: {},
     selected_client: undefined,
     client_dialog: {
       open: false,
