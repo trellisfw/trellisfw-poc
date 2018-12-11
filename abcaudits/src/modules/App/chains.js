@@ -1,10 +1,10 @@
-import randCert from 'trellisfw-rand-cert'
+import randCert from 'fpad-rand-cert'
 import { unset, set, } from 'cerebral/operators'
 import {state, props } from 'cerebral/tags'
 import templateAudit from './GlobalGAP_FullAudit.js'
 import _ from 'lodash'
 import Promise from 'bluebird';
-import signatures from 'trellisfw-signatures'
+import signatures from 'fpad-signatures'
 import prvKey from '../../prvKey.js'
 import pubKey from '../../pubKey.js'
 var agent = require('superagent-promise')(require('superagent'), Promise);
