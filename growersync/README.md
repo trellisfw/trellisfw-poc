@@ -12,7 +12,7 @@ TODO:
     - Add delete button for new connections
     - Add delete button for existing connections
       - Delete the webhook (how to do this? I don't have a token to delete from other cloud. Ask for permission again?)
-      - Delete the webhook from /bookmarks/fpad/connections
+      - Delete the webhook from /bookmarks/trellisfw/connections
 
     - Before create webhook POST to /authorizations to get scoped token
       to use in webhook (for token) so webhook does not have SUPER access.

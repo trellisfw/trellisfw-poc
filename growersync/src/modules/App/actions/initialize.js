@@ -4,13 +4,13 @@ import loadConnections from '../../Connections/actions/loadConnections';
 import watchConnections from '../../Connections/actions/watchConnections';
 import loadAuthorizedApps from '../../Connections/actions/loadAuthorizedApps';
 import configureWebsocketProvider from '../actions/configureWebsocketProvider';
-import initFpadResource from '../actions/initFpadResource';
+import initTrellisfwResource from '../actions/initTrellisfwResource';
 import { equals } from 'cerebral/operators'
 import {props} from 'cerebral/tags'
 
 export default [
   configureWebsocketProvider,
-  initFpadResource,
+  initTrellisfwResource,
   equals(props`error`), {
     true: [],
     otherwise: [

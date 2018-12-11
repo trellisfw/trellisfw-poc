@@ -8,11 +8,11 @@ const oadaDomains = [
   },
   {
     displayText: 'AbcAudits',
-    url: 'https://api.abcaudits.fpad.io'
+    url: 'https://api.abcaudits.trellisfw.io'
   },
   {
     displayText: 'GrowerSync',
-    url: 'https://api.growersync.fpad.io'
+    url: 'https://api.growersync.trellisfw.io'
   },
   {
     displayText: 'vip3',

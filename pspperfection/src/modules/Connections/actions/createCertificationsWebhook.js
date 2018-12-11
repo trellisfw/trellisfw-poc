@@ -11,18 +11,18 @@ function createWebhook({props, state}) {
     POST to: `_meta/_remote_syncs`:
     {
       "token": "Bearer ggg",
-      "url": "bookmarks/fpad/certifications",
+      "url": "bookmarks/trellisfw/certifications",
       "domain": "localhost"
     }
   */
   return post.func(arguments)({
      domain: props.remoteOadaDomain,
      token: props.accessToken,
-     path: '/bookmarks/fpad/certifications/_meta/_remote_syncs',
+     path: '/bookmarks/trellisfw/certifications/_meta/_remote_syncs',
      data: {
        token: 'Bearer '+ state.get('UserProfile.user.token'),
        domain: oadaDomain.substr(oadaDomain.indexOf('://')+3),
-       url: 'bookmarks/fpad/certifications'
+       url: 'bookmarks/trellisfw/certifications'
      }
   }).then(({response})=> {
     var id = response.headers.location.split('/')
@@ -35,7 +35,7 @@ export default sequence('createCertificationsWebhook', [
   doesResourceExist({
     token: props`accessToken`,
     domain: props`remoteOadaDomain`,
-    path: '/bookmarks/fpad/certifications'
+    path: '/bookmarks/trellisfw/certifications'
   }),
   {
     yes: [],
@@ -43,8 +43,8 @@ export default sequence('createCertificationsWebhook', [
       createResource({
         token: props`accessToken`,
         domain: props`remoteOadaDomain`,
-        path: '/bookmarks/fpad/certifications',
-        contentType: 'application/vnd.fpad.certifications.globalgap.1+json'
+        path: '/bookmarks/trellisfw/certifications',
+        contentType: 'application/vnd.trellisfw.certifications.globalgap.1+json'
       })
     ]
   },

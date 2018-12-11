@@ -12,14 +12,14 @@ let getAccessToken = Promise.promisify(require('oada-id-client').getAccessToken)
 function getOadaToken({state, props, path}) {
   let options = {
     metadata: metadata,
-    scope: 'fpad:all',
+    scope: 'trellisfw:all',
     redirect: redirectDomain
   }
-  const fpadDomain = state.get('Login.fpadDomain');
-  return getAccessToken(fpadDomain.substr(fpadDomain.indexOf('://')+3), options).then((accessToken) => {
+  const trellisfwDomain = state.get('Login.trellisfwDomain');
+  return getAccessToken(trellisfwDomain.substr(trellisfwDomain.indexOf('://')+3), options).then((accessToken) => {
     return axios({
        method: 'GET',
-       url: fpadDomain+'/users/me',
+       url: trellisfwDomain+'/users/me',
        headers: {Authorization: accessToken.access_token}
     }).then((response)=> {
       let user = response.data;

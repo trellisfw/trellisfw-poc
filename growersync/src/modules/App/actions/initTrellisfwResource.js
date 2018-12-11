@@ -6,14 +6,14 @@ import doesResourceExist from '../../OADA/factories/doesResourceExist';
 import createResource from '../../OADA/factories/createResource';
 import showError from '../../Error/factories/showError'
 
-export default sequence('initFpadResource', [
-  doesResourceExist({path: '/bookmarks/fpad'}),
+export default sequence('initTrellisfwResource', [
+  doesResourceExist({path: '/bookmarks/trellisfw'}),
   {
     yes: [],
     no: [
       createResource({
-        path: '/bookmarks/fpad',
-        contentType: 'application/vnd.fpad.1+json'
+        path: '/bookmarks/trellisfw',
+        contentType: 'application/vnd.trellisfw.1+json'
       })
     ],
     error: [

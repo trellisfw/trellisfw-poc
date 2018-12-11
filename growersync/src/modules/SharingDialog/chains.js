@@ -54,7 +54,7 @@ export let addUser = [
 function loadSharingMeta({state, props, path}) {
   return axios({
     method: 'get',
-    url: oadaDomain+'/bookmarks/fpad/certifications/_meta',
+    url: oadaDomain+'/bookmarks/trellisfw/certifications/_meta',
     headers: {
       'Authorization': 'Bearer '+state.get('UserProfile.user.token'),
     },
@@ -120,9 +120,9 @@ function createClientUser({state, props, path}) {
 function addPermissions({state, props, path}) {
   return axios({
     method: 'put',
-    url: oadaDomain+'/bookmarks/fpad/certifications/_meta/_permissions',
+    url: oadaDomain+'/bookmarks/trellisfw/certifications/_meta/_permissions',
     headers: {
-      'Content-Type': 'application/vnd.fpad.certifications.1+json',
+      'Content-Type': 'application/vnd.trellisfw.certifications.1+json',
       'Authorization': 'Bearer '+state.get('UserProfile.user.token'),
     },
     data: {

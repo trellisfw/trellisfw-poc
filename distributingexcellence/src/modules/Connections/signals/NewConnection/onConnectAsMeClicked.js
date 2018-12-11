@@ -1,8 +1,8 @@
 /*
   - Do oauth to get token at domain.
   - Use token to create webhook
-  - Create /bookmarks/fpad/connections if does not exists
-  - Add webhook to /bookmarks/fpad/connections
+  - Create /bookmarks/trellisfw/connections if does not exists
+  - Add webhook to /bookmarks/trellisfw/connections
 */
 import { set, unset } from 'cerebral/operators'
 import { props, state } from 'cerebral/tags'
@@ -22,7 +22,7 @@ function getRemoteDomain({props, state}) {
 function getOadaToken({props, path}) {
   let options = {
     metadata: metadata,
-    scope: 'fpad:all',
+    scope: 'trellisfw:all',
     redirect: redirectDomain
   };
   let remoteOadaDomain = props.remoteOadaDomain;
@@ -43,7 +43,7 @@ export default [
       createCertificationsWebhook,
       //Save the connection to oada
       post({
-        path: '/bookmarks/fpad/connections',
+        path: '/bookmarks/trellisfw/connections',
         data: {url: props`remoteOadaDomain`, remoteWebhookId: props`remoteWebhookId`}
       }),
       unset(state`Connections.newConnections.${props`newConnectionId`}`),

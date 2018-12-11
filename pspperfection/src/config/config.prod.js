@@ -1,12 +1,12 @@
 //Production Values
 const devtoolsPort = 8585;
-const oadaDomain = process.env.REACT_APP_OADA_DOMAIN || 'https://api.pspperfection.fpad.io';
-const websiteDomain = 'https://pspperfection.fpad.io';
+const oadaDomain = process.env.REACT_APP_OADA_DOMAIN || 'https://api.pspperfection.trellisfw.io';
+const websiteDomain = 'https://pspperfection.trellisfw.io';
 const metadata = `
 eyJqa3UiOiJodHRwczovL3lkZW50aXR5Lm9hZGEtZGV2LmNvbS9jZXJ0cyIsImtpZCI6ImtqY1NjamMzMmR3SlhYTEpEczNyMTI0c2ExIiwidHlwIjoiSldUIiwiYWxnIjoiUlMyNTYifQ.eyJyZWRpcmVjdF91cmlzIjpbImh0dHBzOi8vcHNwcGVyZmVjdGlvbi5mcGFkLmlvL29hdXRoMi9yZWRpcmVjdC5odG1sIl0sInRva2VuX2VuZHBvaW50X2F1dGhfbWV0aG9kIjoidXJuOmlldGY6cGFyYW1zOm9hdXRoOmNsaWVudC1hc3NlcnRpb24tdHlwZTpqd3QtYmVhcmVyIiwiZ3JhbnRfdHlwZXMiOlsiaW1wbGljaXQiXSwicmVzcG9uc2VfdHlwZXMiOlsidG9rZW4iLCJpZF90b2tlbiIsImlkX3Rva2VuIHRva2VuIl0sImNsaWVudF9uYW1lIjoiUHNwUGVyZmVjdGlvbiIsImNsaWVudF91cmkiOiJodHRwczovL2ZwYWQuaW8vIiwiY29udGFjdHMiOlsiU2FtIE5vZWwgPHNhbm9lbEBwdXJkdWUuZWR1PiJdLCJzb2Z0d2FyZV9pZCI6IjkwMmVjNTc1LWQ1MDEtNDg3NC05OWM5LTVkN2NhNmY1ZTkzZSIsInJlZ2lzdHJhdGlvbl9wcm92aWRlciI6Imh0dHBzOi8vaWRlbnRpdHkub2FkYS1kZXYuY29tIiwiaWF0IjoxNTA4MjY4ODc1fQ.kPpDWuByq6F8TWk_UJpNsRJXc9BOxbKxvK1j3YcuL7AErgI7K2X2ISCjv_kHFJQazqWM8FT4wW-2WBff0kmygKBUm3ug9rASSiUKYWeQPigrz7ftg29Al0rsEITxYo0D576nESr-KTZWhlHhx0wvFWnpiMSzPU2dsDEX_R3PczY
 `.trim()
 
-const defaultNewConnectionURL = 'https://api.growersync.fpad.io';
+const defaultNewConnectionURL = 'https://api.growersync.trellisfw.io';
 
 export default {
   oadaDomain,

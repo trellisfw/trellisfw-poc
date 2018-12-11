@@ -83,9 +83,9 @@ function addPermissions({state, props, path}) {
 	
   return axios({
     method: 'put',
-    url: domain+'/bookmarks/fpad/clients/'+clientId+'/_meta/_permissions',
+    url: domain+'/bookmarks/trellisfw/clients/'+clientId+'/_meta/_permissions',
     headers: {
-      'Content-Type': 'application/vnd.fpad.client.1+json',
+      'Content-Type': 'application/vnd.trellisfw.client.1+json',
       'Authorization': 'Bearer '+state.get('user_profile.user.token'),
     },
     data: { 

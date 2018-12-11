@@ -9,7 +9,7 @@ function loadCertificationsWebsocket({state, path, websocket}) {
   let certifications = {};
   return websocket.http({
       method: 'GET',
-      url: '/bookmarks/fpad/certifications',
+      url: '/bookmarks/trellisfw/certifications',
       headers: {Authorization: 'Bearer '+ state.get('UserProfile.user.token')}
     }).then((res) => {
       //Extract only list of certification ids
@@ -19,7 +19,7 @@ function loadCertificationsWebsocket({state, path, websocket}) {
         //Load the certifications
         return websocket.http({
             method: 'GET',
-            url: '/bookmarks/fpad/certifications/'+key+'/audit',
+            url: '/bookmarks/trellisfw/certifications/'+key+'/audit',
             headers: {Authorization: 'Bearer '+ state.get('UserProfile.user.token')}
 				}).then((res) => {
 						console.log(res)

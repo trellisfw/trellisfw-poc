@@ -1,13 +1,13 @@
-import connectWithFpadClicked from './signals/connectWithFpadClicked'
-import fpadDomainChanged from './signals/fpadDomainChanged'
+import connectWithTrellisfwClicked from './signals/connectWithTrellisfwClicked'
+import trellisfwDomainChanged from './signals/trellisfwDomainChanged'
 import {oadaDomain} from '../../config';
 
 export default {
   state: {
-    fpadDomain: oadaDomain,
+    trellisfwDomain: oadaDomain,
   },
   signals: {
-    connectWithFpadClicked,
-    fpadDomainChanged
+    connectWithTrellisfwClicked,
+    trellisfwDomainChanged
   }
 }

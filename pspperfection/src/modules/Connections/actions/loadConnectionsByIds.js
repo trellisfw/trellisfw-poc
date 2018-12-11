@@ -7,7 +7,7 @@ function loadConnectionsByIds({state, props, path, websocket}) {
   return Promise.map(props.ids, (key) => {
     //Load the connections
     return get.func(arguments)({
-      path: '/bookmarks/fpad/connections/'+key
+      path: '/bookmarks/trellisfw/connections/'+key
     }).then(({response}) => {
       state.set('Connections.connections.'+key, response.data);
     });

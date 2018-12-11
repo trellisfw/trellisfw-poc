@@ -1,10 +1,10 @@
-import randCert from 'fpad-rand-cert'
+import randCert from 'trellisfw-rand-cert'
 import { unset, set, } from 'cerebral/operators'
 import {state, props } from 'cerebral/tags'
 import templateAudit from './GlobalGAP_FullAudit.js'
 import _ from 'lodash'
 import Promise from 'bluebird';
-import signatures from 'fpad-signatures'
+import signatures from 'trellisfw-signatures'
 import prvKey from '../../prvKey.js'
 import pubKey from '../../pubKey.js'
 var agent = require('superagent-promise')(require('superagent'), Promise);
@@ -89,7 +89,7 @@ function generateAuditSignature({state, props, path}) {
   let clientId = state.get('client_panel.selected_client')
   let audit = _.clone(props.audit)
   return signatures.generate(audit, prvKey, headers).then((signatures) => {
-		return agent('PUT', domain+'/bookmarks/fpad/clients/'+clientId+'/certifications/'+props.name+'/audit/signatures')
+		return agent('PUT', domain+'/bookmarks/trellisfw/clients/'+clientId+'/certifications/'+props.name+'/audit/signatures')
     .set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
     .set('Content-Type', 'application/vnd.oada.certifications.globalgap.1+json')
     .send(signatures)
@@ -109,7 +109,7 @@ function deleteSelectedCertifications({state, props, path}) {
 		if (certs[key].selected) selectedCerts.push(key)
 	})
   return Promise.map(selectedCerts, (key) => {
-    return agent('DELETE', domain+'/bookmarks/fpad/clients/'+id+'/certifications/'+key)
+    return agent('DELETE', domain+'/bookmarks/trellisfw/clients/'+id+'/certifications/'+key)
     .set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
     .end()
   }).then(() => {
@@ -146,7 +146,7 @@ function updateCerts({state, props, path}) {
 		})
 		return agent('POST', domain+'/resources')
 		.set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
-		.set('Content-Type', 'application/vnd.fpad.audit.globalgap.1+json')
+		.set('Content-Type', 'application/vnd.trellisfw.audit.globalgap.1+json')
 		.send(audit)
 		.end()
 		.then((response) => {
@@ -155,16 +155,16 @@ function updateCerts({state, props, path}) {
 			audit._id = 'resources/'+id
 			return agent('POST', domain+'/resources')
 			.set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
-			.set('Content-Type', 'application/vnd.fpad.certification.globalgap.1+json')
+			.set('Content-Type', 'application/vnd.trellisfw.certification.globalgap.1+json')
 			.send({audit: { _id: id, _rev: '0-0'}})
 			.end()
 			.then((res) => {
 				let certid = response.headers.location.split('/')
 				certid = certid[certid.length-1]
 				newAudits[certid] = audit
-				return agent('PUT', domain+'/bookmarks/fpad/clients/'+clientId+'/certifications/'+certid)
+				return agent('PUT', domain+'/bookmarks/trellisfw/clients/'+clientId+'/certifications/'+certid)
 				.set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
-				.set('Content-Type', 'application/vnd.fpad.certification.globalgap.1+json')
+				.set('Content-Type', 'application/vnd.trellisfw.certification.globalgap.1+json')
 				.send({_id:'resources/'+certid, _rev: '0-0'})
 				.end()
 			})
@@ -187,7 +187,7 @@ function addRandomCert({state, props, path}) {
 	let certid;
   return agent('POST', domain+'/resources')
   .set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
-  .set('Content-Type', 'application/vnd.fpad.audit.globalgap.1+json')
+  .set('Content-Type', 'application/vnd.trellisfw.audit.globalgap.1+json')
   .send(audit)
   .end()
 	.then((response) => {
@@ -196,15 +196,15 @@ function addRandomCert({state, props, path}) {
 		audit._id = 'resources/'+auditid
 		return agent('POST', domain+'/resources')
 		.set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
-		.set('Content-Type', 'application/vnd.fpad.certification.globalgap.1+json')
+		.set('Content-Type', 'application/vnd.trellisfw.certification.globalgap.1+json')
 		.send({audit: {_id:'resources/'+auditid, _rev: '0-0'}})
 		.end()
 		.then((response) => {
 			certid = response.headers.location.split('/')
 			certid = certid[certid.length-1]
-			return agent('PUT', domain+'/bookmarks/fpad/clients/'+clientId+'/certifications/'+certid)
+			return agent('PUT', domain+'/bookmarks/trellisfw/clients/'+clientId+'/certifications/'+certid)
 			.set('Authorization', 'Bearer '+ state.get('user_profile.user.token'))
-			.set('Content-Type', 'application/vnd.fpad.certifications.globalgap.1+json')
+			.set('Content-Type', 'application/vnd.trellisfw.certifications.globalgap.1+json')
 			.send({_id:'resources/'+certid, _rev: '0-0'})
 			.end()
 		}).then(() => {
