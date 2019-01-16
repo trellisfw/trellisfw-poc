@@ -115,9 +115,9 @@ function putClient({state, props, path}) {
 		url: domain+'/resources',
 		headers: {
 			'Authorization': 'Bearer '+state.get('user_profile.user.token'),
-			'Content-Type': 'application/vnd.trellisfw.certifications.globalgap.1+json',
+			'Content-Type': 'application/vnd.trellisfw.certifications.1+json',
 		},
-		data: {_type: 'application/vnd.trellisfw.certifications.globalgap.1+json'},
+		data: {_type: 'application/vnd.trellisfw.certifications.1+json'},
 	}).then((response) => {
 		return axios({
 			method: 'POST',
