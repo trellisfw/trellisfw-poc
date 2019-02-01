@@ -1,10 +1,10 @@
-import randCert from 'fpad-rand-cert'
+import randCert from '@trellisfw/random-certs'
 import { unset, set, when } from 'cerebral/operators'
 import {state, props } from 'cerebral/tags'
 import templateAudit from './GlobalGAP_FullAudit.js'
 import _ from 'lodash'
 import Promise from 'bluebird';
-import signatures from 'fpad-signatures'
+import signatures from '@trellisfw/signatures'
 import prvKey from '../../prvKey.js'
 import pubKey from '../../pubKey.js'
 var agent = require('superagent-promise')(require('superagent'), Promise);
@@ -20,7 +20,7 @@ export let showViewer = [
 
 function showDoc({state, props, path}) {
   state.set(`App.model.certifications.${props.name}.cert_viewer`, {
-    doc: props.doc, 
+    doc: props.doc,
     expanded: ''
   })
 }
@@ -54,7 +54,7 @@ export let addCertification = [
     ],
     error: [],
   },
-] 
+]
 
 export let deleteCertifications = [
   deleteSelectedCertifications, {
@@ -88,7 +88,7 @@ function generateAuditSignature({state, props, path}) {
   var alg = 'RS256'
   var kty = 'RSA'
   var typ = 'JWT'
-  var jku = 'https://raw.githubusercontent.com/trellisfw/trusted-list/master/jku-test/jku-test.json' 
+  var jku = 'https://raw.githubusercontent.com/trellisfw/trusted-list/master/jku-test/jku-test.json'
   var headers = { kid, alg, kty, typ, jwk:pubKey, jku }
   let clientId = state.get('ClientPanel.selected_client')
   let audit = _.clone(props.audit)
@@ -139,7 +139,7 @@ function updateCerts({state, props, path}) {
   return Promise.map(Object.keys(certifications), (key) => {
     if (!a[key].selected) return
     let audit = randCert.generateAudit({
-      template: templateAudit, 
+      template: templateAudit,
       minimizeAuditData: true,
       organization: {name: clientName},
       year: (parseInt(certifications[key].audit.conditions_during_audit.operation_observed_date.slice(0,4), 10)+1).toString(),
@@ -184,7 +184,7 @@ function addRandomCert({state, props, path}) {
   let clientName = state.get(`ClientPanel.clients.${clientId}.name`)
   let orgName = state.get(`ClientPanel.clients.${clientId}.org_name`)
   let audit = randCert.generateAudit({
-    template: templateAudit, 
+    template: templateAudit,
     minimizeAuditData: true,
     organization: {contacts: [{ name: clientName}]},
     certifying_body: { name: 'AbcAudits' }
