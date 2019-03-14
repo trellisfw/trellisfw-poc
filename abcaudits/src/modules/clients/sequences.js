@@ -88,13 +88,17 @@ export const fetch = sequence('clients.fetch', [
     var newTree = _.cloneDeep(tree);
     newTree.bookmarks.trellis.clients['*'].certifications._meta = {_permissions: {'*': {}}};
     return {
-      path: '/bookmarks/trellis/clients',
-      tree: newTree,
-      watch: {
-        signals: ['clients.mapTrellisToRecords'],
-      },
-      connection_id: state.get(`clients.connection_id`),
-    }
+      requests: [
+        {
+          path: '/bookmarks/trellis/clients',
+          tree: newTree,
+          watch: {
+            signals: ['clients.mapTrellisToRecords'],
+          },
+          connection_id: state.get(`clients.connection_id`),
+        }
+      ],
+    };
   },
   oada.get,
   mapTrellisToRecords,
