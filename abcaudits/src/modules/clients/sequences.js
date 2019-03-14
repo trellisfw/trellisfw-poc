@@ -8,33 +8,33 @@ import oada from '@oada/cerebral-module/sequences';
 import * as certifications from '../../common/modules/certifications/sequences';
 import * as sharing_dialog from '../../common/modules/sharing_dialog/sequences';
 import * as user_profile from '../../common/modules/user_profile/sequences';
-Promise.config({warnings: false})                                                
+Promise.config({warnings: false})
 
 var tree = {
   bookmarks: {
     _type: 'application/vnd.oada.bookmarks.1+json',
     _rev: '0-0',
-    trellis: {
-      _type: 'application/vnd.trellis.1+json',
+    trellisfw: {
+      _type: 'application/vnd.trellisfw.1+json',
       _rev: '0-0',
       clients: {
-        _type: 'application/vnd.trellis.clients.1+json',
+        _type: 'application/vnd.trellisfw.clients.1+json',
         _rev: '0-0',
         '*': {
-          _type: 'application/vnd.trellis.client.1+json',
+          _type: 'application/vnd.trellisfw.client.1+json',
           _rev: '0-0',
           certifications: {
-            _type: 'application/vnd.trellis.certifications.1+json',
+            _type: 'application/vnd.trellisfw.certifications.1+json',
             _rev: '0-0',
             '*': {
-              _type: 'application/vnd.trellis.certification.globalgap.1+json',
+              _type: 'application/vnd.trellisfw.certification.globalgap.1+json',
               _rev: '0-0',
               audit: {
-                _type: 'application/vnd.trellis.audit.globalgap.1+json',
+                _type: 'application/vnd.trellisfw.audit.globalgap.1+json',
                 _rev: '0-0',
               },
               certificate: {
-                _type: 'application/vnd.trellis.certificate.1+json',
+                _type: 'application/vnd.trellisfw.certificate.1+json',
                 _rev: '0-0',
               }
             }
@@ -72,9 +72,9 @@ export const clientClicked = sequence('clients.clientClicked', [
 export const mapTrellisToRecords = sequence('clients.mapTrellisToRecords', [
   ({state, props}) => {
     var connection_id = state.get(`clients.connection_id`);
-    var clients = state.get(`oada.${connection_id}.bookmarks.trellis.clients`);
+    var clients = state.get(`oada.${connection_id}.bookmarks.trellisfw.clients`);
     state.set(`clients.records`, {});
-    Object.keys(clients || {}).map((key) => 
+    Object.keys(clients || {}).map((key) =>
       state.set(`clients.records.${key}`, clients[key])
     )
   },
@@ -86,11 +86,11 @@ export const fetch = sequence('clients.fetch', [
   ({state, props}) => {
     // Putting meta permissions is dangerous, so just manually add it to the tree to fetch it
     var newTree = _.cloneDeep(tree);
-    newTree.bookmarks.trellis.clients['*'].certifications._meta = {_permissions: {'*': {}}};
+    newTree.bookmarks.trellisfw.clients['*'].certifications._meta = {_permissions: {'*': {}}};
     return {
       requests: [
         {
-          path: '/bookmarks/trellis/clients',
+          path: '/bookmarks/trellisfw/clients',
           tree: newTree,
           watch: {
             signals: ['clients.mapTrellisToRecords'],
@@ -118,15 +118,15 @@ export const clientDialogSubmitted = sequence('clients.clientDialogSubmitted', [
   set(state`clients.records.${props`clientId`}`, {certifications: {}, name: ''}),
   set(state`clients.records.${props`clientId`}.name`, props`text`),
   ({state, props}) => ({
-    requests: [ 
+    requests: [
       {
         connection_id: state.get(`clients.connection_id`),
-  		  path: '/bookmarks/trellis/clients/'+props.clientId,
+  		  path: '/bookmarks/trellisfw/clients/'+props.clientId,
         data: {
           name: props.text,
         },
         tree,
-      } 
+      }
     ],
   }),
   oada.put,
@@ -163,8 +163,8 @@ export const deleteCertsButtonClicked = sequence('clients.deleteCertsButtonClick
       state.unset(`view.certifications.${key}`);
       state.unset(`clients.records.${props.clientId}.certifications.${key}`);
       return {
-        path: `/bookmarks/trellis/clients/${props.clientId}/certifications/${key}`,
-        type: `application/vnd.trellis.certification.globalgap.1+json`,
+        path: `/bookmarks/trellisfw/clients/${props.clientId}/certifications/${key}`,
+        type: `application/vnd.trellisfw.certification.globalgap.1+json`,
       }
     }).then((requests) => {
       return {requests};
@@ -179,7 +179,7 @@ export const createClientCert = sequence('clients.createClientCert', [
   set(state`view.certifications.${props`certId`}`, props`certification`),
   set(props`connection_id`, state`clients.connection_id`),
   ({state, props}) => ({
-    path: `/bookmarks/trellis/clients/${props.clientId}/certifications/${props.certId}`,
+    path: `/bookmarks/trellisfw/clients/${props.clientId}/certifications/${props.certId}`,
     data: {_id: 'resources/'+props.certId, _rev: '0-0'},
     tree
   }),
@@ -210,7 +210,7 @@ export const updateCertButtonClicked = sequence('clients.updateCertButtonClicked
       //optimist update
       state.set(`view.certifications.${key}.audit`, props.certifications[key].audit);
       return {
-        path: `/bookmarks/trellis/clients/${props.clientId}/certifications/${key}/audit`,
+        path: `/bookmarks/trellisfw/clients/${props.clientId}/certifications/${key}/audit`,
         data: props.certifications[key].audit,
         tree,
       }
@@ -227,7 +227,7 @@ export const signAuditButtonClicked = sequence('clients.signAuditButtonClicked',
   certifications.generateAuditSignature,
   ({state, props}) => ({
     connection_id: state.get(`clients.connection_id`),
-    path: `/bookmarks/trellis/clients/${props.clientId}/certifications/${props.certId}/audit`,
+    path: `/bookmarks/trellisfw/clients/${props.clientId}/certifications/${props.certId}/audit`,
     data: {signatures: props.signature},
     tree,
   }),

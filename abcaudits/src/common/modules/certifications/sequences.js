@@ -10,27 +10,27 @@ import Promise from 'bluebird';
 import signatures from '@trellisfw/signatures';
 import prvKey from '../../../prvKey.js';
 import pubKey from '../../../pubKey.js';
-Promise.config({warnings: false})                                                
+Promise.config({warnings: false})
 
 var tree = {
   bookmarks: {
     _type: 'application/vnd.oada.bookmarks.1+json',
     _rev: '0-0',
-    trellis: {
-      _type: 'application/vnd.trellis.1+json',
+    trellisfw: {
+      _type: 'application/vnd.trellisfw.1+json',
       _rev: '0-0',
       certifications: {
-        _type: 'application/vnd.trellis.certifications.1+json',
+        _type: 'application/vnd.trellisfw.certifications.1+json',
         _rev: '0-0',
         '*': {
-          _type: 'application/vnd.trellis.certification.globalgap.1+json',
+          _type: 'application/vnd.trellisfw.certification.globalgap.1+json',
           _rev: '0-0',
           audit: {
-            _type: 'application/vnd.trellis.audit.globalgap.1+json',
+            _type: 'application/vnd.trellisfw.audit.globalgap.1+json',
             _rev: '0-0',
           },
           certificate: {
-            _type: 'application/vnd.trellis.certificate.1+json',
+            _type: 'application/vnd.trellisfw.certificate.1+json',
             _rev: '0-0',
           }
         }
@@ -44,9 +44,9 @@ var tree = {
 export const mapTrellisToRecords = sequence('certifications.mapTrellisToRecords', [
   ({state, props}) => {
     var connection_id = state.get('certifications.connection_id');
-    var certs = state.get(`oada.${connection_id}.bookmarks.trellis.certifications`);
+    var certs = state.get(`oada.${connection_id}.bookmarks.trellisfw.certifications`);
     state.set(`certifications.records`, {});
-    Object.keys(certs || {}).map((certId) => 
+    Object.keys(certs || {}).map((certId) =>
       state.set(`certifications.records.${certId}`, certs[certId])
     )
   },
@@ -57,7 +57,7 @@ export const fetch = sequence('certifications.fetch', [
     var signals = (props.signals ? props.signals : []);
     var watch = {signals: [...signals, 'certifications.mapTrellisToRecords']};
     return {
-      path: '/bookmarks/trellis/certifications',
+      path: '/bookmarks/trellisfw/certifications',
       tree,
       connection_id: state.get('certifications.connection_id'),
       watch,
@@ -79,14 +79,14 @@ export const createCertification = sequence('certifications.createCertification'
   set(props`connection_id`, state`certifications.connection_id`),
   ({state, props}) => ({
     connection_id: state.get(`certifications.connection_id`),
-    path: `/bookmarks/trellis/certifications/${props.certId}`,
+    path: `/bookmarks/trellisfw/certifications/${props.certId}`,
     data: {_id: 'resources/'+props.certId},
     tree
   }),
   oada.put,
   ({state, props}) => ({
     connection_id: state.get(`certifications.connection_id`),
-    path: `/bookmarks/trellis/certifications/${props.certId}/audit`,
+    path: `/bookmarks/trellisfw/certifications/${props.certId}/audit`,
     data: props.audit,
     tree
   }),
@@ -99,8 +99,8 @@ export const deleteCertifications = sequence('certifications.deleteCertification
       // Optimistic update
       state.unset(`certifications.records.${key}`);
       return {
-        path: `/bookmarks/trellis/certifications/${key}`,
-        type: `application/vnd.trellis.certification.globalgap.1+json`,
+        path: `/bookmarks/trellisfw/certifications/${key}`,
+        type: `application/vnd.trellisfw.certification.globalgap.1+json`,
       }
     }).then((requests) => {
       return {requests}
@@ -119,7 +119,7 @@ export const certViewerClicked = sequence('certifications.certViewerClicked', [
 
 function showDoc({state, props}) {
 	state.set(`view.certifications.${props.certId}.cert_viewer`, {
-		doc: props.doc, 
+		doc: props.doc,
 		expanded: ''
 	})
 }
@@ -129,7 +129,7 @@ export function generateAuditSignature({state, props}) {
   var alg = 'RS256'
   var kty = 'RSA'
   var typ = 'JWT'
-  var jku = 'https://raw.githubusercontent.com/trellisfw/trellisfw-trusted-list/master/jku-test/jku-test.json' 
+  var jku = 'https://raw.githubusercontent.com/trellisfw/trellisfw-trusted-list/master/jku-test/jku-test.json'
   var headers = { kid, alg, kty, typ, jwk:pubKey, jku }
   var audit = _.clone(props.audit)
   delete audit._id
@@ -146,7 +146,7 @@ export function updateCerts({state, props}) {
   var certifications = {};
 	return Promise.map(Object.keys(props.certifications), (key) => {
 		let audit = randCert.generateAudit({
-			template: templateAudit, 
+			template: templateAudit,
 			minimizeAuditData: true,
 			organization: {name: props.clientName},
 			year: (parseInt(props.certifications[key].audit.conditions_during_audit.operation_observed_date.slice(0,4), 10)+1).toString(),
@@ -166,7 +166,7 @@ export function updateCerts({state, props}) {
 
 export function generateRandomCertification({state, props}) {
 	let audit = randCert.generateAudit({
-		template: templateAudit, 
+		template: templateAudit,
 		minimizeAuditData: true,
 		organization: {name: props.clientName},
   })

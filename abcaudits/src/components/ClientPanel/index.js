@@ -45,7 +45,7 @@ class ClientPanel extends React.Component {
 						    disabled={!this.props.client}
 						    className='client-panel-share-button'
                 onTouchTap={() => this.props.shareClientButtonClicked({
-                  metaPath:`/bookmarks/trellis/clients/${this.props.client}/certifications/_meta/_permissions`,
+                  metaPath:`/bookmarks/trellisfw/clients/${this.props.client}/certifications/_meta/_permissions`,
                   connection_id: this.props.connection_id,
                 })}
 						    iconClassName="material-icons">group

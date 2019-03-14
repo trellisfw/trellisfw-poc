@@ -61,11 +61,11 @@ export const addUserButtonClicked = sequence('sharing_dialog.addUserButtonClicke
   set(props`token`, state`oada.connections.${props`connection_id`}.token`),
   createClientUser,
   ({state, props}) => ({
-    type: 'application/vnd.trellis.client.1+json',
+    type: 'application/vnd.trellisfw.client.1+json',
     path: props.path+'/'+props.user_id,
     data: {
       read: true,
-      write: true, 
+      write: true,
       owner: false
     }
   }),
@@ -95,7 +95,7 @@ function createClientUser({state, props}) {
 		method: 'post',
 		url: config.oadaDomain+'/users',
 		headers: {
-			'Content-Type': 'application/vnd.trellis.client.1+json',
+			'Content-Type': 'application/vnd.trellisfw.client.1+json',
 			'Authorization': 'Bearer '+props.token,
 		},
 		data
@@ -103,5 +103,3 @@ function createClientUser({state, props}) {
     return {user_id: response.headers.location.slice(1)}
   })
 }
-
-

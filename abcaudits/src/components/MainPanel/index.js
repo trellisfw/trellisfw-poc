@@ -32,7 +32,7 @@ class MainPanel extends React.Component {
         {this.props.sharingDialog ? 
           <SharingDialog 
             connection_id={this.props.connection_id}
-            permissionsPath={`/bookmarks/trellis/clients/${this.props.client}/certifications/_meta/_permissions`}
+            permissionsPath={`/bookmarks/trellisfw/clients/${this.props.client}/certifications/_meta/_permissions`}
             title={'Sharing for '+this.props.person}
           /> : null
         }

@@ -13,7 +13,7 @@ export const initialize = sequence('initialize', [
     options: {
       redirect,
       metadata,
-      scope: 'trellis:all'
+      scope: 'trellisfw:all'
     }
   }),
   clients.initialize,
