@@ -8,9 +8,13 @@ import * as app from '../../../modules/app/sequences';
 
 export const fetch = sequence('user_profile.fetch', [
   ({state, props}) => ({
-    path: '/users/me',
-    tree: undefined,
-    watch: undefined
+    requests: [ 
+      {
+        path: '/users/me',
+        tree: undefined,
+        watch: undefined
+      },
+    ],
   }),
   oada.get,
   set(state`user_profile.user`, props`responses.0.data`),
