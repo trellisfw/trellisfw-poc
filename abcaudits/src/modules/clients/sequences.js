@@ -114,12 +114,16 @@ export const clientDialogSubmitted = sequence('clients.clientDialogSubmitted', [
   set(state`clients.records.${props`clientId`}`, {certifications: {}, name: ''}),
   set(state`clients.records.${props`clientId`}.name`, props`text`),
   ({state, props}) => ({
-    connection_id: state.get(`clients.connection_id`),
-		path: '/bookmarks/trellis/clients/'+props.clientId,
-    data: {
-      name: props.text,
-    },
-    tree,
+    requests: [ 
+      {
+        connection_id: state.get(`clients.connection_id`),
+  		  path: '/bookmarks/trellis/clients/'+props.clientId,
+        data: {
+          name: props.text,
+        },
+        tree,
+      } 
+    ],
   }),
   oada.put,
   clientClicked,
