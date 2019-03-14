@@ -57,10 +57,14 @@ export const fetch = sequence('certifications.fetch', [
     var signals = (props.signals ? props.signals : []);
     var watch = {signals: [...signals, 'certifications.mapTrellisToRecords']};
     return {
-      path: '/bookmarks/trellisfw/certifications',
-      tree,
-      connection_id: state.get('certifications.connection_id'),
-      watch,
+      requests: [
+        {
+          path: '/bookmarks/trellisfw/certifications',
+          tree,
+          connection_id: state.get('certifications.connection_id'),
+          watch,
+        }
+      ],
     }
   },
   oada.get,
@@ -78,10 +82,14 @@ export const createCertification = sequence('certifications.createCertification'
   set(state`certifications.records.${props`certId`}.audit`, props`audit`),
   set(props`connection_id`, state`certifications.connection_id`),
   ({state, props}) => ({
-    connection_id: state.get(`certifications.connection_id`),
-    path: `/bookmarks/trellisfw/certifications/${props.certId}`,
-    data: {_id: 'resources/'+props.certId},
-    tree
+    requests: [
+      {
+        connection_id: state.get(`certifications.connection_id`),
+        path: `/bookmarks/trellisfw/certifications/${props.certId}`,
+        data: {_id: 'resources/'+props.certId},
+        tree
+      },
+    ],
   }),
   oada.put,
   ({state, props}) => ({

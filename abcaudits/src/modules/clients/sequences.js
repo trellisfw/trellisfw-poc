@@ -179,11 +179,23 @@ export const createClientCert = sequence('clients.createClientCert', [
   set(state`view.certifications.${props`certId`}`, props`certification`),
   set(props`connection_id`, state`clients.connection_id`),
   ({state, props}) => ({
-    path: `/bookmarks/trellisfw/clients/${props.clientId}/certifications/${props.certId}`,
-    data: {_id: 'resources/'+props.certId, _rev: '0-0'},
-    tree
+    requests: [
+      {
+        path: `/bookmarks/trellisfw/clients/${props.clientId}/certifications/${props.certId}`,
+        data: {_id: 'resources/'+props.certId, _rev: '0-0'},
+        tree
+      },
+    ],
   }),
   oada.put,
+  ({state, props}) => ({
+    requests: [
+      {
+        path: `/bookmarks/trellisfw/clients/${props.clientId}/certifications/${props.certId}`,
+        tree
+      },
+    ],
+  }),
   oada.get,
   set(state`view.certifications.${props`certId`}`, props`certification`),
   mapTrellisToRecords,
@@ -226,10 +238,14 @@ export const signAuditButtonClicked = sequence('clients.signAuditButtonClicked',
   set(props`clientName`, state`clients.records.${props`selected_client`}.name`),
   certifications.generateAuditSignature,
   ({state, props}) => ({
-    connection_id: state.get(`clients.connection_id`),
-    path: `/bookmarks/trellisfw/clients/${props.clientId}/certifications/${props.certId}/audit`,
-    data: {signatures: props.signature},
-    tree,
+    requests: [
+      {
+        connection_id: state.get(`clients.connection_id`),
+        path: `/bookmarks/trellisfw/clients/${props.clientId}/certifications/${props.certId}/audit`,
+        data: {signatures: props.signature},
+        tree,
+      },
+    ],
   }),
   oada.put,
 ])

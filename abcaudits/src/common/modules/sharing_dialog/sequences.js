@@ -41,8 +41,12 @@ export const metaToSharedUsers = sequence('sharing_dialog.metaToSharedUsers', [
 export const shareClientButtonClicked = sequence('sharing_dialog.shareClientButtonClicked', [
   toggle(state`sharing_dialog.open`),
   ({state, props}) => ({
-    connection_id: props.connection_id,
-    path: props.metaPath,
+    requests: [
+      {
+        connection_id: props.connection_id,
+        path: props.metaPath,
+      },
+    ],
   }),
   oada.get,
   metaToSharedUsers,
@@ -61,17 +65,27 @@ export const addUserButtonClicked = sequence('sharing_dialog.addUserButtonClicke
   set(props`token`, state`oada.connections.${props`connection_id`}.token`),
   createClientUser,
   ({state, props}) => ({
-    type: 'application/vnd.trellisfw.client.1+json',
-    path: props.path+'/'+props.user_id,
-    data: {
-      read: true,
-      write: true,
-      owner: false
-    }
+    requests: [
+      {
+        type: 'application/vnd.trellisfw.client.1+json',
+        path: props.path,
+        data: {
+          [props.user_id]: {
+            read: true,
+            write: true,
+            owner: false
+          }
+        }
+      },
+    ],
   }),
   oada.put,
   ({state, props}) => ({
-    path: '/'+props.user_id,
+    requests: [
+      {
+        path: '/'+props.user_id,
+      }
+    ],
   }),
   oada.get,
   set(props`user`, props`responses.0.data`),
