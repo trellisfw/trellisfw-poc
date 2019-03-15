@@ -17,6 +17,7 @@ function getOadaConfigurationFactory ({domain, funcMode}) {
       if (!_domain) throw new Error('Must provide a `domain` to getOadaConfiguration.');
       //Normalize the domain if it is wonky format
       _domain = url.parse(normalizeUrl(_domain));
+      console.log('_domain', _domain);
       return axios({
         method: 'get',
         url: _domain.protocol + '//' + _domain.host + '/.well-known/oada-configuration'

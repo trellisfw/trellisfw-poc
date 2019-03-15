@@ -84,11 +84,12 @@ function websocketClient(context, config, promise) {
           path: request.url,
           data: request.data
         };
+        if (request.headers) message.headers = {};
         if (request.headers && request.headers.Authorization) {
-          message.authorization = request.headers.Authorization;
+          message.headers.authorization = request.headers.Authorization;
         }
         if (request.headers && request.headers['Content-Type']) {
-          message.contentType = request.headers['Content-Type'];
+          message.headers.contentType = request.headers['Content-Type'];
         }
         messages.push(message);
         httpCallbacks[message.requestId] = {
@@ -108,8 +109,9 @@ function websocketClient(context, config, promise) {
           method: 'watch',
           path: request.url
         };
+        if (request.headers) message.headers = {};
         if (request.headers && request.headers.Authorization) {
-          message.authorization = request.headers.Authorization;
+          message.headers.authorization = request.headers.Authorization;
         }
         messages.push(message);
         watchSignals[message.requestId] = {signalPath, resolve, reject};
